@@ -17,6 +17,14 @@ vehicles.
 No cloud, no vehicle telematics, no OBD dongle: one ESP32 board on the battery, one
 entry in your Home Assistant.
 
+<p align="center">
+  <img src="docs/images/dashboard.png" width="420"
+       alt="Irin dashboard in Home Assistant: voltage, SOC, charging status and 48-hour history">
+</p>
+<p align="center"><sub>The included dashboard on the bench prototype. SOC steps only
+after a rest window (0% from an early reboot loop, then 50%, ~17% and 42% as the bench
+supply was changed); voltage is charted continuously.</sub></p>
+
 ### The name
 
 *Irin* (Aramaic עִירִין, *ʿirin*; singular *ʿir*) means "watchers", literally "the
@@ -327,6 +335,7 @@ display and HA entities need no changes.
 | `ha_config/` | HA dashboard, draft automations, config snippets | MIT |
 | `hardware/` | KiCad schematic, PCB placement, custom footprints, netlist, PDF preview | CERN-OHL-P-2.0 |
 | `hardware/breadboard/` | Breadboard layout generator (Python) and its HTML output | MIT |
+| `docs/images/` | Screenshots | MIT |
 | `PARTS.md` | Bill of materials, wiring, divider math | MIT |
 | `CLAUDE.md` | Full design record: rationale, measurements, rejected options, bench log. Written as context for the AI assistant used to develop the project, and the most detailed technical reference here. | MIT |
 
