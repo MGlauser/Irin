@@ -6,8 +6,11 @@
 # Temp:   DHT22 on GPIO3, remote-mounted outside the enclosure via J2 (<=1 m cable)
 # Display: SSD1306 72x40 @ 0x3C
 #
-# See CLAUDE.md for design rationale. Bench-verified 2026-10-05: I2C pin order,
-# OLED, ADS1115 two-point calibration.
+# See CLAUDE.md for design rationale and README.md "Customizing" for other
+# chemistries and 24/48 V systems. Bench-verified 2026-10-06: I2C pin order,
+# OLED, ADS1115 two-point calibration, rest gate.
+#
+# SPDX-License-Identifier: MIT
 
 substitutions:
   device_name: uncharted-batt
@@ -37,6 +40,15 @@ substitutions:
   # OLED stays lit this long after boot, a BOOT-button press, or the end of a
   # charging run. Blanked otherwise to limit burn-in of the static layout.
   display_wake_ms: "120000"
+
+  # Resting (open-circuit) voltage -> SOC at 25 degC, ascending, same length.
+  # Flooded lead-acid (Pb), 12 V. These are RESTED voltages, not charging
+  # voltages. NOT an AGM table: AGM rests 0.10-0.15 V higher, so an AGM table
+  # would read this battery high and fire the 50% alert late. Capacity only sets
+  # how fast a given drain moves SOC; it does not change this lookup.
+  # Other chemistries and 24/48 V systems: see README "Customizing".
+  soc_table_v:   "11.60, 11.75, 11.90, 12.02, 12.12, 12.22, 12.30, 12.38, 12.48, 12.58, 12.70"
+  soc_table_pct: "    0,    10,    20,    30,    40,    50,    60,    70,    80,    90,   100"
 
 esphome:
   name: ${device_name}
@@ -371,17 +383,11 @@ interval:
             vc += ${temp_coeff} * (25.0f - id(air_temp).state);
           }
 
-          // Flooded lead-acid (Pb) open-circuit table at 25 degC, for the stock
-          // 50 Ah battery. These are RESTED voltages, not charging voltages.
-          // NOT an AGM table: AGM rests 0.10-0.15 V higher, so an AGM table
-          // would read this battery high and fire the 50% alert late.
-          // Capacity (50 Ah) only sets how fast a given drain moves SOC; it
-          // does not change this lookup.
-          static const float TV[] = {11.60f, 11.75f, 11.90f, 12.02f, 12.12f,
-                                     12.22f, 12.30f, 12.38f, 12.48f, 12.58f, 12.70f};
-          static const float TS[] = {0.0f, 10.0f, 20.0f, 30.0f, 40.0f,
-                                     50.0f, 60.0f, 70.0f, 80.0f, 90.0f, 100.0f};
-          const int N = 11;
+          // Resting-voltage -> SOC table from substitutions (soc_table_v / _pct).
+          static const float TV[] = {${soc_table_v}};
+          static const float TS[] = {${soc_table_pct}};
+          static_assert(sizeof(TV) == sizeof(TS), "soc_table_v and soc_table_pct differ in length");
+          const int N = sizeof(TV) / sizeof(TV[0]);
 
           float soc;
           if (vc <= TV[0]) {

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
 """
 Breadboard layout for the Uncharted 12V battery monitor (400-point half-size board: 30 columns, rows a-j, two rails each side).
 
