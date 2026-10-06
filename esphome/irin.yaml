@@ -101,9 +101,11 @@ wifi:
   password: !secret wifi_password
   # No power-save disable and no static IP — always-on operation, and the
   # vehicle's own 430 mA draw makes wake-time optimization pointless.
-  # Reboot after 60 min without WiFi (default 15 min) as a stack-recovery
-  # backstop. 60 min leaves room for a full rest gate (~35 min) between reboots
-  # when the car is out of range, so the OLED SOC stays current.
+  # NOTE: inert while the fallback `ap:` below is configured. ESPHome skips the
+  # no-WiFi reboot when an AP is set (wifi_component.cpp, `!has_ap()`); after
+  # 90 s without WiFi it raises the fallback AP instead and keeps running, so
+  # nothing restarts while the car is away. Kept so that removing `ap:` gives a
+  # 60 min stack-recovery backstop (room for a ~35 min rest gate between reboots).
   reboot_timeout: 60min
   ap:
     ssid: "${friendly_name} Fallback"
@@ -191,9 +193,9 @@ globals:
     restore_value: false
     initial_value: '${display_wake_ms}'
 
-  # --- Away tracking: the period in progress. Restored, because the WiFi
-  # reboot_timeout reboots the device hourly while it is out of range. Written
-  # at most every 5 min (see the away tracker) to spare flash.
+  # --- Away tracking: the period in progress. Restored, so a reboot mid-period
+  # (crash, brownout, power loss) loses at most the last 5 min, not the trip.
+  # Written at most every 5 min (see the away tracker) to spare flash.
   - id: away_active
     type: bool
     restore_value: true
@@ -565,8 +567,8 @@ interval:
             if (!isnan(v) && v < ram_min_v) ram_min_v = v;
             const bool ch = id(charging).state;
             if (ch) ram_charge += 10;
-            // Skip edges in the first minute after boot: an hourly no-WiFi
-            // reboot mid-charge would otherwise count the same charge again.
+            // Skip edges in the first minute after boot: a reboot mid-charge
+            // would otherwise count the same charge again.
             if (ch && !was_charging && millis() > 60000) id(away_charges) += 1;
             was_charging = ch;
             if (id(soc_valid) && id(last_soc) < ${soc_alert_pct}) ram_below += 10;
