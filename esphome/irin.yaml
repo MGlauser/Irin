@@ -20,6 +20,11 @@ substitutions:
   # on a running install creates new entities and orphans the old history.
   device_name: uncharted-batt
   friendly_name: "Uncharted 12V"
+  # Fallback WiFi network name (raised 90 s after home WiFi is lost; used to
+  # enter a new WiFi password from a phone). Deliberately doesn't name the
+  # vehicle, since it broadcasts wherever the car is parked. "Sunny" is the
+  # car's name: she runs on sunlight.
+  ap_ssid: "irin-Sunny"
 
   # --- Tunables -------------------------------------------------------------
   # Charging detection (the vehicle DC-DC on the Uncharted), with hysteresis so
@@ -108,7 +113,7 @@ wifi:
   # 60 min stack-recovery backstop (room for a ~35 min rest gate between reboots).
   reboot_timeout: 60min
   ap:
-    ssid: "${friendly_name} Fallback"
+    ssid: "${ap_ssid}"
     password: !secret uncharted_fallback_password
 
 captive_portal:

@@ -190,6 +190,7 @@ resistors and calibration for other system voltages.
 | `slope_tolerance` | Allowed drift per 5-minute tick to count as stable | 0.005 V |
 | `temp_coeff` | Resting-voltage temperature coefficient, V/°C, for the whole battery | 0.004 |
 | `display_wake_ms` | How long the OLED stays lit | 120000 |
+| `ap_ssid` | Fallback WiFi network, raised 90 s after home WiFi is lost; join it from a phone to enter a new WiFi password. Don't name the vehicle: it broadcasts wherever you park | irin-Sunny |
 | `soc_alert_pct` | SOC alert level, used for the away report's "time below alert" (match your HA automation) | 50 |
 | `away_min_sec` | Shortest HA outage that counts as "away" and replaces the last report | 1800 s |
 
