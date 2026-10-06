@@ -1,4 +1,4 @@
 (fp_lib_table
 	(version 7)
-	(lib (name "Uncharted") (type "KiCad") (uri "${KIPRJMOD}/Uncharted.pretty") (options "") (descr "Project-local footprints for the Uncharted 12V battery monitor"))
+	(lib (name "Irin") (type "KiCad") (uri "${KIPRJMOD}/Irin.pretty") (options "") (descr "Project-local footprints for Irin"))
 )

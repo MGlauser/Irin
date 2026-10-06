@@ -1,4 +1,4 @@
-# HomeAssistant automations — Uncharted 12V Battery Monitor
+# HomeAssistant automations — Irin battery monitor ("Uncharted 12V" instance)
 #
 # CORE ALERTS. The optional external-maintainer control loop lives in
 # automations_charger_optional.yaml and is not required for normal operation.

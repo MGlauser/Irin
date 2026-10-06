@@ -1,11 +1,13 @@
-# 12V Battery Monitor for Home Assistant
+# Irin
 
-An always-on battery monitor that clamps onto a battery's terminals and reports
+**The wakeful one: an always-on battery watcher for Home Assistant.**
+
+Irin is an always-on battery monitor that clamps onto a battery's terminals and reports
 **voltage, state of charge (SOC), charging activity and temperature** to
 [Home Assistant](https://www.home-assistant.io/) over WiFi, with a tiny OLED readout on
 the device itself.
 
-It was built for the 12V accessory battery of a 2027 Subaru Uncharted GT (an EV whose
+The prototype watches the 12V accessory battery of a 2027 Subaru Uncharted GT (an EV whose
 12V battery can run down in a couple of days of parking), but nothing in it is
 car-specific. Change a few lines of configuration and it monitors **flooded lead-acid,
 AGM, LiFePO4 or sodium-ion** batteries in **12V, 24V or 48V** systems: RVs and boats,
@@ -14,6 +16,22 @@ vehicles.
 
 No cloud, no vehicle telematics, no OBD dongle: one ESP32 board on the battery, one
 entry in your Home Assistant.
+
+### The name
+
+*Irin* (Aramaic עִירִין, *ʿirin*; singular *ʿir*) means "watchers", literally "the
+wakeful ones": those who do not sleep. It is the word for the Watchers of the Book of
+Enoch, whose first part (1 Enoch 1–36) is called *The Book of the Watchers* and survives
+in Aramaic among the Dead Sea Scrolls. The same word appears in Daniel 4:13: "a watcher
+and a holy one came down from heaven."
+
+The name is meant in the sense of the *holy* Watchers, the ones who kept their post
+(1 Enoch 20 names them: Uriel, Raphael, Raguel, Michael, Saraqael, Gabriel and Remiel),
+not the fallen ones the book is better known for.
+
+It is also the design in one word. Deep sleep was evaluated and rejected (on the
+prototype it would buy about 2% more runway), so the monitor stays awake around the
+clock, watching the battery so you don't have to.
 
 ---
 
@@ -84,7 +102,7 @@ breadboard rails became an 86 mV error at the battery, and it drifted.
    in the ESPHome log (0x3C and 0x48).
 
 ### 2. Firmware (ESPHome)
-The firmware is a single ESPHome config: [`esphome/uncharted-battery.yaml`](esphome/uncharted-battery.yaml).
+The firmware is a single ESPHome config: [`esphome/irin.yaml`](esphome/irin.yaml).
 
 **With the Home Assistant ESPHome add-on (Device Builder):**
 1. Copy the YAML into `/config/esphome/`.
@@ -93,10 +111,13 @@ The firmware is a single ESPHome config: [`esphome/uncharted-battery.yaml`](esph
 3. Plug the ESP32 into the HA host by USB, then **Install**. Later updates go over WiFi.
 
 **Or with the ESPHome command line:** copy `secrets.yaml.example` to `secrets.yaml`, fill
-it in, and run `esphome run uncharted-battery.yaml`.
+it in, and run `esphome run irin.yaml`.
 
 Change `device_name` and `friendly_name` at the top of the YAML for each monitor you
-build; entity IDs in HA follow `friendly_name`.
+build; entity IDs in HA follow `friendly_name`. The files in this repository are the
+prototype's own configuration, named "Uncharted 12V", so the HA examples use entity IDs
+like `sensor.uncharted_12v_battery_voltage`. If your `friendly_name` is "RV House", for
+example, replace `uncharted_12v` with `rv_house` throughout `ha_config/`.
 
 ### 3. Calibrate (two-point)
 Every divider is different, so calibrate against a good meter:
@@ -124,7 +145,7 @@ a few tenths of a percent, suspect the ground wiring (see above) before the resi
    new entity IDs with it (`sensor.garage_…`). Rename them, or edit the dashboard to
    match.
 3. Dashboard: create a new dashboard, open the **Raw configuration editor**, and paste
-   [`ha_config/dashboard_uncharted.yaml`](ha_config/dashboard_uncharted.yaml). For a
+   [`ha_config/dashboard.yaml`](ha_config/dashboard.yaml). For a
    single card on an existing dashboard, use
    [`ha_config/dashboard_card.yaml`](ha_config/dashboard_card.yaml).
 4. Alerts: draft automations are in [`ha_config/`](ha_config/) (low SOC, charging
@@ -146,7 +167,7 @@ a few tenths of a percent, suspect the ground wiring (see above) before the resi
 ## Customizing
 
 Everything you need to change is in the `substitutions:` block at the top of
-[`esphome/uncharted-battery.yaml`](esphome/uncharted-battery.yaml), plus the divider
+[`esphome/irin.yaml`](esphome/irin.yaml), plus the divider
 resistors and calibration for other system voltages.
 
 | Setting | What it does | 12V flooded default |

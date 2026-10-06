@@ -1,4 +1,7 @@
-# Uncharted 12V Battery Monitor — ESPHome
+# Irin — battery monitor for Home Assistant (ESPHome)
+#
+# This file is the prototype instance, "Uncharted 12V": the 12V accessory battery
+# of a 2027 Subaru Uncharted GT. Change device_name / friendly_name for your own.
 #
 # Battery: flooded lead-acid (Pb), 50 Ah, stock Uncharted accessory battery (NOT AGM)
 # Board:  01Space ESP32-C3-0.42LCD
@@ -13,6 +16,8 @@
 # SPDX-License-Identifier: MIT
 
 substitutions:
+  # Instance names. Entity IDs in HA derive from friendly_name; changing either
+  # on a running install creates new entities and orphans the old history.
   device_name: uncharted-batt
   friendly_name: "Uncharted 12V"
 

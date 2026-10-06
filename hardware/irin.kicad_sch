@@ -5,15 +5,15 @@
 	(uuid "097d63fa-dc7b-4932-a049-360b053b132d")
 	(paper "A2")
 	(title_block
-		(title "Uncharted 12V Battery Monitor")
+		(title "Irin — 12V Battery Monitor")
 		(date "2026-08-29")
 		(rev "B")
 		(company "Owner-built")
-		(comment 1 "ESP32-C3 + ADS1115 12V battery monitor for 2027 Subaru Uncharted GT")
+		(comment 1 "ESP32-C3 + ADS1115 battery monitor. Prototype: 2027 Subaru Uncharted GT")
 		(comment 2 "See CLAUDE.md / PARTS.md in project root for full design rationale")
 	)
 	(lib_symbols
-		(symbol "Uncharted:ADS1115"
+		(symbol "Irin:ADS1115"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -197,7 +197,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:BATT_CONN"
+		(symbol "Irin:BATT_CONN"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -309,7 +309,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:BUCK_MODULE"
+		(symbol "Irin:BUCK_MODULE"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -457,7 +457,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:C"
+		(symbol "Irin:C"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -569,7 +569,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:CP"
+		(symbol "Irin:CP"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -681,7 +681,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:DHT22"
+		(symbol "Irin:DHT22"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -811,7 +811,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:ESP32C3_BOARD"
+		(symbol "Irin:ESP32C3_BOARD"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -995,7 +995,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:FUSE"
+		(symbol "Irin:FUSE"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1107,7 +1107,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:R"
+		(symbol "Irin:R"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1219,7 +1219,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Uncharted:TVS"
+		(symbol "Irin:TVS"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2172,7 +2172,7 @@
 		(uuid "fd0fd986-ed59-457b-8a39-d77b82b3abf9")
 	)
 	(symbol
-		(lib_id "Uncharted:R")
+		(lib_id "Irin:R")
 		(at 129.54 134.62 270)
 		(unit 1)
 		(body_style 1)
@@ -2241,7 +2241,7 @@
 			(uuid "5ab5a5bd-5bbb-4a35-b7fb-1858f2408fc9")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "R2")
 					(unit 1)
@@ -2250,7 +2250,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:CP")
+		(lib_id "Irin:CP")
 		(at 180.34 95.25 270)
 		(unit 1)
 		(body_style 1)
@@ -2319,7 +2319,7 @@
 			(uuid "374494a3-99d0-486e-92df-4213096920de")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "C2")
 					(unit 1)
@@ -2328,7 +2328,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:R")
+		(lib_id "Irin:R")
 		(at 129.54 64.77 270)
 		(unit 1)
 		(body_style 1)
@@ -2397,7 +2397,7 @@
 			(uuid "a54e6f5b-8df5-43f5-bf24-8551e40a6a8f")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "R1")
 					(unit 1)
@@ -2406,7 +2406,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:ESP32C3_BOARD")
+		(lib_id "Irin:ESP32C3_BOARD")
 		(at 299.72 90.17 0)
 		(unit 1)
 		(body_style 1)
@@ -2436,7 +2436,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm"
+		(property "Footprint" "Irin:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm"
 			(at 299.72 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -2487,7 +2487,7 @@
 			(uuid "6b0d93c4-aea9-4d9a-8fd8-4bb09e4fe406")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "U2")
 					(unit 1)
@@ -2496,7 +2496,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:TVS")
+		(lib_id "Irin:TVS")
 		(at 95.25 95.25 270)
 		(unit 1)
 		(body_style 1)
@@ -2565,7 +2565,7 @@
 			(uuid "a454a7e0-d199-42ec-949c-3e5d3b4ef84d")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "D1")
 					(unit 1)
@@ -2574,7 +2574,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:C")
+		(lib_id "Irin:C")
 		(at 199.39 95.25 270)
 		(unit 1)
 		(body_style 1)
@@ -2643,7 +2643,7 @@
 			(uuid "8a9bb039-e01b-49e3-ad88-b9feacbca968")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "C3")
 					(unit 1)
@@ -2652,7 +2652,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:ADS1115")
+		(lib_id "Irin:ADS1115")
 		(at 359.41 54.61 0)
 		(unit 1)
 		(body_style 1)
@@ -2682,7 +2682,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm"
+		(property "Footprint" "Irin:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm"
 			(at 359.41 54.61 0)
 			(hide yes)
 			(show_name no)
@@ -2733,7 +2733,7 @@
 			(uuid "14771d92-09d7-48b5-b1a5-89bfd77153ed")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "U3")
 					(unit 1)
@@ -2742,7 +2742,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:DHT22")
+		(lib_id "Irin:DHT22")
 		(at 359.41 139.7 0)
 		(unit 1)
 		(body_style 1)
@@ -2814,7 +2814,7 @@
 			(uuid "a17082ef-ee27-44f2-8b80-c1dcf6222325")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "J2")
 					(unit 1)
@@ -2823,7 +2823,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:FUSE")
+		(lib_id "Irin:FUSE")
 		(at 62.23 100.33 0)
 		(unit 1)
 		(body_style 1)
@@ -2892,7 +2892,7 @@
 			(uuid "00c7b875-de02-4b62-9e9c-c5b1500b0f7b")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "F1")
 					(unit 1)
@@ -2901,7 +2901,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:C")
+		(lib_id "Irin:C")
 		(at 154.94 134.62 270)
 		(unit 1)
 		(body_style 1)
@@ -2970,7 +2970,7 @@
 			(uuid "4bf0891b-ebb6-41ea-8677-99be9db89589")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "C1")
 					(unit 1)
@@ -2979,7 +2979,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:BUCK_MODULE")
+		(lib_id "Irin:BUCK_MODULE")
 		(at 245.11 90.17 0)
 		(unit 1)
 		(body_style 1)
@@ -3009,7 +3009,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+		(property "Footprint" "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
 			(at 245.11 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -3054,7 +3054,7 @@
 			(uuid "073d390e-c834-4165-b200-58c29bdc4128")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "U1")
 					(unit 1)
@@ -3063,7 +3063,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Uncharted:BATT_CONN")
+		(lib_id "Irin:BATT_CONN")
 		(at 20.32 100.33 0)
 		(unit 1)
 		(body_style 1)
@@ -3132,7 +3132,7 @@
 			(uuid "d3909cfc-670d-4746-997a-0db78fd74c52")
 		)
 		(instances
-			(project "uncharted-battery-monitor"
+			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "J1")
 					(unit 1)

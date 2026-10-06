@@ -1,22 +1,22 @@
 (export
 	(version "E")
 	(design
-		(source "/Volumes/x/Uncharted/hardware/uncharted-battery-monitor.kicad_sch")
-		(date "2026-10-06T12:48:04")
+		(source "/Volumes/x/Uncharted/hardware/irin.kicad_sch")
+		(date "2026-10-06T15:04:32")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
 			(name "/")
 			(tstamps "/")
 			(title_block
-				(title "Uncharted 12V Battery Monitor")
+				(title "Irin — 12V Battery Monitor")
 				(company "Owner-built")
 				(rev "B")
 				(date "2026-08-29")
-				(source "uncharted-battery-monitor.kicad_sch")
+				(source "irin.kicad_sch")
 				(comment
 					(number "1")
-					(value "ESP32-C3 + ADS1115 12V battery monitor for 2027 Subaru Uncharted GT")
+					(value "ESP32-C3 + ADS1115 battery monitor. Prototype: 2027 Subaru Uncharted GT")
 				)
 				(comment
 					(number "2")
@@ -69,17 +69,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "C")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -115,17 +115,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "CP")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -161,17 +161,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "C")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -207,17 +207,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "TVS")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -253,17 +253,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "FUSE")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -299,17 +299,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "BATT_CONN")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -345,17 +345,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "DHT22")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -394,17 +394,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "R")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -440,17 +440,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "R")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -474,10 +474,10 @@
 		(comp
 			(ref "U1")
 			(value "MP1584EN set to 5.0V")
-			(footprint "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
+			(footprint "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
 			(fields
 				(field
-					(name "Footprint") "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
+					(name "Footprint") "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
 				(field
 					(name "Datasheet")
 				)
@@ -486,17 +486,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "BUCK_MODULE")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -526,10 +526,10 @@
 		(comp
 			(ref "U2")
 			(value "01Space ESP32-C3-0.42LCD")
-			(footprint "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
+			(footprint "Irin:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
 			(fields
 				(field
-					(name "Footprint") "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
+					(name "Footprint") "Irin:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
 				(field
 					(name "Datasheet")
 				)
@@ -538,17 +538,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "ESP32C3_BOARD")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -584,10 +584,10 @@
 		(comp
 			(ref "U3")
 			(value "HiLetgo ADS1115 (0x48, ADDR->GND)")
-			(footprint "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
+			(footprint "Irin:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
 			(fields
 				(field
-					(name "Footprint") "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
+					(name "Footprint") "Irin:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
 				(field
 					(name "Datasheet")
 				)
@@ -596,17 +596,17 @@
 				)
 			)
 			(libsource
-				(lib "Uncharted")
+				(lib "Irin")
 				(part "ADS1115")
 				(description "")
 			)
 			(property
 				(name "Sheetname")
-				(value "uncharted-battery-monitor")
+				(value "irin")
 			)
 			(property
 				(name "Sheetfile")
-				(value "uncharted-battery-monitor.kicad_sch")
+				(value "irin.kicad_sch")
 			)
 			(sheetpath
 				(names "/")
@@ -644,7 +644,7 @@
 	(variants)
 	(libparts
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "ADS1115")
 			(fields
 				(field
@@ -695,7 +695,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "BATT_CONN")
 			(fields
 				(field
@@ -726,7 +726,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "BUCK_MODULE")
 			(fields
 				(field
@@ -767,7 +767,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "C")
 			(fields
 				(field
@@ -798,7 +798,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "CP")
 			(fields
 				(field
@@ -829,7 +829,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "DHT22")
 			(fields
 				(field
@@ -865,7 +865,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "ESP32C3_BOARD")
 			(fields
 				(field
@@ -916,7 +916,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "FUSE")
 			(fields
 				(field
@@ -947,7 +947,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "R")
 			(fields
 				(field
@@ -978,7 +978,7 @@
 			)
 		)
 		(libpart
-			(lib "Uncharted")
+			(lib "Irin")
 			(part "TVS")
 			(fields
 				(field

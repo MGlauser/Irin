@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "manual")
 	(layer "F.Cu")
-	(descr "HiLetgo ADS1115 16-bit ADC breakout (ASIN B07VPFLSMX). Single row of 10 THT pins at 0.1in (2.54mm) pitch along one long edge. Board outline 28.3mm x 18mm is from the published listing spec, NOT measured by owner -- drawn as a generous placeholder box for visual reference only, same caveat as Uncharted:MP1584EN_HW133. Pin ROW ORDER is CONFIRMED by owner against the physical module's silkscreen as VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3 (left to right). Pad numbers match the Uncharted:ADS1115 schematic symbol (1=VDD 2=GND 3=SCL 4=SDA 5=ADDR 6=A0); pads 7,9,10 are the module's other physical pins (ALRT, A1, A2, A3) not used in this design, numbered arbitrarily. The module is cable-wired to the ESP32's Qwiic port rather than pin-header-mounted (see CLAUDE.md).")
+	(descr "HiLetgo ADS1115 16-bit ADC breakout (ASIN B07VPFLSMX). Single row of 10 THT pins at 0.1in (2.54mm) pitch along one long edge. Board outline 28.3mm x 18mm is from the published listing spec, NOT measured by owner -- drawn as a generous placeholder box for visual reference only, same caveat as Irin:MP1584EN_HW133. Pin ROW ORDER is CONFIRMED by owner against the physical module's silkscreen as VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3 (left to right). Pad numbers match the Irin:ADS1115 schematic symbol (1=VDD 2=GND 3=SCL 4=SDA 5=ADDR 6=A0); pads 7,9,10 are the module's other physical pins (ALRT, A1, A2, A3) not used in this design, numbered arbitrarily. The module is cable-wired to the ESP32's Qwiic port rather than pin-header-mounted (see CLAUDE.md).")
 	(tags "ADS1115 HiLetgo ADC breakout perfboard")
 	(attr through_hole)
 	(property "Reference" "REF**"

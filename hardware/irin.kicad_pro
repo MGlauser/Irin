@@ -488,7 +488,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "uncharted-battery-monitor.kicad_pro",
+    "filename": "irin.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -656,8 +656,8 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "uncharted-battery-monitor.kicad_sch",
-        "name": "uncharted-battery-monitor",
+        "filename": "irin.kicad_sch",
+        "name": "irin",
         "uuid": "097d63fa-dc7b-4932-a049-360b053b132d"
       }
     ],
@@ -667,7 +667,7 @@
   "sheets": [
     [
       "097d63fa-dc7b-4932-a049-360b053b132d",
-      "uncharted-battery-monitor"
+      "irin"
     ]
   ],
   "text_variables": {},

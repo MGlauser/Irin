@@ -1,7 +1,26 @@
-# Uncharted 12V Battery Monitor
+# Irin — Uncharted 12V Battery Monitor
 
 ESP32-C3 device that monitors the 12V accessory battery of a 2027 Subaru Uncharted GT
 and reports to HomeAssistant over WiFi.
+
+## Project name: Irin
+
+**Irin** is the open-source project name (chosen 2026-10-06); the Uncharted install is
+its prototype instance. The name is from the Book of Enoch: Aramaic *ʿirin* (עִירִין,
+singular *ʿir*), "watchers", literally "the wakeful ones" who do not sleep. It is the
+word for the Watchers of 1 Enoch 1–36 (*The Book of the Watchers*, extant in Aramaic in
+the Dead Sea Scrolls) and of Daniel 4:13 ("a watcher and a holy one"). Meant in the
+sense of the **holy** Watchers who kept their post (1 Enoch 20: Uriel, Raphael, Raguel,
+Michael, Saraqael, Gabriel, Remiel), not the fallen ones. It also names the design:
+always-on, deep sleep deliberately rejected (see Power budget).
+
+**Naming convention:** project branding (repo, README, KiCad project `hardware/irin.*`,
+footprint library `Irin`, `esphome/irin.yaml`) says Irin. The *instance* keeps its
+names: ESPHome `device_name: uncharted-batt`, `friendly_name: "Uncharted 12V"`, HA
+entity IDs `*.uncharted_12v_*`, secrets `uncharted_*`, HA dashboard "Uncharted". Do not
+rename the instance: ESPHome entity unique IDs derive from these names, so a rename
+creates new HA entities and orphans the recorded history. On the HA Pi the config is
+still `/config/esphome/uncharted-batt.yaml` (same content as `esphome/irin.yaml`).
 
 > **Audience:** the owner is a veteran electronics/manufacturing engineer and Extra Class
 > ham. Write at peer level. Do not explain soldering, meter use, or basic circuit theory.

@@ -1,5 +1,5 @@
 # Snippets to merge into HomeAssistant configuration.yaml
-# Uncharted 12V Battery Monitor
+# Irin battery monitor ("Uncharted 12V" instance)
 
 # =============================================================================
 # Automations

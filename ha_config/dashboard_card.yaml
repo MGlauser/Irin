@@ -1,10 +1,10 @@
-# Uncharted 12V — dashboard card
+# Irin — dashboard card ("Uncharted 12V" instance)
 #
 # Paste into a dashboard: Edit dashboard -> + Add card -> Manual -> paste.
 # Built-in cards only (no HACS).
 #
 # Entity IDs follow from friendly_name "Uncharted 12V" + each sensor's name in
-# esphome/uncharted-battery.yaml. Confirm them under Settings -> Devices ->
+# esphome/irin.yaml. Confirm them under Settings -> Devices ->
 # Uncharted 12V after the device is adopted; fix here if any differ.
 
 type: vertical-stack

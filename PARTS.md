@@ -1,4 +1,4 @@
-# Parts List — Uncharted 12V Battery Monitor
+# Parts List — Irin battery monitor (12V prototype)
 
 Enough parts for **three complete units** once the remaining items land.
 

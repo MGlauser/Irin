@@ -87,11 +87,11 @@
 			(outputdirectory "")
 		)
 	)
-	(footprint "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+	(footprint "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
 		(layer "F.Cu")
 		(uuid "043bd47f-f53d-470e-8fe8-1c02cd21f149")
 		(at 22.987 64.8208)
-		(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.3in apart center-to-center. Measured by owner with a ruler (input/output edge spacing and pair pitch only -- +/-0.5mm). Board outline below is NOT measured -- it is a generous placeholder box around the hole pattern for visual reference only. Pad numbers match the Uncharted:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
+		(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.3in apart center-to-center. Measured by owner with a ruler (input/output edge spacing and pair pitch only -- +/-0.5mm). Board outline below is NOT measured -- it is a generous placeholder box around the hole pattern for visual reference only. Pad numbers match the Irin:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
 		(tags "MP1584EN HW-133 buck module perfboard")
 		(property "Reference" "U1"
 			(at 0 -12.5 0)
@@ -139,7 +139,7 @@
 		)
 		(path "/b8169df6-a622-4da6-b34d-a3e283748715")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -368,7 +368,7 @@
 		)
 		(path "/ad839596-afd0-43f4-bc04-e65235d75264")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -544,11 +544,11 @@
 			)
 		)
 	)
-	(footprint "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm"
+	(footprint "Irin:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm"
 		(layer "F.Cu")
 		(uuid "162e6cd1-f6e3-457f-9ee0-c5b71b55eed7")
 		(at 34.5948 57.2008)
-		(descr "01Space ESP32-C3-0.42LCD dev board: 2x8 THT pin rows, 0.1in pitch, 0.7in row spacing. Pad numbers match the Uncharted:ESP32C3_BOARD schematic symbol (1=5V 2=3V3 3=GND 4=GPIO3 5=GPIO5 6=GPIO6); pads 7-16 are the board's other physical pins, not used in this design, numbered arbitrarily.")
+		(descr "01Space ESP32-C3-0.42LCD dev board: 2x8 THT pin rows, 0.1in pitch, 0.7in row spacing. Pad numbers match the Irin:ESP32C3_BOARD schematic symbol (1=5V 2=3V3 3=GND 4=GPIO3 5=GPIO5 6=GPIO6); pads 7-16 are the board's other physical pins, not used in this design, numbered arbitrarily.")
 		(tags "ESP32-C3 01Space 0.42LCD perfboard")
 		(property "Reference" "U2"
 			(at 8.89 -3 0)
@@ -596,7 +596,7 @@
 		)
 		(path "/6891fa05-3490-4979-b5df-bf78f96ec371")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -925,7 +925,7 @@
 		)
 		(path "/3cc6f456-70f0-4142-b256-a5f30670b7f1")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -2668,7 +2668,7 @@
 		)
 		(path "/71a7858c-42b5-4e32-8ea9-65f61dfddf73")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -2943,7 +2943,7 @@
 		)
 		(path "/413e1129-d5dd-41d2-b201-541b7f3ee9cf")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3071,11 +3071,11 @@
 			)
 		)
 	)
-	(footprint "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm"
+	(footprint "Irin:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm"
 		(layer "F.Cu")
 		(uuid "405b0911-2310-4f1f-861b-5202333fb2ec")
 		(at 70.9732 63.0682 -90)
-		(descr "HiLetgo ADS1115 16-bit ADC breakout (ASIN B07VPFLSMX). Single row of 10 THT pins at 0.1in (2.54mm) pitch along one long edge. Board outline 28.3mm x 18mm is from the published listing spec, NOT measured by owner -- drawn as a generous placeholder box for visual reference only, same caveat as Uncharted:MP1584EN_HW133. Pin ROW ORDER is CONFIRMED by owner against the physical module's silkscreen as VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3 (left to right). Pad numbers match the Uncharted:ADS1115 schematic symbol (1=VDD 2=GND 3=SCL 4=SDA 5=ADDR 6=A0); pads 7,9,10 are the module's other physical pins (ALRT, A1, A2, A3) not used in this design, numbered arbitrarily. The module is cable-wired to the ESP32's Qwiic port rather than pin-header-mounted (see CLAUDE.md).")
+		(descr "HiLetgo ADS1115 16-bit ADC breakout (ASIN B07VPFLSMX). Single row of 10 THT pins at 0.1in (2.54mm) pitch along one long edge. Board outline 28.3mm x 18mm is from the published listing spec, NOT measured by owner -- drawn as a generous placeholder box for visual reference only, same caveat as Irin:MP1584EN_HW133. Pin ROW ORDER is CONFIRMED by owner against the physical module's silkscreen as VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3 (left to right). Pad numbers match the Irin:ADS1115 schematic symbol (1=VDD 2=GND 3=SCL 4=SDA 5=ADDR 6=A0); pads 7,9,10 are the module's other physical pins (ALRT, A1, A2, A3) not used in this design, numbered arbitrarily. The module is cable-wired to the ESP32's Qwiic port rather than pin-header-mounted (see CLAUDE.md).")
 		(tags "ADS1115 HiLetgo ADC breakout perfboard")
 		(property "Reference" "U3"
 			(at 0 -13 90)
@@ -3123,7 +3123,7 @@
 		)
 		(path "/9b618e58-d4f1-4c81-a4b2-ecd051e0b0bb")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3384,7 +3384,7 @@
 		)
 		(path "/b5f711d0-eb70-4a4b-836a-e92f45e24242")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3585,7 +3585,7 @@
 		)
 		(path "/73122ae2-2b2a-47f0-af2f-53667f1e417a")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3786,7 +3786,7 @@
 		)
 		(path "/3b0f4448-a7cc-4d84-bb9f-9d15e624687b")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3978,7 +3978,7 @@
 		)
 		(path "/edcd3089-0922-4eda-8707-09c680ba686d")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -4218,7 +4218,7 @@
 		)
 		(path "/9ef01df8-20bf-4ea6-917b-677a116f712d")
 		(sheetname "/")
-		(sheetfile "uncharted-battery-monitor.kicad_sch")
+		(sheetfile "irin.kicad_sch")
 		(units
 			(unit
 				(name "A")

@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "manual")
 	(layer "F.Cu")
-	(descr "01Space ESP32-C3-0.42LCD dev board: 2x8 THT pin rows, 0.1in pitch, 0.7in row spacing. Pad numbers match the Uncharted:ESP32C3_BOARD schematic symbol (1=5V 2=3V3 3=GND 4=GPIO3 5=GPIO5 6=GPIO6); pads 7-16 are the board's other physical pins, not used in this design, numbered arbitrarily.")
+	(descr "01Space ESP32-C3-0.42LCD dev board: 2x8 THT pin rows, 0.1in pitch, 0.7in row spacing. Pad numbers match the Irin:ESP32C3_BOARD schematic symbol (1=5V 2=3V3 3=GND 4=GPIO3 5=GPIO5 6=GPIO6); pads 7-16 are the board's other physical pins, not used in this design, numbered arbitrarily.")
 	(tags "ESP32-C3 01Space 0.42LCD perfboard")
 	(attr through_hole)
 	(property "Reference" "REF**"
