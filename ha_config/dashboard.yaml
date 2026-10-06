@@ -4,7 +4,8 @@
 # scratch", title "Uncharted". Open it -> pencil -> three-dot menu -> "Raw
 # configuration editor" -> replace everything with this file -> Save.
 #
-# Entity IDs verified against HA's entity registry 2026-10-06.
+# Entity IDs verified against HA's entity registry 2026-10-06, except the
+# "Last time away" section (added later; check for a garage_ prefix).
 # Built-in cards only (no HACS).
 
 title: Uncharted
@@ -45,6 +46,31 @@ views:
           - type: tile
             entity: sensor.uncharted_12v_uptime
             name: Uptime
+
+      # --- Last time away -----------------------------------------------------
+      # Summary of the last period the device couldn't reach HA (car away from
+      # home WiFi), published on reconnect. Gaps under 30 min are ignored.
+      - type: grid
+        cards:
+          - type: heading
+            heading: Last time away
+          - type: tile
+            entity: sensor.uncharted_12v_away_summary
+            name: Summary
+            grid_options:
+              columns: full
+          - type: tile
+            entity: sensor.uncharted_12v_away_ended
+            name: Back since
+          - type: tile
+            entity: sensor.uncharted_12v_away_min_soc
+            name: Min SOC
+          - type: tile
+            entity: sensor.uncharted_12v_away_time_below_alert
+            name: Below alert
+          - type: tile
+            entity: sensor.uncharted_12v_away_min_voltage
+            name: Min voltage
 
       # --- Recent history (raw, ~10 days retained) ---------------------------
       - type: grid

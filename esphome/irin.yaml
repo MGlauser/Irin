@@ -46,6 +46,14 @@ substitutions:
   # charging run. Blanked otherwise to limit burn-in of the static layout.
   display_wake_ms: "120000"
 
+  # Away report. While Home Assistant is unreachable (car away from home WiFi,
+  # or HA down), the device keeps a summary of the battery: lowest voltage,
+  # lowest SOC, time below the alert SOC, charging. It is published on
+  # reconnect. Gaps shorter than away_min_sec (HA restarts, WiFi blips, OTA)
+  # are discarded and leave the previous report in place.
+  soc_alert_pct: "50"             # SOC alert level; match the HA automation
+  away_min_sec: "1800"            # 30 min
+
   # Resting (open-circuit) voltage -> SOC at 25 degC, ascending, same length.
   # Flooded lead-acid (Pb), 12 V. These are RESTED voltages, not charging
   # voltages. NOT an AGM table: AGM rests 0.10-0.15 V higher, so an AGM table
@@ -65,6 +73,7 @@ esphome:
     then:
       - lambda: |-
           if (id(soc_valid)) id(batt_soc).publish_state(id(last_soc));
+      - script.execute: publish_away_report
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -113,6 +122,11 @@ time:
             // First boot ever: start the time-since-charging clock now rather than at 1970.
             if (id(last_charge_epoch) == 0) id(last_charge_epoch) = id(ha_time).now().timestamp;
             if (id(soc_epoch) > 0) id(soc_updated).publish_state(id(soc_epoch));
+            if (id(rep_pending)) {
+              id(rep_end_epoch) = id(ha_time).now().timestamp;
+              id(rep_pending) = false;
+              id(publish_away_report).execute();
+            }
 
 # =============================================================================
 # I2C
@@ -176,6 +190,80 @@ globals:
     type: uint32_t
     restore_value: false
     initial_value: '${display_wake_ms}'
+
+  # --- Away tracking: the period in progress. Restored, because the WiFi
+  # reboot_timeout reboots the device hourly while it is out of range. Written
+  # at most every 5 min (see the away tracker) to spare flash.
+  - id: away_active
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: away_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: away_min_v
+    type: float
+    restore_value: true
+    initial_value: '99.0'
+  # 999 = no SOC known during this period
+  - id: away_min_soc
+    type: float
+    restore_value: true
+    initial_value: '999.0'
+  - id: away_below_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: away_charge_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: away_charges
+    type: int
+    restore_value: true
+    initial_value: '0'
+
+  # --- Away tracking: the last completed report, as published to HA. Kept
+  # separate so a short gap can't wipe it. Written once per away period.
+  - id: rep_valid
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: rep_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: rep_min_v
+    type: float
+    restore_value: true
+    initial_value: '0.0'
+  - id: rep_min_soc
+    type: float
+    restore_value: true
+    initial_value: '999.0'
+  - id: rep_below_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: rep_charge_sec
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: rep_charges
+    type: int
+    restore_value: true
+    initial_value: '0'
+  # Epoch seconds when the period ended; 0 until HA time is available.
+  - id: rep_end_epoch
+    type: int
+    restore_value: true
+    initial_value: '0'
+  # Report finished but not yet timestamped (HA time not synced yet).
+  - id: rep_pending
+    type: bool
+    restore_value: false
+    initial_value: 'false'
 
 # =============================================================================
 # Sensors
@@ -285,6 +373,63 @@ sensor:
     accuracy_decimals: 0
     update_interval: never
 
+  # --- Away report (last completed period away from HA) -------------------
+  # Published by the publish_away_report script; values only change when a
+  # period of at least away_min_sec ends.
+  - platform: template
+    id: away_duration
+    name: "Away Duration"
+    unit_of_measurement: "h"
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    id: away_min_voltage
+    name: "Away Min Voltage"
+    unit_of_measurement: "V"
+    device_class: voltage
+    accuracy_decimals: 2
+    update_interval: never
+  # Lowest gated SOC: the SOC held when the period began, or any rest-gate
+  # result during it. Unknown if no SOC was available.
+  - platform: template
+    id: away_min_soc_s
+    name: "Away Min SOC"
+    unit_of_measurement: "%"
+    device_class: battery
+    accuracy_decimals: 0
+    update_interval: never
+  - platform: template
+    id: away_below_alert
+    name: "Away Time Below Alert"
+    unit_of_measurement: "h"
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    id: away_charging_time
+    name: "Away Charging Time"
+    unit_of_measurement: "h"
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    id: away_charge_events
+    name: "Away Charge Events"
+    accuracy_decimals: 0
+    update_interval: never
+  - platform: template
+    id: away_ended
+    name: "Away Ended"
+    device_class: timestamp
+    accuracy_decimals: 0
+    update_interval: never
+
+text_sensor:
+  # One-line version of the away report for a phone tile or a notification,
+  # e.g. "3.2 d: SOC min 46%, 4.0 h below 50%, 6 charges".
+  - platform: template
+    id: away_summary
+    name: "Away Summary"
+    update_interval: never
+
 # =============================================================================
 # Binary sensors
 # =============================================================================
@@ -330,6 +475,34 @@ binary_sensor:
           id(oled).turn_on();
 
 # =============================================================================
+# Away report
+# =============================================================================
+script:
+  - id: publish_away_report
+    then:
+      - lambda: |-
+          if (!id(rep_valid)) return;
+          const float hours = id(rep_sec) / 3600.0f;
+          const bool soc_known = id(rep_min_soc) <= 100.0f;
+          id(away_duration).publish_state(hours);
+          id(away_min_voltage).publish_state(id(rep_min_v));
+          id(away_min_soc_s).publish_state(soc_known ? id(rep_min_soc) : NAN);
+          id(away_below_alert).publish_state(id(rep_below_sec) / 3600.0f);
+          id(away_charging_time).publish_state(id(rep_charge_sec) / 3600.0f);
+          id(away_charge_events).publish_state(id(rep_charges));
+          if (id(rep_end_epoch) > 0) id(away_ended).publish_state(id(rep_end_epoch));
+
+          char dur[16], soc[24], buf[96];
+          if (hours < 48.0f) snprintf(dur, sizeof(dur), "%.1f h", hours);
+          else snprintf(dur, sizeof(dur), "%.1f d", hours / 24.0f);
+          if (soc_known) snprintf(soc, sizeof(soc), "SOC min %.0f%%", id(rep_min_soc));
+          else snprintf(soc, sizeof(soc), "SOC unknown");
+          snprintf(buf, sizeof(buf), "%s: %s, %.1f h below ${soc_alert_pct}%%, %d charge%s",
+                   dur, soc, id(rep_below_sec) / 3600.0f, id(rep_charges),
+                   id(rep_charges) == 1 ? "" : "s");
+          id(away_summary).publish_state(buf);
+
+# =============================================================================
 # Rest gate + SOC calculation
 # =============================================================================
 # Runs every 5 min. The slope test compares against the previous tick rather
@@ -347,6 +520,82 @@ interval:
           const bool awake = (int32_t)(id(display_wake_until) - millis()) > 0;
           if (awake && !id(oled).is_on()) id(oled).turn_on();
           else if (!awake && id(oled).is_on()) id(oled).turn_off();
+
+  # Away tracker. "Away" = no Home Assistant connection (log viewers don't
+  # count). Time, charging and below-alert time accumulate in RAM every 10 s
+  # and fold into the restored globals every 5 min, so flash sees at most one
+  # write burst per 5 min while away, and none at home.
+  - interval: 10s
+    then:
+      - lambda: |-
+          static uint32_t ram_sec = 0, ram_charge = 0, ram_below = 0;
+          static float ram_min_v = 99.0f;
+          static int ticks = 0;
+          static bool was_charging = false;
+          auto fold = [&]() {
+            id(away_sec) += ram_sec;
+            id(away_charge_sec) += ram_charge;
+            id(away_below_sec) += ram_below;
+            if (ram_min_v < id(away_min_v)) id(away_min_v) = ram_min_v;
+            ram_sec = ram_charge = ram_below = 0;
+            ram_min_v = 99.0f;
+          };
+
+          const bool connected = api::global_api_server != nullptr &&
+              api::global_api_server->is_connected_with_state_subscription();
+          // Give HA a minute to connect after boot before calling it "away".
+          if (!connected && !id(away_active) && millis() < 60000) return;
+
+          if (!connected && !id(away_active)) {
+            // Period starts. Resets only the in-progress set, never the report.
+            id(away_active) = true;
+            id(away_sec) = id(away_below_sec) = id(away_charge_sec) = id(away_charges) = 0;
+            id(away_min_v) = 99.0f;
+            id(away_min_soc) = id(soc_valid) ? id(last_soc) : 999.0f;
+            ram_sec = ram_charge = ram_below = 0;
+            ram_min_v = 99.0f;
+            ticks = 0;
+            was_charging = id(charging).state;
+            ESP_LOGI("away", "HA connection lost, tracking");
+          }
+
+          if (id(away_active) && !connected) {
+            ram_sec += 10;
+            const float v = id(batt_v).state;
+            if (!isnan(v) && v < ram_min_v) ram_min_v = v;
+            const bool ch = id(charging).state;
+            if (ch) ram_charge += 10;
+            // Skip edges in the first minute after boot: an hourly no-WiFi
+            // reboot mid-charge would otherwise count the same charge again.
+            if (ch && !was_charging && millis() > 60000) id(away_charges) += 1;
+            was_charging = ch;
+            if (id(soc_valid) && id(last_soc) < ${soc_alert_pct}) ram_below += 10;
+            if (++ticks % 30 == 0) fold();
+            return;
+          }
+
+          if (id(away_active) && connected) {
+            // Period ends. Report it only if it was long enough to matter.
+            fold();
+            id(away_active) = false;
+            ESP_LOGI("away", "HA reconnected after %d s", id(away_sec));
+            if (id(away_sec) < ${away_min_sec}) return;
+            id(rep_valid) = true;
+            id(rep_sec) = id(away_sec);
+            id(rep_min_v) = id(away_min_v);
+            id(rep_min_soc) = id(away_min_soc);
+            id(rep_below_sec) = id(away_below_sec);
+            id(rep_charge_sec) = id(away_charge_sec);
+            id(rep_charges) = id(away_charges);
+            auto now = id(ha_time).now();
+            if (now.is_valid()) {
+              id(rep_end_epoch) = now.timestamp;
+            } else {
+              id(rep_end_epoch) = 0;
+              id(rep_pending) = true;  // stamped in on_time_sync
+            }
+            id(publish_away_report).execute();
+          }
 
   - interval: 300s
     then:
@@ -413,6 +662,7 @@ interval:
           id(last_soc) = soc;
           id(soc_valid) = true;
           id(batt_soc).publish_state(soc);
+          if (id(away_active) && soc < id(away_min_soc)) id(away_min_soc) = soc;
           auto now = id(ha_time).now();
           if (now.is_valid()) {
             id(soc_epoch) = now.timestamp;

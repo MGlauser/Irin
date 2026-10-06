@@ -361,6 +361,7 @@ Entities to expose:
 | SOC last-updated | timestamp | Staleness indicator for the gated SOC |
 | Charging | binary_sensor | Voltage > 12.9 V (off < 12.8 V). On this car, the DC-DC running — a free "contactors closed" signal. Named generically (was "DC-DC Active", renamed 2026-10-06) so the config reuses for any charge source |
 | Time Since Charging | sensor (h) | Hours since Charging was last on; the DC-DC-stall diagnostic |
+| Away report | 7 sensors + text summary | Built 2026-10-06. While HA is unreachable (car away from home WiFi, HA down) the device tracks duration, min voltage, min gated SOC, time below `soc_alert_pct`, charging time and events; published on reconnect if the gap was >= `away_min_sec` (30 min). In-progress counters live in restored globals folded from RAM every 5 min (flash wear; survives the hourly no-WiFi reboot); the last report is a separate restored set so a short gap can't wipe it. HA's recorder can't be backfilled from ESPHome, so this is a summary, not history (options B/C, statistics import or InfluxDB, deferred). Cannot alert while away. |
 | WiFi RSSI | sensor | Diagnostic — signal strength from inside the vehicle |
 | Last seen | timestamp | Detects a dead or out-of-range device |
 
@@ -481,6 +482,8 @@ DC-DC idle timer and mask a genuine converter stall.
 - [x] Resting gate verified by simulating a DC-DC charge cycle on the bench: held SOC through
       14.4 V, fresh 50% at 12.22 V after rest, timestamped once HA time was available (2026-10-06)
 - [ ] Entities appear in HA; alert automation fires on a forced low reading
+- [ ] Away report: AP off > 30 min (charge/rest on the bench supply meanwhile), AP on,
+      summary posts; AP off < 30 min leaves the previous report in place
 - [ ] 24+ hour stability run before installation
 
 ## Safety

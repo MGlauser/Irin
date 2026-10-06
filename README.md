@@ -51,6 +51,7 @@ clock, watching the battery so you don't have to.
 | **Voltage** | Measured every 30 s with a 16-bit ADC (0.7 mV resolution at 12V) and published continuously, never gated. Charts charging cycles in detail. |
 | **State of charge** | Looked up from *resting* voltage, temperature-corrected, and only updated when the battery has truly rested (see below). Holds its last good value otherwise, with a "last updated" timestamp. |
 | **Charging** | On/off, detected from voltage with hysteresis, plus *Time Since Charging*. Shows whether the charging source (alternator, DC-DC converter, solar, shore power) is actually doing its job. |
+| **Away report** | While Home Assistant is unreachable (the car is away from home WiFi, or HA is down), the device keeps a summary: lowest voltage, lowest SOC, time below the alert level, charging time and events. Published when it reconnects, e.g. *"3.2 d: SOC min 46%, 4.0 h below 50%, 6 charges"*. Gaps under 30 minutes are ignored. |
 | **Temperature / humidity** | Remote DHT22 sensor on a short cable, used for the SOC temperature correction. |
 | **On-device display** | Voltage, SOC, temperature and rest/charging status on a 72×40 OLED. Blanks after 2 minutes to prevent burn-in; the BOOT button wakes it. Stays lit while charging. |
 | **Home Assistant** | Native ESPHome integration (no MQTT broker), a ready-made dashboard, and history for long-term battery-health trends. Alerts are ordinary HA automations. |
@@ -189,6 +190,8 @@ resistors and calibration for other system voltages.
 | `slope_tolerance` | Allowed drift per 5-minute tick to count as stable | 0.005 V |
 | `temp_coeff` | Resting-voltage temperature coefficient, V/°C, for the whole battery | 0.004 |
 | `display_wake_ms` | How long the OLED stays lit | 120000 |
+| `soc_alert_pct` | SOC alert level, used for the away report's "time below alert" (match your HA automation) | 50 |
+| `away_min_sec` | Shortest HA outage that counts as "away" and replaces the last report | 1800 s |
 
 **Rule for the charging thresholds:** `charge_off_threshold` must sit **above** the
 battery's full resting voltage (otherwise a full, idle battery looks like it is
@@ -317,7 +320,9 @@ display and HA entities need no changes.
   "100k" from a resistor strip that measured 100 Ω.
 - **WiFi is required.** ESPHome needs it. The device keeps measuring and updating its
   display without HA (and won't reboot just because HA is down), but nothing reaches
-  your phone. Remote sites without WiFi would need a different radio (LoRa, Meshtastic).
+  your phone; the away report fills in the summary on reconnect, but not the minute-by-
+  minute history, and can't alert you while away. Remote sites without WiFi would need a
+  different radio (LoRa, Meshtastic, cellular).
 
 ## Ideas / roadmap
 
