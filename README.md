@@ -23,7 +23,8 @@ entry in your Home Assistant.
 </p>
 <p align="center"><sub>The included dashboard on the bench prototype. SOC steps only
 after a rest window (0% from an early reboot loop, then 50%, ~17% and 42% as the bench
-supply was changed); voltage is charted continuously.</sub></p>
+supply was changed); voltage is charted continuously. And 42% is, of course, the
+answer.</sub></p>
 
 ### The name
 
