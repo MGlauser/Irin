@@ -1,0 +1,108 @@
+# Uncharted 12V — full dashboard
+#
+# Install: Settings -> Dashboards -> + Add dashboard -> "New dashboard from
+# scratch", title "Uncharted". Open it -> pencil -> three-dot menu -> "Raw
+# configuration editor" -> replace everything with this file -> Save.
+#
+# Entity IDs verified against HA's entity registry 2026-10-06.
+# Built-in cards only (no HACS).
+
+title: Uncharted
+views:
+  - title: Battery
+    path: battery
+    icon: mdi:car-battery
+    type: sections
+    max_columns: 2
+    sections:
+      # --- Now --------------------------------------------------------------
+      - type: grid
+        cards:
+          - type: heading
+            heading: Now
+          - type: tile
+            entity: sensor.uncharted_12v_battery_voltage
+            name: Voltage
+          - type: tile
+            entity: sensor.uncharted_12v_battery_soc
+            name: SOC
+          # SOC is gated to rest windows, so its age matters as much as its value.
+          - type: tile
+            entity: sensor.uncharted_12v_soc_last_updated
+            name: SOC updated
+          - type: tile
+            entity: binary_sensor.uncharted_12v_charging
+            name: Charging
+          - type: tile
+            entity: sensor.uncharted_12v_time_since_charging
+            name: Since charge
+          - type: tile
+            entity: sensor.uncharted_12v_ambient_temperature
+            name: Air temp
+          - type: tile
+            entity: sensor.uncharted_12v_wifi_signal
+            name: WiFi
+          - type: tile
+            entity: sensor.uncharted_12v_uptime
+            name: Uptime
+
+      # --- Recent history (raw, ~10 days retained) ---------------------------
+      - type: grid
+        cards:
+          - type: heading
+            heading: Last 48 hours
+          # Voltage is published ungated every 30 s; SOC only steps at rest-gate
+          # passes. Charging draws as an on/off bar to line converter runs
+          # up against the voltage trace.
+          - type: history-graph
+            hours_to_show: 48
+            grid_options:
+              columns: full
+            entities:
+              - entity: sensor.uncharted_12v_battery_voltage
+                name: Voltage
+          - type: history-graph
+            hours_to_show: 48
+            grid_options:
+              columns: full
+            entities:
+              - entity: sensor.uncharted_12v_battery_soc
+                name: SOC
+          - type: history-graph
+            hours_to_show: 48
+            grid_options:
+              columns: full
+            entities:
+              - entity: binary_sensor.uncharted_12v_charging
+                name: Charging
+
+      # --- Long-term (HA statistics, kept indefinitely) ----------------------
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Last 30 days
+          # Hourly min/mean/max: the spread shows charge cycling, the trend of the
+          # min shows battery health over weeks.
+          - type: statistics-graph
+            title: Voltage
+            days_to_show: 30
+            period: hour
+            chart_type: line
+            stat_types: [min, mean, max]
+            grid_options:
+              columns: full
+            entities:
+              - entity: sensor.uncharted_12v_battery_voltage
+                name: Voltage
+          - type: statistics-graph
+            title: SOC
+            days_to_show: 30
+            period: hour
+            chart_type: line
+            stat_types: [mean]
+            grid_options:
+              columns: full
+            entities:
+              - entity: sensor.uncharted_12v_battery_soc
+                name: SOC

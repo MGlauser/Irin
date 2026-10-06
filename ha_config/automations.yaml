@@ -1,0 +1,106 @@
+# HomeAssistant automations — Uncharted 12V Battery Monitor
+#
+# CORE ALERTS. The optional external-maintainer control loop lives in
+# automations_charger_optional.yaml and is not required for normal operation.
+#
+# Verify entity IDs after first adoption — ESPHome derives them from the
+# friendly_name and they may differ from the guesses here.
+#
+# Hierarchy:
+#   1. SOC < 50%    — THE POINT OF THE PROJECT. Go plug the car in.
+#   2. Unavailable  — distinguishes a dead monitor from a healthy battery.
+#   3. DC-DC stall  — diagnostic. Separates "forgot to plug in" from a vehicle fault.
+
+# =============================================================================
+# 1. PRIMARY — SOC below 50%
+# =============================================================================
+# This is what the project exists to do.
+#
+# At ~430 mA parasitic draw, 50% SOC leaves roughly 3 days to flat. The intended
+# response takes minutes: plug the car into the 240 V charger and let a nightly
+# scheduled charge run the DC-DC. One to two days of margin is ample.
+#
+# 50% is also where AGM cycle life begins to degrade, so the threshold is
+# chemistry-driven rather than arbitrary.
+- id: uncharted_soc_low
+  alias: "Uncharted — Battery SOC below 50%"
+  description: >-
+    Primary alert. Gated (resting) SOC has fallen below half. Plug the car in.
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.uncharted_12v_battery_soc
+      below: 50
+      for: "00:30:00"
+  condition:
+    # Ignore a stale reading — if the rest gate has not passed in over a day,
+    # the held value may predate whatever is happening now.
+    - condition: numeric_state
+      entity_id: sensor.uncharted_12v_soc_age
+      below: 24
+  action:
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: 12V battery at 50%"
+        message: >-
+          SOC {{ states('sensor.uncharted_12v_battery_soc') }}% at
+          {{ states('sensor.uncharted_12v_battery_voltage') }} V.
+          Roughly 3 days to flat. Plug into the 240 V charger and run a
+          scheduled charge tonight.
+    # Add your preferred push notifier here — a persistent notification alone
+    # is easy to miss, and this alert has a multi-day fuse, not an open-ended one.
+    # - service: notify.mobile_app_<device>
+    #   data:
+    #     title: "Uncharted: 12V battery at 50%"
+    #     message: "Plug the car in."
+  mode: single
+
+# =============================================================================
+# 2. Monitor offline
+# =============================================================================
+# Without this, a dead monitor is indistinguishable from a healthy battery —
+# silence reads as good news, which is the worst possible failure mode for an
+# alerting device.
+- id: uncharted_monitor_offline
+  alias: "Uncharted — Monitor unavailable"
+  trigger:
+    - platform: state
+      entity_id: sensor.uncharted_12v_battery_voltage
+      to: "unavailable"
+      for: "00:30:00"
+  action:
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: monitor offline"
+        message: >-
+          No data for 30+ min. Either the device failed, the car is out of WiFi
+          range, or the 12V rail is already down.
+  mode: single
+
+# =============================================================================
+# 3. DIAGNOSTIC — DC-DC converter has stopped cycling
+# =============================================================================
+# Not the primary alert. Its value is diagnostic: it distinguishes "the owner
+# has not plugged the car in" from "the vehicle's DC-DC converter has stopped
+# working" — the latter being a warranty conversation.
+#
+# THRESHOLD IS A PLACEHOLDER. Set it after the first week: find the normal
+# maximum gap between DC-DC cycles and roughly double it. Leave this automation
+# disabled until that data exists, or it will simply cry wolf.
+- id: uncharted_dcdc_stall
+  alias: "Uncharted — DC-DC not cycling (diagnostic)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.uncharted_12v_time_since_charging
+      above: 12          # hours — TUNE AFTER FIRST WEEK OF DATA
+      for: "00:10:00"
+  action:
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: DC-DC not cycling"
+        message: >-
+          No vehicle-side 12V charging for
+          {{ states('sensor.uncharted_12v_time_since_charging') }} h.
+          Battery at {{ states('sensor.uncharted_12v_battery_voltage') }} V.
+          If the car has been plugged in during this period, the converter may
+          have a fault — worth raising while under warranty.
+  mode: single

@@ -1,0 +1,1270 @@
+(export
+	(version "E")
+	(design
+		(source "/Volumes/x/Uncharted/hardware/uncharted-battery-monitor.kicad_sch")
+		(date "2026-10-06T12:48:04")
+		(tool "Eeschema 10.0.5")
+		(sheet
+			(number "1")
+			(name "/")
+			(tstamps "/")
+			(title_block
+				(title "Uncharted 12V Battery Monitor")
+				(company "Owner-built")
+				(rev "B")
+				(date "2026-08-29")
+				(source "uncharted-battery-monitor.kicad_sch")
+				(comment
+					(number "1")
+					(value "ESP32-C3 + ADS1115 12V battery monitor for 2027 Subaru Uncharted GT")
+				)
+				(comment
+					(number "2")
+					(value "See CLAUDE.md / PARTS.md in project root for full design rationale")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+	)
+	(components
+		(comp
+			(ref "C1")
+			(value "2nF mica (2x1000pF)")
+			(footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+			(fields
+				(field
+					(name "Footprint") "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "C")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "b5f711d0-eb70-4a4b-836a-e92f45e24242")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C2")
+			(value "100uF/35V")
+			(footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm")
+			(fields
+				(field
+					(name "Footprint") "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "CP")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "3cc6f456-70f0-4142-b256-a5f30670b7f1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C3")
+			(value "0.1uF")
+			(footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+			(fields
+				(field
+					(name "Footprint") "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "C")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "73122ae2-2b2a-47f0-af2f-53667f1e417a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D1")
+			(value "P6KE18A (opt.)")
+			(footprint "Diode_THT:D_DO-15_P12.70mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Diode_THT:D_DO-15_P12.70mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "TVS")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "71a7858c-42b5-4e32-8ea9-65f61dfddf73")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "F1")
+			(value "5A (Micro2 blade)")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "FUSE")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "ad839596-afd0-43f4-bc04-e65235d75264")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J1")
+			(value "Battery terminals")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "BATT_CONN")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "edcd3089-0922-4eda-8707-09c680ba686d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J2")
+			(value "DHT22 remote (VCC/DATA/GND)")
+			(footprint "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
+			(fields
+				(field
+					(name "Footprint") "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "DHT22")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "9ef01df8-20bf-4ea6-917b-677a116f712d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R1")
+			(value "47k 1%")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "R")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "413e1129-d5dd-41d2-b201-541b7f3ee9cf")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R2")
+			(value "10k 1%")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "R")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "3b0f4448-a7cc-4d84-bb9f-9d15e624687b")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U1")
+			(value "MP1584EN set to 5.0V")
+			(footprint "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
+			(fields
+				(field
+					(name "Footprint") "Uncharted:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "BUCK_MODULE")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "b8169df6-a622-4da6-b34d-a3e283748715")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U2")
+			(value "01Space ESP32-C3-0.42LCD")
+			(footprint "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
+			(fields
+				(field
+					(name "Footprint") "Uncharted:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "ESP32C3_BOARD")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "6891fa05-3490-4979-b5df-bf78f96ec371")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U3")
+			(value "HiLetgo ADS1115 (0x48, ADDR->GND)")
+			(footprint "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
+			(fields
+				(field
+					(name "Footprint") "Uncharted:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Uncharted")
+				(part "ADS1115")
+				(description "")
+			)
+			(property
+				(name "Sheetname")
+				(value "uncharted-battery-monitor")
+			)
+			(property
+				(name "Sheetfile")
+				(value "uncharted-battery-monitor.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "9b618e58-d4f1-4c81-a4b2-ecd051e0b0bb")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+					)
+				)
+			)
+		)
+	)
+	(groups)
+	(variants)
+	(libparts
+		(libpart
+			(lib "Uncharted")
+			(part "ADS1115")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "ADS1115")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VDD")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "SCL")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "SDA")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "ADDR")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "A0")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "BATT_CONN")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "BATTERY")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "BATT+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "BUCK_MODULE")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "MP1584EN")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "IN+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "IN-")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "OUT+")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "OUT-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "C")
+			(fields
+				(field
+					(name "Reference") "C")
+				(field
+					(name "Value") "C")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "2")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "CP")
+			(fields
+				(field
+					(name "Reference") "C")
+				(field
+					(name "Value") "CP")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "DHT22")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "AM2302")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "DATA")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "GND")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "ESP32C3_BOARD")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "ESP32-C3-0.42LCD")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "5V")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "3V3")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "GPIO3")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "GPIO5")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "GPIO6")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "FUSE")
+			(fields
+				(field
+					(name "Reference") "F")
+				(field
+					(name "Value") "FUSE")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "2")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "R")
+			(fields
+				(field
+					(name "Reference") "R")
+				(field
+					(name "Value") "R")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "2")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Uncharted")
+			(part "TVS")
+			(fields
+				(field
+					(name "Reference") "D")
+				(field
+					(name "Value") "TVS")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "K")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "A")
+					(type "passive")
+				)
+			)
+		)
+	)
+	(libraries)
+	(nets
+		(net
+			(code "1")
+			(name "/12vPROT")
+			(class "Default")
+			(node
+				(ref "C2")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "D1")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "F1")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "1")
+				(pinfunction "IN+_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "2")
+			(name "/GND")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D1")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "3")
+				(pinfunction "GND_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "2")
+				(pinfunction "IN-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "4")
+				(pinfunction "OUT-_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "3")
+				(pinfunction "GND_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "5")
+				(pinfunction "ADDR_5")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "3")
+			(name "Net-(J1-BATT+)")
+			(class "Default")
+			(node
+				(ref "F1")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "1")
+				(pinfunction "BATT+_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "4")
+			(name "Net-(J2-DATA)")
+			(class "Default")
+			(node
+				(ref "J2")
+				(pin "2")
+				(pinfunction "DATA_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "4")
+				(pinfunction "GPIO3_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "5")
+			(name "Net-(J2-VCC)")
+			(class "Default")
+			(node
+				(ref "J2")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "3V3_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "1")
+				(pinfunction "VDD_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "6")
+			(name "Net-(U1-OUT+)")
+			(class "Default")
+			(node
+				(ref "U1")
+				(pin "3")
+				(pinfunction "OUT+_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "5V_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "7")
+			(name "Net-(U2-GPIO5)")
+			(class "Default")
+			(node
+				(ref "U2")
+				(pin "5")
+				(pinfunction "GPIO5_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "4")
+				(pinfunction "SDA_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "8")
+			(name "Net-(U2-GPIO6)")
+			(class "Default")
+			(node
+				(ref "U2")
+				(pin "6")
+				(pinfunction "GPIO6_6")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "3")
+				(pinfunction "SCL_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "9")
+			(name "Net-(U3-A0)")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "6")
+				(pinfunction "A0_6")
+				(pintype "passive")
+			)
+		)
+	)
+)

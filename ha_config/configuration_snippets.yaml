@@ -1,0 +1,69 @@
+# Snippets to merge into HomeAssistant configuration.yaml
+# Uncharted 12V Battery Monitor
+
+# =============================================================================
+# Automations
+# =============================================================================
+# Core alerts are required. The charger file is optional — see its header.
+#
+#   automation core: !include ha_config/automations.yaml
+#   automation charger: !include ha_config/automations_charger_optional.yaml
+
+# =============================================================================
+# Helper sensors — ONLY needed for the optional charger control loop
+# =============================================================================
+sensor:
+  # Smooths the maintainer's float-mode pulsing so termination is reliable.
+  # Without this, a pulse every 20 min resets an instantaneous threshold forever
+  # and the charger runs to its 24 h backstop every cycle.
+  - platform: statistics
+    name: "Uncharted Charger Power 1h"
+    unique_id: uncharted_charger_power_1h
+    entity_id: sensor.uncharted_charger_plug_power
+    state_characteristic: mean
+    max_age:
+      hours: 1
+    sampling_size: 200
+
+  # Intervention rate — the number that reveals whether the car has a fault
+  # rather than merely a flat battery.
+  - platform: history_stats
+    name: "Uncharted Charger Starts 7d"
+    unique_id: uncharted_charger_starts_7d
+    entity_id: switch.uncharted_charger_plug
+    state: "on"
+    type: count
+    duration:
+      days: 7
+    end: "{{ now() }}"
+
+# =============================================================================
+# Recorder — keep voltage history long enough to be useful
+# =============================================================================
+# Voltage is the diagnostic record. Default purge (10 days) is too short to
+# characterize DC-DC cycling across seasons or to support a warranty argument.
+#
+# recorder:
+#   purge_keep_days: 90
+#   include:
+#     entities:
+#       - sensor.uncharted_12v_battery_voltage
+#       - sensor.uncharted_12v_battery_soc
+#       - binary_sensor.uncharted_12v_charging
+
+# =============================================================================
+# TUNING VALUES — all three need real data
+# =============================================================================
+#
+#  1. ESPHome calibrate_linear
+#       Two-point against a known-good meter, ~11.5 V and ~15 V.
+#       Absorbs resistor tolerance and ADS1115 gain error together.
+#
+#  2. DC-DC stall threshold (automations.yaml, currently 12 h)
+#       Observe the normal maximum gap between DC-DC cycles over the first
+#       week; roughly double it. Leave the automation disabled until then.
+#
+#  3. Charger float threshold (optional loop, currently 20 W)
+#       Run one full charge cycle manually and watch the power trace. Note the
+#       bulk draw (likely 60-90 W) and the float mean (a few watts). Set
+#       between them.

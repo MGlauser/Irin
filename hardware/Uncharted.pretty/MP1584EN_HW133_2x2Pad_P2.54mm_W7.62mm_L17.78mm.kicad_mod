@@ -1,0 +1,137 @@
+(footprint "MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+	(version 20250114)
+	(generator "manual")
+	(layer "F.Cu")
+	(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.3in apart center-to-center. Measured by owner with a ruler (input/output edge spacing and pair pitch only -- +/-0.5mm). Board outline below is NOT measured -- it is a generous placeholder box around the hole pattern for visual reference only. Pad numbers match the Uncharted:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
+	(tags "MP1584EN HW-133 buck module perfboard")
+	(attr through_hole)
+	(property "Reference" "REF**"
+		(at 0 -12.5 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+		(at 0 12.5 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_rect
+		(start -6.5 -10.5)
+		(end 6.5 10.5)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_rect
+		(start -7 -11)
+		(end 7 11)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+	)
+	(fp_text user "VOUT-"
+		(at -3.81 10.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VOUT+"
+		(at 3.81 10.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VIN-"
+		(at -3.81 -10.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VIN+"
+		(at 3.81 -10.9 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(pad "2" thru_hole circle
+		(at -5.08 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "2" thru_hole circle
+		(at -2.54 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "1" thru_hole rect
+		(at 2.54 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "1" thru_hole rect
+		(at 5.08 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "4" thru_hole circle
+		(at -5.08 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "4" thru_hole circle
+		(at -2.54 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "3" thru_hole rect
+		(at 2.54 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "3" thru_hole rect
+		(at 5.08 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(embedded_fonts no)
+)

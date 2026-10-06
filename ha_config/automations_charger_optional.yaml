@@ -1,0 +1,154 @@
+# OPTIONAL — automated external 12V maintainer
+# Uncharted 12V Battery Monitor
+#
+# =============================================================================
+# THIS IS A BACKUP PATH. DO NOT BUILD IT FIRST.
+# =============================================================================
+#
+# The primary remediation is manual and needs no hardware: on a 50% alert, plug
+# the car into the 240 V wall charger and run a scheduled charge nightly. The
+# vehicle's own DC-DC tops up the 12V on the manufacturer's profile.
+#
+# This file covers the case where the car is parked away from the 240 V outlet
+# for weeks at a time. Prove the alert works before adding a control loop that
+# can mask the very condition you are trying to observe.
+#
+# Hardware assumed:
+#   - Power-metering smart plug (confirmed available)
+#   - NOCO 3.5 A with AGM mode (primary; on hand)
+#   - Harley-Davidson 3.5 A, measured float ~13.2 V (spare; slightly low for AGM)
+#
+# PREREQUISITE TEST — power-cycle mode recovery:
+#   Set AGM mode, start charging, pull the cord, reapply power. With no button
+#   press, does it resume?
+#     Resumes in AGM              -> use as written
+#     Resumes in 12V standard     -> acceptable, mild chronic undercharge
+#     Sits in standby             -> switched-plug control unusable; see NOTE below
+#
+# NOTE on failure: do NOT simply leave the charger on permanently. A continuously
+# floated battery sits at charging voltage forever, making SOC unmeasurable and
+# DC-DC stall detection masked — a healthy battery with zero visibility into
+# whether the vehicle is faulty. Instead switch the plug on a schedule (e.g. off
+# 2 h each morning) to create a daily observation window.
+#
+# SAFETY: this automation WILL eventually fail with the plug on — HA restart,
+# upgrade, disabled automation. The safe state must be "charger on forever does
+# no harm." Only use a charger that holds float indefinitely.
+#
+# Requires helpers from configuration_snippets.yaml.
+
+# --- Start: preventive, at 70% ---------------------------------------------
+# Deliberately above the 50% alert. Intervening at 50% means the AGM has already
+# reached the depth of discharge where cycle life degrades.
+- id: uncharted_charger_start
+  alias: "Uncharted — Start 12V maintainer"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.uncharted_12v_battery_soc
+      below: 70
+  condition:
+    - condition: state
+      entity_id: switch.uncharted_charger_plug
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.uncharted_12v_soc_age
+      below: 24
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.uncharted_charger_plug
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: maintainer started"
+        message: >-
+          SOC {{ states('sensor.uncharted_12v_battery_soc') }}%. Charger on.
+  mode: single
+
+# --- Stop: charger reached float -------------------------------------------
+# Terminates on CHARGER POWER DRAW, not SOC. SOC cannot be used here: while the
+# charger runs, voltage sits at ~14 V, no rest window accumulates, and the gated
+# SOC never updates. A SOC-based loop would latch on permanently.
+#
+# Thresholds on an HOURLY MEAN, not instantaneous power. Smart maintainers pulse
+# in float mode, so an instantaneous "below X for 30 min" trigger can be reset
+# forever by a pulse every 20 min — the charger would then run to the 24 h
+# backstop every cycle.
+- id: uncharted_charger_stop
+  alias: "Uncharted — Stop 12V maintainer (float reached)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.uncharted_charger_power_1h
+      below: 20          # W — TUNE after observing a real charge cycle
+  condition:
+    - condition: state
+      entity_id: switch.uncharted_charger_plug
+      state: "on"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.uncharted_charger_plug
+  mode: single
+
+# --- Backstop: hard maximum on-time ----------------------------------------
+# Catches a stuck charger, a failed power sensor, or a bad connection that never
+# reaches float. 24 h is correct for this setup: 3.5 A into a 60 Ah AGM from 50%
+# (~30 Ah) takes 10-12 h with absorption taper, so a shorter timeout would
+# truncate a legitimate charge.
+- id: uncharted_charger_timeout
+  alias: "Uncharted — Maintainer runtime exceeded"
+  trigger:
+    - platform: state
+      entity_id: switch.uncharted_charger_plug
+      to: "on"
+      for: "24:00:00"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.uncharted_charger_plug
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: maintainer timeout"
+        message: >-
+          Charger ran 24 h without reaching float. Check the connection, the
+          charger, and the battery.
+  mode: single
+
+# --- Watch the intervention RATE -------------------------------------------
+# The important one. Automated remediation hides the underlying defect.
+# Occasional charging is normal storage behavior; frequent charging means the
+# vehicle has a fault worth a service visit, not a workaround.
+- id: uncharted_charger_frequency
+  alias: "Uncharted — Maintainer running too often"
+  trigger:
+    - platform: state
+      entity_id: switch.uncharted_charger_plug
+      to: "on"
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.uncharted_charger_starts_7d
+      above: 3
+  action:
+    - service: notify.persistent_notification
+      data:
+        title: "Uncharted: frequent 12V charging"
+        message: >-
+          Maintainer has started {{ states('sensor.uncharted_charger_starts_7d') }}
+          times this week. This is masking a vehicle fault rather than fixing it —
+          worth raising with service while under warranty.
+  mode: single
+
+# --- FALLBACK: only if the smart plug lacks power metering -----------------
+# Not needed — metering is confirmed available. Kept for reference.
+#
+# - id: uncharted_charger_stop_timed
+#   alias: "Uncharted — Stop 12V maintainer (timed)"
+#   trigger:
+#     - platform: state
+#       entity_id: switch.uncharted_charger_plug
+#       to: "on"
+#       for: "12:00:00"     # must exceed the 10-12 h full charge at 3.5 A
+#   action:
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.uncharted_charger_plug
+#   mode: single

@@ -1,0 +1,59 @@
+# Uncharted 12V — dashboard card
+#
+# Paste into a dashboard: Edit dashboard -> + Add card -> Manual -> paste.
+# Built-in cards only (no HACS).
+#
+# Entity IDs follow from friendly_name "Uncharted 12V" + each sensor's name in
+# esphome/uncharted-battery.yaml. Confirm them under Settings -> Devices ->
+# Uncharted 12V after the device is adopted; fix here if any differ.
+
+type: vertical-stack
+cards:
+  # Current state at a glance.
+  - type: glance
+    title: Uncharted 12V
+    columns: 4
+    entities:
+      - entity: sensor.uncharted_12v_battery_voltage
+        name: Voltage
+      - entity: sensor.uncharted_12v_battery_soc
+        name: SOC
+      - entity: sensor.uncharted_12v_ambient_temperature
+        name: Temp
+      - entity: binary_sensor.uncharted_12v_charging
+        name: Charging
+
+  # SOC is gated to rest windows, so its age matters as much as its value.
+  - type: entities
+    entities:
+      - entity: sensor.uncharted_12v_soc_last_updated
+        name: SOC last updated
+        format: relative
+      - entity: sensor.uncharted_12v_time_since_charging
+        name: Since charge
+
+  # Last 48 h of raw history. Voltage and SOC have different units, so HA draws
+  # them as two graphs; Charging draws as an on/off bar underneath, lining
+  # converter runs up against the voltage trace.
+  - type: history-graph
+    title: Last 48 hours
+    hours_to_show: 48
+    entities:
+      - entity: sensor.uncharted_12v_battery_voltage
+        name: Voltage
+      - entity: sensor.uncharted_12v_battery_soc
+        name: SOC
+      - entity: binary_sensor.uncharted_12v_charging
+        name: Charging
+
+  # Long-term trend from HA statistics (kept indefinitely, unlike the ~10 days
+  # of raw history). Hourly min/mean/max shows battery health over weeks.
+  - type: statistics-graph
+    title: Voltage, 30 days
+    days_to_show: 30
+    period: hour
+    chart_type: line
+    stat_types: [min, mean, max]
+    entities:
+      - entity: sensor.uncharted_12v_battery_voltage
+        name: Voltage

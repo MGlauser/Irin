@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Secrets — never commit. See esphome/secrets.yaml.example.
+secrets.yaml
+
+# ESPHome build output
+.esphome/
+
+# KiCad: local history, backups, per-user UI state, caches, lock files
+.history/
+*-backups/
+*.kicad_prl
+fp-info-cache
+*.lck
+~*.lck
+_autosave-*
+
+# Claude Code per-user settings
+.claude/settings.local.json
