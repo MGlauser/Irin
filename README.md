@@ -116,7 +116,10 @@ breadboard rails became an 86 mV error at the battery, and it drifted.
 The firmware is a single ESPHome config: [`esphome/irin.yaml`](esphome/irin.yaml).
 
 **With the Home Assistant ESPHome add-on (Device Builder):**
-1. Copy the YAML into `/config/esphome/`.
+1. Run `python3 esphome/www/build_www.py` (needs ESPHome installed; it writes
+   `esphome/irin_www.js`, the status page script), then copy the YAML and `irin_www.js`
+   into `/config/esphome/`. The script isn't in the repo because it is mostly ESPHome's
+   own page code.
 2. Add the keys from [`esphome/secrets.yaml.example`](esphome/secrets.yaml.example) to
    the add-on's `secrets.yaml` (Secrets button in the add-on).
 3. Plug the ESP32 into the HA host by USB, then **Install**. Later updates go over WiFi.
@@ -220,9 +223,13 @@ network and open `http://192.168.4.1`. On your home network, use
 the fallback password. Useful when the battery is in a sealed box and the OLED is out of
 reach. While the fallback network is up, the setup page is still what your phone's
 network-login popup shows. If you need it in a browser, open any other address on the
-device, e.g. `http://192.168.4.1/wifi` (any path the status page doesn't use works).
-The setup page exists only while the fallback network is up; on your home network those
-addresses just show the status page.
+device, or tap **WiFi Setup** on the status page, just above OTA Update. That link
+appears only while the fallback network is up, because that is the only time the setup
+page exists. It comes from `esphome/irin_www.js`, which is ESPHome's own status page
+script with the link added; after upgrading ESPHome, regenerate it with
+`python3 esphome/www/build_www.py` (using the ESPHome install that builds the firmware) and
+copy it next to the YAML. Don't want the link? Replace `js_include` and `js_url` with
+`local: true` and drop the file.
 
 For a *planned* password change you don't need the fallback network at all: list both
 passwords under `wifi: networks:` (same SSID), install over WiFi while the old one still
@@ -388,7 +395,7 @@ display and HA entities need no changes.
 
 | Path | Contents | License |
 |---|---|---|
-| `esphome/` | ESPHome firmware config, secrets template | MIT |
+| `esphome/` | ESPHome firmware config, secrets template, status page script (`www/` builds it) | MIT |
 | `ha_config/` | HA dashboard, draft automations, config snippets | MIT |
 | `hardware/` | KiCad schematic, PCB placement, custom footprints, netlist, PDF preview | CERN-OHL-P-2.0 |
 | `hardware/breadboard/` | Breadboard layout generator (Python) and its HTML output | MIT |

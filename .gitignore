@@ -18,3 +18,6 @@ _autosave-*
 
 # Claude Code per-user settings
 .claude/settings.local.json
+
+# Generated status page script (ESPHome frontend + our link); build with esphome/www/build_www.py
+esphome/irin_www.js

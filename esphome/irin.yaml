@@ -123,10 +123,15 @@ captive_portal:
 # http://192.168.4.1) when the car is away from home WiFi; also reachable on the
 # home LAN. Registered before the captive portal, so it gets "/" and the
 # portal still answers the phone's network-login check and every other URL.
-# local: scripts are stored on the device, so it works with no internet.
+# The page script is stored on the device, so it works with no internet:
+# irin_www.js is ESPHome's stock v3 script plus a "WiFi Setup" link that shows
+# only while the fallback AP's captive portal is up (esphome/www/). `local: true`
+# would do the same without the link, but ignores js_include. irin_www.js must
+# sit next to this YAML; regenerate it after an ESPHome upgrade (build_www.py).
 web_server:
   version: 3
-  local: true
+  js_include: irin_www.js
+  js_url: ""
   auth:
     username: irin
     password: !secret uncharted_fallback_password
