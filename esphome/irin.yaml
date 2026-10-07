@@ -401,12 +401,6 @@ sensor:
     update_interval: 300s
     entity_category: diagnostic
 
-  - platform: uptime
-    name: "Uptime"
-    web_server: {sorting_group_id: grp_diag, sorting_weight: 2}
-    update_interval: 300s
-    entity_category: diagnostic
-
   # When the gated SOC was last recomputed (HA renders it as "x hours ago").
   - platform: template
     id: soc_updated
@@ -473,6 +467,16 @@ sensor:
     update_interval: never
 
 text_sensor:
+  # Human-readable uptime, e.g. "14m", "3h 12m", "2d 5h 40m" (largest units
+  # only; seconds are dropped because update_interval >= 60 s). Replaced a
+  # numeric seconds sensor; uptime history has no value worth keeping.
+  - platform: uptime
+    name: "Uptime"
+    web_server: {sorting_group_id: grp_diag, sorting_weight: 2}
+    update_interval: 60s
+    format:
+      separator: " "
+
   # One-line version of the away report for a phone tile or a notification,
   # e.g. "3.2 d: SOC min 46%, 4.0 h below 50%, 6 charges".
   - platform: template
@@ -670,7 +674,12 @@ interval:
             id(rest_sec) = 0;
             id(stable_sec) = 0;
           } else {
-            id(rest_sec) += 300;
+            // Credit rest only for an interval observed at rest at both ends.
+            // The first tick after charging (or after boot, prev_volts = 0)
+            // starts the clock without crediting it, so the gate needs a true
+            // 30-35 min, not 25-30 (bench step test 2026-10-07 passed at 26 min).
+            if (id(prev_volts) > 0.0f && id(prev_volts) <= ${charge_off_threshold})
+              id(rest_sec) += 300;
             if (fabs(v - id(prev_volts)) < ${slope_tolerance}) {
               id(stable_sec) += 300;
             } else {
