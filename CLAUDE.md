@@ -475,6 +475,24 @@ DC-DC idle timer and mask a genuine converter stall.
 - Temp: DHT22 on GPIO3, remote-mounted outside the enclosure via J2 (3-pin), cable ≤1 m
 - Enclosure: 3D printed, PETG or ASA (both on hand)
 
+## Firmware versioning
+
+`irin_version` substitution at the top of `esphome/irin.yaml` (semver; started at
+**0.3.0** on 2026-10-07). It feeds `esphome: project:` (`mglauser.irin`, shown on HA's
+device page) and the **Firmware** template text_sensor (diagnostic, status page Diagnostics
+group): "Irin X.Y.Z, ESPHome <ver>, built <time>", published once from on_boot.
+
+**Check on every firmware change (for Claude):** before committing a change to
+`esphome/irin.yaml` (or `esphome/www/`, which ships in the firmware) that changes
+behavior, bump `irin_version` in the same commit and add a line to the README
+Changelog. PATCH for a fix that doesn't change what the device reports; MINOR for new or
+changed entities, behavior, or default tunables; while 0.x, breaking changes (entity
+renames, new required secrets, wiring) are also MINOR. Comment-only edits and docs,
+dashboard, HA-config or hardware-file changes do not bump. After pushing, tag the commit
+`vX.Y.Z` and push the tag, with the owner's OK as for any push. Confirm the device
+picked up the build from the Firmware sensor (its build time changes on every install).
+1.0.0 is planned for the installed, enclosed reference build with proven alerts.
+
 ## Bench-before-vehicle checklist
 
 - [x] I2C works with SDA=GPIO5 / SCL=GPIO6; SSD1306 (0x3C) + ADS1115 (0x48) both respond (2026-10-05)

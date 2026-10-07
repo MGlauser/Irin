@@ -410,6 +410,40 @@ gate and temperature correction, the charging-detection hysteresis, the display 
 and Home Assistant integration. Next: perfboard build, enclosure, in-vehicle data, then
 tuned alerts.
 
+## Versioning
+
+The firmware carries a version, `irin_version` at the top of
+[`esphome/irin.yaml`](esphome/irin.yaml) (currently **0.3.0**). It shows in two places:
+
+- **Home Assistant device page** (Settings → Devices → your device): the firmware line
+  shows the ESPHome version and `mglauser.irin` plus the Irin version.
+- **Firmware** sensor, in the Diagnostics group of the status page and in HA, e.g.
+  *"Irin 0.3.0, ESPHome 2026.9.1, built 2026-10-07 13:20:00 -0700"*. The build time
+  changes on every install, so you can always tell whether an install took effect, even
+  if nobody bumped the version.
+
+**When reporting a problem, include the Firmware line.**
+
+Rules for changes (semantic versioning, `MAJOR.MINOR.PATCH`):
+
+| Change | Bump | Example |
+|---|---|---|
+| Fix that doesn't change what the device reports | PATCH | 0.3.0 → 0.3.1 |
+| New feature or entity, changed behavior or default tunable | MINOR | 0.3.1 → 0.4.0 |
+| Change that breaks existing installs (renamed entities, new required secret, new wiring) | MAJOR (MINOR while 0.x) | |
+
+- Bump `irin_version` **in the same commit** as the YAML change, add a line under
+  [Changelog](#changelog), and tag the commit: `git tag v0.3.1 && git push --tags`.
+- Docs-only, dashboard-only, and hardware-file changes don't bump the firmware version.
+- Still 0.x: a prototype that is still changing. **1.0.0** is planned for when the
+  reference build is installed on the battery in its enclosure and the alerts are proven.
+
+### Changelog
+
+- **0.3.0** (2026-10-07). First versioned build. Away report, fallback network
+  `irin-<car>` with a WiFi Setup link on the status page, readable uptime, rest gate
+  requires a true 30 minutes of observed rest, Firmware sensor.
+
 ## License
 
 - **Software** (firmware, HA configs, scripts, documentation): [MIT](LICENSE)
