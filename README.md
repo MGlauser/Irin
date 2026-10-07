@@ -213,6 +213,15 @@ re-flashing:
    password saved this way only applies to the firmware that is running; any install with
    a changed configuration goes back to the password in the YAML.
 
+**Status page.** The device also serves a small status page: voltage, SOC, temperature,
+charging and the away report. When the device is out of WiFi range, join the fallback
+network and open `http://192.168.4.1`. On your home network, use
+`http://<device_name>.local` (e.g. `http://uncharted-batt.local`). Log in as `irin`, with
+the fallback password. Useful when the battery is in a sealed box and the OLED is out of
+reach. While the fallback network is up, the setup page is still what your phone's
+network-login popup shows. If you need it in a browser, open any other address on the
+device, e.g. `http://192.168.4.1/wifi`.
+
 For a *planned* password change you don't need the fallback network at all: list both
 passwords under `wifi: networks:` (same SSID), install over WiFi while the old one still
 works, then change the router.
@@ -226,7 +235,9 @@ home replaces.
 
 **To turn it off**, for example on a battery bank that spends long periods out of range,
 or if you'd rather not broadcast a network: delete the `ap:` block under `wifi:` and the
-`captive_portal:` line, then install. Out-of-range draw then falls to an estimated 20-30 mA
+`captive_portal:` line, then install. The status page then only works on your home
+network. To remove it as well, delete the `web_server:` block and the
+`web_server: {sorting_group_id: ...}` lines. Out-of-range draw then falls to an estimated 20-30 mA
 (not measured), not to 10 mA, because the radio keeps searching. The trade-offs:
 - Recovering from a WiFi password change needs the planned method above, or a USB flash.
 - `wifi: reboot_timeout: 60min` becomes active (ESPHome only uses it when there is no
