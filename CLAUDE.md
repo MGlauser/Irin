@@ -490,8 +490,13 @@ DC-DC idle timer and mask a genuine converter stall.
 - [x] Resting gate verified by simulating a DC-DC charge cycle on the bench: held SOC through
       14.4 V, fresh 50% at 12.22 V after rest, timestamped once HA time was available (2026-10-06)
 - [ ] Entities appear in HA; alert automation fires on a forced low reading
-- [ ] Away report: AP off > 30 min (charge/rest on the bench supply meanwhile), AP on,
-      summary posts; AP off < 30 min leaves the previous report in place
+- [x] Away report: AP off > 30 min (charge/rest on the bench supply meanwhile), AP on,
+      summary posts; AP off < 30 min leaves the previous report in place (2026-10-06:
+      14 min gap discarded; 0.6 h gap posted "SOC min 42%, 0.6 h below 50%, 1 charge")
+- [x] Fallback AP `irin-Sunny` comes up on a wrong WiFi password; captive-portal rescue
+      restores WiFi; away current ~40 mA at 12 V (2026-10-06)
+- [x] Status page loads on the LAN behind auth (2026-10-06)
+- [ ] Status page via the fallback AP at http://192.168.4.1, captive portal /wifi still works
 - [ ] 24+ hour stability run before installation
 
 ## Safety
