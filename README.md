@@ -220,7 +220,9 @@ network and open `http://192.168.4.1`. On your home network, use
 the fallback password. Useful when the battery is in a sealed box and the OLED is out of
 reach. While the fallback network is up, the setup page is still what your phone's
 network-login popup shows. If you need it in a browser, open any other address on the
-device, e.g. `http://192.168.4.1/wifi`.
+device, e.g. `http://192.168.4.1/wifi` (any path the status page doesn't use works).
+The setup page exists only while the fallback network is up; on your home network those
+addresses just show the status page.
 
 For a *planned* password change you don't need the fallback network at all: list both
 passwords under `wifi: networks:` (same SSID), install over WiFi while the old one still

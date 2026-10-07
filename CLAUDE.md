@@ -369,7 +369,7 @@ Entities to expose:
 | Charging | binary_sensor | Voltage > 12.9 V (off < 12.8 V). On this car, the DC-DC running — a free "contactors closed" signal. Named generically (was "DC-DC Active", renamed 2026-10-06) so the config reuses for any charge source |
 | Time Since Charging | sensor (h) | Hours since Charging was last on; the DC-DC-stall diagnostic |
 | Away report | 7 sensors + text summary | Built 2026-10-06. While HA is unreachable (car away from home WiFi, HA down) the device tracks duration, min voltage, min gated SOC, time below `soc_alert_pct`, charging time and events; published on reconnect if the gap was >= `away_min_sec` (30 min). In-progress counters live in restored globals folded from RAM every 5 min (flash wear; a reboot mid-trip loses at most 5 min). Note: with the fallback `ap:` configured, ESPHome never does the no-WiFi reboot, so the device runs uninterrupted while away; the last report is a separate restored set so a short gap can't wipe it. HA's recorder can't be backfilled from ESPHome, so this is a summary, not history (options B/C, statistics import or InfluxDB, deferred). Cannot alert while away. |
-| Status page | `web_server` v3, `local: true` | Added 2026-10-06 for in-car checks: the device is strapped to the battery in a closed box, so the OLED/BOOT button are out of reach. Join fallback AP `irin-Sunny`, open http://192.168.4.1 (user `irin`, fallback password). Works because web_server registers its handler at setup, before the captive portal's handler (added when the AP starts), so it wins `/`; the portal still serves every other GET (OS login probes, /wifi). ~47 KB flash. |
+| Status page | `web_server` v3, `local: true` | Added 2026-10-06 for in-car checks: the device is strapped to the battery in a closed box, so the OLED/BOOT button are out of reach. Join fallback AP `irin-Sunny`, open http://192.168.4.1 (user `irin`, fallback password). Works because web_server registers its handler at setup, before the captive portal's handler (added when the AP starts), so it wins `/`; the portal still serves every other GET (OS login probes, /wifi; it has no real /wifi route, any unclaimed path gets the setup page). The portal is active only while the AP is up, so on the LAN /wifi just shows the status page (seen 2026-10-06). ~47 KB flash. |
 | WiFi RSSI | sensor | Diagnostic — signal strength from inside the vehicle |
 | Last seen | timestamp | Detects a dead or out-of-range device |
 
@@ -495,7 +495,7 @@ DC-DC idle timer and mask a genuine converter stall.
       14 min gap discarded; 0.6 h gap posted "SOC min 42%, 0.6 h below 50%, 1 charge")
 - [x] Fallback AP `irin-Sunny` comes up on a wrong WiFi password; captive-portal rescue
       restores WiFi; away current ~40 mA at 12 V (2026-10-06)
-- [x] Status page loads on the LAN behind auth (2026-10-06)
+- [x] Status page loads on the LAN behind auth, live updates (2026-10-06)
 - [ ] Status page via the fallback AP at http://192.168.4.1, captive portal /wifi still works
 - [ ] 24+ hour stability run before installation
 
