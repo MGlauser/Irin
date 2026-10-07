@@ -56,7 +56,8 @@ clock, watching the battery so you don't have to.
 | **On-device display** | Voltage, SOC, temperature and rest/charging status on a 72×40 OLED. Blanks after 2 minutes to prevent burn-in; the BOOT button wakes it. Stays lit while charging. |
 | **Home Assistant** | Native ESPHome integration (no MQTT broker), a ready-made dashboard, and history for long-term battery-health trends. Alerts are ordinary HA automations. |
 
-It draws about **10 mA at 12V**.
+It draws about **10 mA at 12V** on WiFi, and about **40 mA** while out of WiFi range with
+its fallback network up (see [Fallback WiFi network](#fallback-wifi-network-and-its-power-cost)).
 
 ### Why SOC needs a "rest gate"
 
@@ -190,7 +191,7 @@ resistors and calibration for other system voltages.
 | `slope_tolerance` | Allowed drift per 5-minute tick to count as stable | 0.005 V |
 | `temp_coeff` | Resting-voltage temperature coefficient, V/°C, for the whole battery | 0.004 |
 | `display_wake_ms` | How long the OLED stays lit | 120000 |
-| `ap_ssid` | Fallback WiFi network, raised 90 s after home WiFi is lost; join it from a phone to enter a new WiFi password. Don't name the vehicle: it broadcasts wherever you park | irin-Sunny |
+| `ap_ssid` | Name of the fallback WiFi network (see below). Don't name the vehicle: it broadcasts wherever you park | irin-Sunny |
 | `soc_alert_pct` | SOC alert level, used for the away report's "time below alert" (match your HA automation) | 50 |
 | `away_min_sec` | Shortest HA outage that counts as "away" and replaces the last report | 1800 s |
 
@@ -198,6 +199,42 @@ resistors and calibration for other system voltages.
 battery's full resting voltage (otherwise a full, idle battery looks like it is
 charging), and **below** the lowest charging voltage you expect. Put
 `charge_on_threshold` about 0.1 V higher (per 12V) for hysteresis.
+
+### Fallback WiFi network (and its power cost)
+
+When the device can't reach its WiFi for 90 seconds, it starts its own password-protected
+network (`ap_ssid`). This is how you recover after changing your WiFi password without
+re-flashing:
+
+1. Join the fallback network from a phone, using `uncharted_fallback_password` from your secrets.
+2. The setup page opens (or browse to `http://192.168.4.1`). Pick your network and enter
+   the new password. The device saves it and reconnects.
+3. **Then update `wifi_password` in your secrets before the next firmware install.** A
+   password saved this way only applies to the firmware that is running; any install with
+   a changed configuration goes back to the password in the YAML.
+
+For a *planned* password change you don't need the fallback network at all: list both
+passwords under `wifi: networks:` (same SSID), install over WiFi while the old one still
+works, then change the router.
+
+**The cost: about 40 mA instead of 10 mA, but only while out of WiFi range.** A device
+that can't find its network keeps the radio on, searching and broadcasting. On WiFi at
+home there is no extra draw. Measured on the prototype at 12V. For a car parked away from
+home for a week next to a 430 mA vehicle draw, that's about 4 hours less warning before
+the 50% alert, out of more than two days. Daily trips cost about 0.25 Ah, which the drive
+home replaces.
+
+**To turn it off**, for example on a battery bank that spends long periods out of range,
+or if you'd rather not broadcast a network: delete the `ap:` block under `wifi:` and the
+`captive_portal:` line, then install. Out-of-range draw then falls to an estimated 20-30 mA
+(not measured), not to 10 mA, because the radio keeps searching. The trade-offs:
+- Recovering from a WiFi password change needs the planned method above, or a USB flash.
+- `wifi: reboot_timeout: 60min` becomes active (ESPHome only uses it when there is no
+  fallback network): the device reboots after an hour without WiFi as a recovery
+  backstop. The away report survives it (kept in flash) and a full SOC rest window fits
+  between reboots, but the clock comes from Home Assistant, so after such a reboot,
+  charging while out of range isn't timestamped and *Time Since Charging* reads high
+  until the device is back home.
 
 ### Battery chemistry (12V)
 

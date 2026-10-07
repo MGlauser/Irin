@@ -323,6 +323,13 @@ Usable capacity before the alert: **25 Ah** (100% -> 50%).
 OLED lit and ESPHome default WiFi light power-save; brief excursions to ~21 mA during
 WiFi transmit. Matches the 10 mA always-on assumption above.
 
+**Away from home WiFi (measured 2026-10-06): ~40 mA at 12 V, stable**, with the fallback
+AP up and the STA retrying (bench test: wrong WiFi password, phone joined to the AP).
+The AP cannot power-save. Cost: on a long sit away from home (e.g. a week at an
+airport) total draw 470 mA vs 440 mA, ~53 h to 50% instead of ~57 h, i.e. ~4 h less
+lead time. Day trips cost ~0.25 Ah extra and the drive home recharges it. Long sits in
+the home garage are on WiFi at ~10 mA. The AP is the WiFi-password rescue.
+
 ### Verdict: run always-on. Do not implement deep sleep.
 
 The difference between deep sleep and always-on is ~1.3 hours out of ~58 (2.3%) —
