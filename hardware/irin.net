@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "/Volumes/x/Uncharted/hardware/irin.kicad_sch")
-		(date "2026-10-06T15:04:32")
+		(date "2026-10-08T14:15:52")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
@@ -563,12 +563,6 @@
 							(num "1")
 						)
 						(pin
-							(num "2")
-						)
-						(pin
-							(num "3")
-						)
-						(pin
 							(num "4")
 						)
 						(pin
@@ -576,6 +570,12 @@
 						)
 						(pin
 							(num "6")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
 						)
 					)
 				)
@@ -1014,7 +1014,7 @@
 		(net
 			(code "1")
 			(name "/12vPROT")
-			(class "Default")
+			(class "Pwr,Default")
 			(node
 				(ref "C2")
 				(pin "1")
