@@ -52,7 +52,7 @@ clock, watching the battery so you don't have to.
 | **State of charge** | Looked up from *resting* voltage, temperature-corrected, and only updated when the battery has truly rested (see below). Holds its last good value otherwise, with a "last updated" timestamp. |
 | **Charging** | On/off, detected from voltage with hysteresis, plus *Time Since Charging*. Shows whether the charging source (alternator, DC-DC converter, solar, shore power) is actually doing its job. |
 | **Away report** | While Home Assistant is unreachable (the car is away from home WiFi, or HA is down), the device keeps a summary: lowest voltage, lowest SOC, time below the alert level, charging time and events. Published when it reconnects, e.g. *"3.2 d: SOC min 46%, 4.0 h below 50%, 6 charges"*. Gaps under 30 minutes are ignored. |
-| **Temperature / humidity** | Remote DHT22 sensor on a short cable, used for the SOC temperature correction. |
+| **Temperature / humidity** | DHT22 sensor, used for the SOC temperature correction. |
 | **On-device display** | Voltage, SOC, temperature and rest/charging status on a 72×40 OLED. Blanks after 2 minutes to prevent burn-in; the BOOT button wakes it. Stays lit while charging. |
 | **Home Assistant** | Native ESPHome integration (no MQTT broker), a ready-made dashboard, and history for long-term battery-health trends. Alerts are ordinary HA automations. |
 
@@ -81,7 +81,7 @@ Voltage itself is never gated: you always see the raw trace.
 | **Voltage divider** R1/R2, 1% metal film, same series | 47k / 10k for 12V systems (see the voltage table for 24/48V). |
 | **C1**, 2 nF across R2 | 2× 1000 pF mica in parallel (low leakage). |
 | **MP1584EN** buck module, set to 5.0V | Feeds the board's 5V pin. 12V systems only; see 24/48V below. |
-| **DHT22 / AM2302** + 3-pin JST-XH (J2) | Remote-mounted outside the enclosure, cable ≤1 m at 3.3V. |
+| **DHT22 / AM2302** + 3-pin JST-XH (J2) | Best outside the enclosure (cable ≤1 m at 3.3V); inside works, reading a few °C warm, which errs toward an early alert. |
 | **Fuse** at the battery positive terminal | 5 A, DC-rated for the system voltage. Protects the wiring, not the 10 mA load. |
 | **TVS diode** (optional) | P6KE18A for 12V. |
 | **Enclosure** | 3D printed, PETG or ASA. |
@@ -101,6 +101,8 @@ ground at exactly one point.** If the divider and the ADC sit on different groun
 the supply current's voltage drop appears in series with the measurement and gets
 multiplied by the divider ratio. On the prototype, 15 mV of ground drop between two
 breadboard rails became an 86 mV error at the battery, and it drifted.
+This applies to wired builds. On the PCB, the solid GND plane does the same job and R2/C1
+connect to it directly.
 
 ---
 
@@ -172,7 +174,7 @@ a few tenths of a percent, suspect the ground wiring (see above) before the resi
 - **If the battery has a current sensor clamped on its negative post** (many modern
   vehicles do), connect the monitor's ground on the chassis side of the sensor, so the
   vehicle still accounts for the monitor's current.
-- Remote temperature sensor outside the enclosure, near the battery.
+- Temperature sensor outside the enclosure near the battery if you can; inside the box is acceptable.
 - Check the WiFi signal tile in HA at the final location before closing everything up.
   Below about −80 dBm, expect dropouts.
 
@@ -237,9 +239,9 @@ works, then change the router.
 
 **The cost: about 40 mA instead of 10 mA, but only while out of WiFi range.** A device
 that can't find its network keeps the radio on, searching and broadcasting. On WiFi at
-home there is no extra draw. Measured on the prototype at 12V. For a car parked away from
-home for a week next to a 430 mA vehicle draw, that's about 4 hours less warning before
-the 50% alert, out of more than two days. Daily trips cost about 0.25 Ah, which the drive
+home there is no extra draw. Measured on the prototype at 12V. The extra 30 mA is about
+0.7 Ah a day, around 3% of the capacity between full and the 50% alert on a 50 Ah
+battery: for a car parked away from home, a few hours less warning out of several days. Daily trips cost about 0.25 Ah, which the drive
 home replaces.
 
 **To turn it off**, for example on a battery bank that spends long periods out of range,

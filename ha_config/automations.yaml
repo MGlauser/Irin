@@ -16,7 +16,7 @@
 # =============================================================================
 # This is what the project exists to do.
 #
-# At ~430 mA parasitic draw, 50% SOC leaves roughly 3 days to flat. The intended
+# At the observed ~0.1 V/day resting drop, 50% SOC leaves several days to flat. The intended
 # response takes minutes: plug the car into the 240 V charger and let a nightly
 # scheduled charge run the DC-DC. One to two days of margin is ample.
 #

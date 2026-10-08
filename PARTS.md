@@ -11,7 +11,7 @@ Enough parts for **three complete units** once the remaining items land.
 | ESP32-C3 0.42" OLED board (01Space design) | 3 | |
 | HiLetgo ADS1115 16-bit 4-ch ADC (B07VPFLSMX) | 3 | Ordered, $11.89. No Qwiic connector. |
 | MP1584EN buck module, adjustable | 5 | Ordered, $8.69. Set to 5.0 V. |
-| DHT22 / AM2302 | 2 | Ordered, $7.99. **Remote-mounted outside the enclosure** via J2 — see below. |
+| DHT22 / AM2302 | 2 | Ordered, $7.99. On J2; **inside the box for now** (2026-10-08) — see below. |
 | 18 GA micro fuse holders, inline | 6 | Ordered, $8.99. Confirm fuses included. |
 | PETG / ASA filament | — | On hand. Enclosure printed in-house. |
 
@@ -23,7 +23,7 @@ Enough parts for **three complete units** once the remaining items land.
 
 | Item | Qty | Notes |
 |---|---|---|
-| TVS, 18 V standoff | 3 | **P6KE18A** — 600 W DO-15. Optional. MP1584 abs max is 30 V. |
+| TVS, 18 V breakdown | 3 | **P6KE18A** — 600 W DO-15. Optional. VRWM 15.3 V, VBR 17.1-18.9 V, Vc 25.2 V at 24 A. MP1584 abs max is 30 V. Banded end (cathode) to the + rail. |
 | Micro blade fuses, 5 A | 3 | If not included with the holders |
 
 **Reverse-polarity Schottky: dropped by decision.** Owner-built, wired once — not a
@@ -82,8 +82,8 @@ parts cancel most tempco in the ratio.
 **ADS1115** — Qwiic from the ESP32 (red 3.3 V, black GND, blue SDA, yellow SCL) to the
 module. ADDR to GND = 0x48; OLED is 0x3C.
 
-**Power** — 5 V into the board's 5V pin. Efficiency is irrelevant against 430 mA of
-vehicle draw, and this keeps onboard protection plus USB for flashing.
+**Power** — 5 V into the board's 5V pin. Efficiency is irrelevant against the
+vehicle's own parked draw, and this keeps onboard protection plus USB for flashing.
 
 **DHT22** — data on **GPIO3**. 4.7-10k pullup if using the bare 4-pin part. ESPHome
 `update_interval: 300s`; expect occasional NaN from WiFi interrupt jitter, which is
@@ -93,6 +93,9 @@ harmless at this timescale.
 > cable to board connector J2 (JST-XH 3-pin, 1=VCC 2=DATA 3=GND) through a cable gland.
 > Removes the self-heating offset of the earlier inside-mount. At 3.3 V supply the
 > AM2302 datasheet limits the cable to ~1 m.
+>
+> **For now (2026-10-08): inside the first PCB enclosure**, plugged into J2 and glued to
+> the wall, so the box has a single cable entry (12 V). Reads a few degC warm; errs safe.
 
 **Fuse** — the fuse protects the 18 GA harness against a chassis short, not the 150 mA
 load. 5 A against 18 GA is correct; Micro2 blade fuses are scarce below 5 A anyway.
@@ -116,4 +119,4 @@ Straight to the battery posts, not a downstream accessory circuit.
 - [ ] 12V battery location — under hood vs. rear drives enclosure temp rating and WiFi margin
 - [x] Battery chemistry: flooded lead-acid, 50 Ah (confirmed 2026-10-05; not AGM)
 - [ ] WiFi RSSI at the mounting location (ceramic chip antenna; a metal bay is worst case)
-- [x] Temperature sensor: DHT22/AM2302, remote-mounted via J2 (DS18B20 not used)
+- [x] Temperature sensor: DHT22/AM2302 on J2, inside the box for now (DS18B20 not used)

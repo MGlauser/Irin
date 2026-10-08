@@ -42,9 +42,12 @@ manufacturer's profile:
   the idle cutoff, if the DC-DC runs for the whole charge session (see the empirical
   check below).
 
-**Lead time is the design constraint, and it is satisfied.** At ~430 mA parasitic draw,
-50% SOC leaves ~2.4 days to flat. One or two days is enough to walk out and run the
-car or plug in, so 50% is the correct trigger — no need for anything more conservative.
+**Lead time is the design constraint.** The vehicle's parasitic draw has **not been
+measured**; the owner has observed the resting voltage drop ~0.1 V over a day (see Power
+budget). If that rate holds, 50% SOC leaves several days to flat. One or two days is
+enough to walk out and run the car or plug in, so 50% is the correct trigger. Confirm
+the rate from Irin's own data (rested SOC readings over a multi-day sit) before
+revisiting the threshold.
 
 Secondary:
 
@@ -116,8 +119,9 @@ input ceiling the divider ratio is sized against. See PARTS.md.
 
 **MP1584EN buck module set to 5.0 V, into the board's 5V pin.** Ordered (5-pack).
 
-Rationale: always-on dissipation, not efficiency — at 430 mA vehicle draw the
-regulator's own consumption is irrelevant, so the choice is driven by heat in a sealed
+Rationale: always-on dissipation, not efficiency — against the vehicle's own draw
+(~0.1 V/day observed, on the order of 200 mA; see Power budget) the regulator's own
+consumption is irrelevant, so the choice is driven by heat in a sealed
 enclosure and by keeping the board's onboard protection and USB flashing intact.
 
 Rejected: back-feeding 3V3 (bypasses onboard protection, blocks USB coexistence, buys
@@ -137,8 +141,13 @@ Battery- ----------------------------+--> GND
 
 - **Fuse protects the 18 GA harness against a chassis short**, not the 150 mA load.
   5 A is correct for 18 GA; Micro2 blade fuses are scarce below 5 A regardless.
-- **TVS, 18 V standoff** — optional. Clears the 16 V max, clamps below the MP1584's
+- **TVS, P6KE18A** (unidirectional) — optional. The "18" is the nominal breakdown, not
+  the standoff: VRWM 15.3 V, VBR 17.1-18.9 V, Vc 25.2 V at 24 A. Stays off through
+  14.4 V charging and the 16 V design max (below VBR min), clamps below the MP1584's
   30 V abs max. Load dump is not a factor on an EV, but inductive switching is.
+  **Orientation:** banded end (cathode, square pad on the DO-15 footprint) to 12vPROT,
+  anode to GND, i.e. reverse-biased in normal service. Fitted backwards it is a forward
+  diode across the supply and blows F1.
 - **100 uF electrolytic + 0.1 uF ceramic** at the buck input
 
 **Reverse-polarity protection: deliberately omitted.** Owner-built and wired once; not
@@ -159,7 +168,7 @@ damage. The ratio must be at least ~5.5:1.
 - Ratio **5.7:1**: **R1 = 47k, R2 = 10k** (as built, measured 46.5k / 9.85k = 5.721:1).
   Originally 470k/100k; dropped 10x on 2026-10-05 for lower source impedance (~8.1 kohm
   vs ~82 kohm): less ADS1115 input-impedance error and noise pickup, at ~220 uA divider
-  current, which is negligible against the 430 mA vehicle draw. The ratio, and therefore
+  current, which is negligible against the vehicle's own draw. The ratio, and therefore
   the levels and headroom, is unchanged.
 - Resulting levels: 12.22 V -> 2.14 V | 14.4 V -> 2.52 V | 16 V -> **2.80 V** (safe)
 - Headroom: tolerates ~20.6 V before reaching the 3.6 V limit
@@ -176,7 +185,11 @@ damage. The ratio must be at least ~5.5:1.
   ground rail and the ADS1115 on the other, ~15 mV of load-dependent rail-to-rail drop
   sat in series with A0, which is ~86 mV at the battery after the 5.7:1 scale-up. It
   drifted overnight by ~30 mV at the battery, and calibration had absorbed part of it as a
-  fake ~0.6% "gain error". On the PCB, route R2/C1 ground to U3 GND, not to the pour.
+  fake ~0.6% "gain error". The rule is for wired builds (breadboard, perfboard), where
+  ground conductors have tens of mohm or more. On the PCB, R2/C1 ground goes straight
+  to the solid B.Cu GND plane (decided 2026-10-08): at ~0.5 mohm/square, with the
+  divider corner away from the buck and ESP32 return currents, the offset is microvolts,
+  so a separate analog return buys nothing.
 - The ADS1115's ~6.4 Mohm input impedance adds ~0.13% gain error at this source
   impedance (was ~1.3% at 470k/100k); **calibration absorbs it**, so calibrate rather
   than recompute
@@ -224,8 +237,8 @@ Without this gate the low-battery alert will likely never fire when it matters.
 
 ### Surface charge — why the gate must not be shortened
 
-Given ~430 mA parasitic draw, the DC-DC likely cycles every few hours, so clean rest
-windows may be **rare** and SOC will often be stale. That is acceptable; staleness is
+If the DC-DC cycles every few hours while parked (cycle period not yet observed), clean
+rest windows may be **rare** and SOC will often be stale. That is acceptable; staleness is
 reported via timestamp.
 
 Do **not** shorten the gate to force more frequent updates. Lead-acid surface charge takes
@@ -233,8 +246,8 @@ Do **not** shorten the gate to force more frequent updates. Lead-acid surface ch
 the one direction that costs the battery. Prefer the dV/dt stability test over a
 shorter timer.
 
-Note the 430 mA load itself does not distort readings: on a 50 Ah battery that is
-~C/116, causing a few mV of sag. Negligible.
+Note the parasitic load itself does not distort readings: even 500 mA on a 50 Ah battery
+is C/100, causing a few mV of sag. Negligible.
 
 ### Resting voltage -> SOC — **flooded lead-acid (Pb), 50 Ah**
 
@@ -294,6 +307,13 @@ gland. Supersedes the earlier inside-the-enclosure decision: remoting removes th
 ~5-15 degC self-heating offset from the buck + ESP32 while keeping the box sealed.
 The data pull-up is on the sensor module.
 
+**For now (2026-10-08): sensor INSIDE the first PCB enclosure**, plugged into J2 and
+hot-glued to the box wall, so the box needs only one cable entry (the 12 V leads).
+Accepted trade-off: the board dissipates ~0.12 W, so the sensor reads a few degC
+above ambient (check it against a thermometer once installed). The error errs safe: reading
+warm under-corrects a cold battery, so SOC reads low and the alert fires early. J2 and
+the remote option stay on the board; going remote later is a cable and a gland.
+
 **Cable-length limit:** at 3.3 V supply the AM2302 datasheet limits the cable to
 **~1 m** (line drop). Longer runs need the sensor on 5 V, which then puts the data
 line's pull-up and the ESP32's 3.3 V-only GPIO in conflict. Keep the run under 1 m.
@@ -308,16 +328,23 @@ Correct to 25 degC before the SOC lookup.
 
 ## Power budget — 50 Ah flooded
 
-**Measured vehicle parasitic draw: ~430 mA when off** (Subaru pass threshold: <500 mA).
-This is ~14x a typical ICE car and it dominates everything.
+**Vehicle parasitic draw: NOT measured.** An earlier "~430 mA" figure in these docs was
+never measured on this car and has been removed (2026-10-08); do not reintroduce it or
+anything derived from it. (Subaru's pass threshold is reportedly <500 mA.)
 
-Usable capacity before the alert: **25 Ah** (100% -> 50%).
+**Observed: resting voltage dropped ~0.1 V over one day** (owner, car parked and off).
+On the flooded table near full, 0.1 V is ~8-10% SOC, i.e. roughly 4-5 Ah/day, or on the
+order of 200 mA averaged. That is an estimate from two voltage readings, not a current
+measurement, and surface charge can skew it. Irin will measure it properly: the decline
+in gated SOC between rested readings over a multi-day sit. A clamp meter on the negative
+lead with the car asleep is the direct check.
 
-| Scenario | Total draw | Days to 50% |
-|---|---|---|
-| Car alone | 430 mA | **2.4** |
-| + deep sleep monitor (0.5 mA) | 430.5 mA | 2.4 |
-| + always-on monitor (10 mA) | 440 mA | 2.37 |
+Usable capacity before the alert: **25 Ah** (100% -> 50%). At ~10%/day that is
+roughly **5 days to 50%** (estimate, from the observed rate).
+
+The monitor's share is small whatever the car's draw turns out to be: 10 mA always-on
+is 0.24 Ah/day, ~1% of the usable 25 Ah per day, and ~5% of the estimated ~4.8 Ah/day
+vehicle loss. Deep sleep (0.5 mA) would save ~0.23 Ah/day.
 
 **Measured on the bench (2026-10-05):** ~10 mA average at 12 V input with WiFi connected,
 OLED lit and ESPHome default WiFi light power-save; brief excursions to ~21 mA during
@@ -326,14 +353,14 @@ WiFi transmit. Matches the 10 mA always-on assumption above.
 **Away from home WiFi (measured 2026-10-06): ~40 mA at 12 V, stable**, with the fallback
 AP up and the STA retrying (bench test: wrong WiFi password, phone joined to the AP).
 The AP cannot power-save. Cost: on a long sit away from home (e.g. a week at an
-airport) total draw 470 mA vs 440 mA, ~53 h to 50% instead of ~57 h, i.e. ~4 h less
-lead time. Day trips cost ~0.25 Ah extra and the drive home recharges it. Long sits in
+airport) the extra 30 mA is 0.72 Ah/day, ~3% of the usable 25 Ah per day; at the
+estimated ~10%/day vehicle loss that is a few hours less lead time out of ~5 days. Day trips cost ~0.25 Ah extra and the drive home recharges it. Long sits in
 the home garage are on WiFi at ~10 mA. The AP is the WiFi-password rescue.
 
 ### Verdict: run always-on. Do not implement deep sleep.
 
-The difference between deep sleep and always-on is ~1.3 hours out of ~58 (2.3%) —
-irrelevant. **Dropped as unnecessary:** deep sleep, TPL5110, static-IP/BSSID wake
+The difference between deep sleep and always-on is ~0.23 Ah/day, about 1% of the
+usable capacity per day and a small fraction of the vehicle's own loss — irrelevant. **Dropped as unnecessary:** deep sleep, TPL5110, static-IP/BSSID wake
 optimization, WiFi connect timeouts for power reasons, and the *power* rationale for
 adaptive sampling.
 
@@ -341,16 +368,17 @@ Keep adaptive sampling only if desired for chart resolution. Otherwise sample ev
 30 s continuously. The OLED blanks 2 min after boot, a BOOT-button press or the end of a
 charge, to limit burn-in of the static layout (saves ~0.5 mA as a side effect).
 
-### 430 mA appears to be genuine steady-state
+### The drain rate is still an open measurement
 
-At 430 mA a 50 Ah battery reaches 50% in ~2.4 days and flat in ~5. This matches
-**widely reported owner experience that these vehicles develop 12V problems after
-sitting more than a couple of days.** The draw is real, not a settling-window artifact.
+The observed ~0.1 V/day suggests ~5 days from full to 50%. **Widely reported owner
+experience is that these vehicles develop 12V problems after sitting a few days**, so
+the failure mode is real even though this car's rate is not yet pinned down.
 
 **This sets the alert's lead time.** The device is an early-warning system for a known
-failure mode with a ~2.4 day fuse. A 50% SOC alert leaves 1-2 days of margin to run the
-car or plug it in — which is exactly the required response, so the SOC alert is
-sufficient on its own and remains primary.
+failure mode with a fuse of a few days. A 50% SOC alert leaves time to run the car or
+plug it in — which is exactly the required response, so the SOC alert is sufficient on
+its own and remains primary. Replace the estimates here with measured numbers once Irin
+has logged a multi-day sit.
 
 DC-DC stall detection is retained as a *diagnostic*: it distinguishes "owner hasn't run
 or plugged in the car" from "the vehicle's converter has stopped working." Useful for a warranty
@@ -445,8 +473,8 @@ DC-DC idle timer and mask a genuine converter stall.
 
 ### Alerting
 
-1. **DC-DC has not run in N hours** (primary, *leading* indicator). With <3 days of
-   margin at 430 mA, waiting for SOC to cross 50% is a lagging signal. If the converter
+1. **DC-DC has not run in N hours** (primary, *leading* indicator). With only a few days
+   of margin, waiting for SOC to cross 50% is a lagging signal. If the converter
    stops cycling, that is the actual failure and it is visible hours earlier. Implement
    as a threshold on the `Time Since Charging` sensor. Set N from the observed cycle
    period once real data exists.
@@ -472,8 +500,27 @@ DC-DC idle timer and mask a genuine converter stall.
 - Remediation: run the car (15-30 min) OR plug in and run a scheduled charge
 - Power: MP1584EN buck to 5 V, always-on, no deep sleep
 - ADC: ADS1115 at 0x48 on the OLED I2C bus, 47k/10k divider (was 470k/100k)
-- Temp: DHT22 on GPIO3, remote-mounted outside the enclosure via J2 (3-pin), cable ≤1 m
+- Temp: DHT22 on GPIO3 via J2 (3-pin); inside the box for now (2026-10-08), remote option kept, cable ≤1 m
 - Enclosure: 3D printed, PETG or ASA (both on hand)
+
+## PCB mechanical (for the enclosure model)
+
+The enclosure is printed to fit the board, not the other way round. Values from
+`hardware/irin.kicad_pcb` as of 2026-10-08; re-check them if the outline or holes move.
+
+| Item | Value |
+|---|---|
+| Board outline | **78.5 x 69.0 mm** (KiCad Edge.Cuts rectangle (9.5, 16.5) to (88.0, 85.5)) |
+| Mounting holes | 4x M3, **3.2 mm** drill, no plating/pad (MountingHole_3.2mm_M3) |
+| Hole inset | **3.5 mm** from the edge on both axes, all four corners |
+| Hole spacing (centre to centre) | **71.5 x 62.0 mm** |
+| Hole centres from the board's lower-left corner | (3.5, 3.5), (75.0, 3.5), (3.5, 65.5), (75.0, 65.5) |
+
+The pattern is symmetric, so KiCad's Y-down versus OpenSCAD's Y-up does not matter.
+**No USB cutout** (owner decision, 2026-10-08): the box stays sealed; firmware goes
+in by OTA, or with the lid off. **One cable entry: the 12 V leads to J1** (position
+not yet specified; take it from the board when the box is modelled). The DHT22 stays
+inside for now (see Temperature compensation), so no J2 entry.
 
 ## Firmware versioning
 
