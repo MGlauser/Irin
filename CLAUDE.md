@@ -132,7 +132,7 @@ nothing here); LM2596 modules (5-10 mA Iq, and hotter).
 ```
 Battery+ --[5A fuse]--+--[divider tap]--> ADS1115 A0
                       |
-                      +--[TVS 18V]--+   (optional)
+                      +--[TVS 18V]--+   (standard)
                       |             |
                       +-------------+--> MP1584 --> 5 V
                                     |
@@ -141,7 +141,7 @@ Battery- ----------------------------+--> GND
 
 - **Fuse protects the 18 GA harness against a chassis short**, not the 150 mA load.
   5 A is correct for 18 GA; Micro2 blade fuses are scarce below 5 A regardless.
-- **TVS, P6KE18A** (unidirectional) — optional. The "18" is the nominal breakdown, not
+- **TVS, P6KE18A** (unidirectional) — standard, fitted on every board (2026-10-08). The "18" is the nominal breakdown, not
   the standoff: VRWM 15.3 V, VBR 17.1-18.9 V, Vc 25.2 V at 24 A. Stays off through
   14.4 V charging and the 16 V design max (below VBR min), clamps below the MP1584's
   30 V abs max. Load dump is not a factor on an EV, but inductive switching is.
@@ -150,9 +150,13 @@ Battery- ----------------------------+--> GND
   diode across the supply and blows F1.
 - **100 uF electrolytic + 0.1 uF ceramic** at the buck input
 
-**Reverse-polarity protection: deliberately omitted.** Owner-built and wired once; not
-a failure mode worth a series diode. This also removes the constraint that the divider
-tap sit ahead of a diode drop — the front end is just fuse and divider.
+**Reverse polarity: no series diode; D1 is the crowbar** (decided 2026-10-08, once kits
+for other builders came up; was "deliberately omitted, owner-built and wired once"). A
+reversed hookup forward-biases D1 across the input and blows F1, holding the board near
+-1 V while it does. No series diode drop, so the divider tap needs no correction and the
+front end stays fuse, TVS and divider. It only works with the fuse upstream (it is, in
+the harness). After a reversal, replace the fuse and check D1: its 100 A forward surge
+rating should survive a 5 A Micro2 clearing, but that is not guaranteed.
 
 ### Voltage divider
 
@@ -522,9 +526,10 @@ in by OTA, or with the lid off. Rev B keeps the ~19 mm of clear board below U2's
 end (USB-C at U2's bottom end, confirmed by the owner 2026-10-08; the ceramic antenna is
 at the opposite end, toward J2, under the "U2 antenna keepout" rule area) so a cable can
 be plugged in with the lid off; the box wall on that side must leave room for the plug
-body and the cable bend. **One cable entry: the 12 V leads to J1**, which in rev B sits
-at the middle of the top edge (pins at KiCad x 55.1, y 21.8/24.4, i.e. ~45.6 mm from the
-left edge; pin 2 ~5.3 mm and pin 1 ~7.9 mm below the top edge). The DHT22 stays
+body and the cable bend. **One cable entry: the 12 V leads to J1**, a 5.08 mm
+2-pin screw terminal at the middle of the top edge, wire openings facing that edge
+(pins at KiCad y 22.0, x 55.1 = + and 50.0 = -, i.e. ~40.5-45.6 mm from the left edge
+and 5.5 mm below the top edge; the terminal body's entry face is ~0.9 mm in from the edge). The DHT22 stays
 inside for now (see Temperature compensation), so no J2 entry.
 
 ## Firmware versioning

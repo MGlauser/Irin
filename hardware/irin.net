@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "/Volumes/x/Uncharted/hardware/irin.kicad_sch")
-		(date "2026-10-08T21:27:25")
+		(date "2026-10-08T22:17:15")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
@@ -56,7 +56,7 @@
 	(components
 		(comp
 			(ref "C1")
-			(value "2nF mica (2x1000pF)")
+			(value "2nF mica")
 			(footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
 			(fields
 				(field
@@ -194,7 +194,7 @@
 		)
 		(comp
 			(ref "D1")
-			(value "P6KE18A (opt.)")
+			(value "P6KE18A")
 			(footprint "Diode_THT:D_DO-15_P12.70mm_Horizontal")
 			(fields
 				(field
@@ -240,11 +240,11 @@
 		)
 		(comp
 			(ref "J1")
-			(value "Battery terminals")
-			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+			(value "12V IN")
+			(footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
 			(fields
 				(field
-					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+					(name "Footprint") "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -286,7 +286,7 @@
 		)
 		(comp
 			(ref "J2")
-			(value "DHT22 remote (VCC/DATA/GND)")
+			(value "DHT22")
 			(footprint "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
 			(fields
 				(field
@@ -537,7 +537,7 @@
 		)
 		(comp
 			(ref "U3")
-			(value "HiLetgo ADS1115 (0x48, ADDR->GND)")
+			(value "ADS1115 (HiLetgo)")
 			(footprint "Irin:ADS1115_HiLetgo_1x10_P2.54mm_W18mm_L28.3mm")
 			(fields
 				(field

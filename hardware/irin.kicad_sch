@@ -2028,7 +2028,7 @@
 		)
 		(uuid "81ba2cff-37b2-4daa-a7da-a1e977629680")
 	)
-	(text "TVS D1: P6KE18A, UNIDIRECTIONAL, optional.\nBANDED END (K, cathode, square pad) to PROT,\nA (anode) to GND.\nReverse-biased in normal service:\nVRWM 15.3 V, breakdown 17.1-18.9 V,\nclamps a surge at Vc 25.2 V (MP1584 abs max 30 V).\nFitted backwards it is a forward diode across\nthe supply and blows F1."
+	(text "TVS D1: P6KE18A, UNIDIRECTIONAL, fitted as standard.\nBANDED END (K, cathode, square pad) to PROT,\nA (anode) to GND.\nReverse-biased in normal service:\nVRWM 15.3 V, breakdown 17.1-18.9 V,\nclamps a surge at Vc 25.2 V (MP1584 abs max 30 V).\nFitted backwards it is a forward diode across\nthe supply and blows F1. That is also the\nreverse-polarity protection: a reversed hookup\nforward-biases D1 and blows F1 (crowbar)."
 		(exclude_from_sim no)
 		(at 22 130 0)
 		(effects
@@ -2039,7 +2039,7 @@
 		)
 		(uuid "a60459bf-3967-4274-bbb5-22a1082e9316")
 	)
-	(text "Reverse-polarity protection deliberately omitted (owner-built, wired once).\nWS2812 RGB LED on U2 is disabled in firmware -- pure parasitic draw."
+	(text "No series reverse-polarity diode: D1 is the crowbar (reversed hookup blows F1).\nWS2812 RGB LED on U2 is disabled in firmware -- pure parasitic draw."
 		(exclude_from_sim no)
 		(at 245 130 0)
 		(effects
@@ -3215,7 +3215,7 @@
 				)
 			)
 		)
-		(property "Value" "P6KE18A (opt.)"
+		(property "Value" "P6KE18A"
 			(at 89.662 95.504 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3371,7 +3371,7 @@
 				)
 			)
 		)
-		(property "Value" "HiLetgo ADS1115 (0x48, ADDR->GND)"
+		(property "Value" "ADS1115 (HiLetgo)"
 			(at 373.38 43.942 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3461,7 +3461,7 @@
 				)
 			)
 		)
-		(property "Value" "DHT22 remote (VCC/DATA/GND)"
+		(property "Value" "DHT22"
 			(at 370.586 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3620,7 +3620,7 @@
 				)
 			)
 		)
-		(property "Value" "2nF mica (2x1000pF)"
+		(property "Value" "2nF mica"
 			(at 150.114 141.986 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3783,7 +3783,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Battery terminals"
+		(property "Value" "12V IN"
 			(at 63.5 99.06 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3794,7 +3794,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal"
 			(at 59.69 96.52 0)
 			(hide yes)
 			(show_name no)

@@ -23,14 +23,15 @@ Enough parts for **three complete units** once the remaining items land.
 
 | Item | Qty | Notes |
 |---|---|---|
-| TVS, 18 V breakdown | 3 | **P6KE18A** — 600 W DO-15. Optional. VRWM 15.3 V, VBR 17.1-18.9 V, Vc 25.2 V at 24 A. MP1584 abs max is 30 V. Banded end (cathode) to the + rail. |
+| TVS, 18 V breakdown | 3 | **P6KE18A** — 600 W DO-15. VRWM 15.3 V, VBR 17.1-18.9 V, Vc 25.2 V at 24 A. MP1584 abs max is 30 V. Standard on the PCB (also the reverse-polarity crowbar). Banded end (cathode) to the + rail. |
 | Micro blade fuses, 5 A | 3 | If not included with the holders |
 
 **Reverse-polarity Schottky: dropped by decision.** Owner-built, wired once — not a
 failure mode worth a diode or the 0.4 V it costs.
 
-TVS is a different case (inductive switching transients, not user error) but remains
-optional.
+TVS is a different case and is fitted as standard (2026-10-08): it handles inductive
+switching transients, and a reversed hookup forward-biases it and blows the fuse, which
+protects kits built by others.
 
 Source: [20PCS P6KE18A, DO-15 axial, unidirectional, 600 W](https://www.amazon.com/dp/B0FRMDHL9Q)
 
@@ -52,6 +53,7 @@ JST SH 1 mm pigtail.*
 | 1000 pF mica | 6 | Two in parallel across R2 (C1 = 2 nF) |
 | 100 µF / 35 V electrolytic | 3 | Buck input bulk |
 | JST-XH 3-pin header + housing/crimps, 3-core cable (≤1 m) | 3 | J2 remote DHT22 lead |
+| 2-pin screw terminal, 5.08 mm pitch (KF301-2P / Phoenix MKDS 1,5-2-5.08 class) | 3 | J1, 12 V leads (PCB rev B) |
 | Perfboard, 18 AWG wire, ring terminals, cable glands, heat shrink | — | |
 
 Net new spend: **~$25-30**.
@@ -104,7 +106,7 @@ load. 5 A against 18 GA is correct; Micro2 blade fuses are scarce below 5 A anyw
 
 ```
 Battery+ ──[5A fuse]──┬──[47k/10k divider]────> ADS1115 A0
-                      ├──[TVS 18V]──┐   (optional)
+                      ├──[TVS 18V]──┐   (standard)
                       └─────────────┴──> MP1584 ──> 5 V
 Battery- ──────────────────────────────────────────> GND
 ```

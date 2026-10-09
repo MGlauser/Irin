@@ -83,7 +83,7 @@ Voltage itself is never gated: you always see the raw trace.
 | **MP1584EN** buck module, set to 5.0V | Feeds the board's 5V pin. 12V systems only; see 24/48V below. |
 | **DHT22 / AM2302** + 3-pin JST-XH (J2) | Best outside the enclosure (cable ≤1 m at 3.3V); inside works, reading a few °C warm, which errs toward an early alert. |
 | **Fuse** at the battery positive terminal | 5 A, DC-rated for the system voltage. Protects the wiring, not the 10 mA load. |
-| **TVS diode** (optional) | P6KE18A for 12V. |
+| **TVS diode** D1 | P6KE18A for 12V. Fitted as standard: it clamps switching transients, and a reversed hookup forward-biases it and blows the fuse. |
 | **Enclosure** | 3D printed, PETG or ASA. |
 
 - Full bill of materials, wiring and divider math: [`PARTS.md`](PARTS.md).
@@ -346,7 +346,7 @@ and the per-12V numbers scale in firmware.
 | Input reaches the ADS1115's 3.6 V abs. max at | 20.6 V | 39.6 V | 82.8 V |
 | Resolution at the battery | 0.7 mV | 1.4 mV | 2.9 mV |
 | Buck converter input rating | MP1584EN (28 V max) OK | **≥ 60 V** (24V lead-acid charges to ~29 V; the MP1584 is **not** OK) | **≥ 100 V** |
-| TVS (optional) | P6KE18A | P6KE36A (30.8 V standoff: skip it if you equalize above ~30.5 V) | SMBJ60A (60 V standoff): LFP 16S and lead-acid without equalization |
+| TVS | P6KE18A | P6KE36A (30.8 V standoff: skip it if you equalize above ~30.5 V) | SMBJ60A (60 V standoff): LFP 16S and lead-acid without equalization |
 | Fuse | 32 V DC automotive blade OK | 32 V DC blade OK | **58 V DC-rated** blade fuse; standard automotive blades are only 32 V |
 | Calibration points | 11.5 V / 15.0 V | 23 V / 30 V | 46 V / 60 V |
 
