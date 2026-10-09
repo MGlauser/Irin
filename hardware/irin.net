@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "/Volumes/x/Uncharted/hardware/irin.kicad_sch")
-		(date "2026-10-08T14:15:52")
+		(date "2026-10-08T21:27:25")
 		(tool "Eeschema 10.0.5")
 		(sheet
 			(number "1")
@@ -224,52 +224,6 @@
 				(tstamps "/")
 			)
 			(tstamps "71a7858c-42b5-4e32-8ea9-65f61dfddf73")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "F1")
-			(value "5A (Micro2 blade)")
-			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-			(fields
-				(field
-					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "Irin")
-				(part "FUSE")
-				(description "")
-			)
-			(property
-				(name "Sheetname")
-				(value "irin")
-			)
-			(property
-				(name "Sheetfile")
-				(value "irin.kicad_sch")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "ad839596-afd0-43f4-bc04-e65235d75264")
 			(units
 				(unit
 					(name "A")
@@ -644,6 +598,43 @@
 	(variants)
 	(libparts
 		(libpart
+			(lib "Device")
+			(part "Battery")
+			(description "Multiple-cell battery")
+			(fields
+				(field
+					(name "Reference") "BT")
+				(field
+					(name "Value") "Battery")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Multiple-cell battery")
+				(field
+					(name "Sim.Device") "V")
+				(field
+					(name "Sim.Type") "DC")
+				(field
+					(name "Sim.Pins") "1=+ 2=-")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
 			(lib "Irin")
 			(part "ADS1115")
 			(fields
@@ -701,7 +692,7 @@
 				(field
 					(name "Reference") "J")
 				(field
-					(name "Value") "BATTERY")
+					(name "Value") "CONN_2PIN")
 				(field
 					(name "Footprint")
 				)
@@ -1009,7 +1000,12 @@
 			)
 		)
 	)
-	(libraries)
+	(libraries
+		(library
+			(logical "Device")
+			(uri "${KICAD10_SYMBOL_DIR}/Device.kicad_sym")
+		)
+	)
 	(nets
 		(net
 			(code "1")
@@ -1034,9 +1030,9 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "F1")
-				(pin "2")
-				(pinfunction "2_2")
+				(ref "J1")
+				(pin "1")
+				(pinfunction "BATT+_1")
 				(pintype "passive")
 			)
 			(node
@@ -1126,23 +1122,6 @@
 				(ref "U3")
 				(pin "5")
 				(pinfunction "ADDR_5")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "3")
-			(name "Net-(J1-BATT+)")
-			(class "Default")
-			(node
-				(ref "F1")
-				(pin "1")
-				(pinfunction "1_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "1")
-				(pinfunction "BATT+_1")
 				(pintype "passive")
 			)
 		)

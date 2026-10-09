@@ -518,8 +518,13 @@ The enclosure is printed to fit the board, not the other way round. Values from
 
 The pattern is symmetric, so KiCad's Y-down versus OpenSCAD's Y-up does not matter.
 **No USB cutout** (owner decision, 2026-10-08): the box stays sealed; firmware goes
-in by OTA, or with the lid off. **One cable entry: the 12 V leads to J1** (position
-not yet specified; take it from the board when the box is modelled). The DHT22 stays
+in by OTA, or with the lid off. Rev B keeps the ~19 mm of clear board below U2's USB
+end (USB-C at U2's bottom end, confirmed by the owner 2026-10-08; the ceramic antenna is
+at the opposite end, toward J2, under the "U2 antenna keepout" rule area) so a cable can
+be plugged in with the lid off; the box wall on that side must leave room for the plug
+body and the cable bend. **One cable entry: the 12 V leads to J1**, which in rev B sits
+at the middle of the top edge (pins at KiCad x 55.1, y 21.8/24.4, i.e. ~45.6 mm from the
+left edge; pin 2 ~5.3 mm and pin 1 ~7.9 mm below the top edge). The DHT22 stays
 inside for now (see Temperature compensation), so no J2 entry.
 
 ## Firmware versioning

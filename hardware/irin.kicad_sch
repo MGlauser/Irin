@@ -244,7 +244,7 @@
 					)
 				)
 			)
-			(property "Value" "BATTERY"
+			(property "Value" "CONN_2PIN"
 				(at -5.08 -3.81 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -288,88 +288,37 @@
 				)
 			)
 			(symbol "BATT_CONN_0_1"
-				(polyline
-					(pts
-						(xy -2.032 2.032) (xy 2.032 2.032)
-					)
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type none)
+						(type background)
 					)
 				)
-				(polyline
-					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
-					)
+				(rectangle
+					(start -0.127 3.81)
+					(end 0.127 2.54)
 					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
-						(type none)
+						(type outline)
 					)
 				)
-				(polyline
-					(pts
-						(xy -1.016 1.27) (xy 1.016 1.27)
-					)
+				(rectangle
+					(start -0.127 -2.54)
+					(end 0.127 -3.81)
 					(stroke
-						(width 0.508)
+						(width 0)
 						(type default)
 					)
 					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 -1.524) (xy 1.016 -1.524)
-					)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 3.81) (xy 0 2.032)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.27) (xy 0 -0.762)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -1.524) (xy 0 -3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
+						(type outline)
 					)
 				)
 				(polyline
@@ -1764,6 +1713,276 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:Battery"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "BT"
+				(at 2.54 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Battery"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.524 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 1.524 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Multiple-cell battery"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Type" "DC"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=+ 2=-"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "batt voltage-source cell"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Battery_0_1"
+				(rectangle
+					(start -2.286 1.778)
+					(end 2.286 1.524)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -2.286 -1.27)
+					(end 2.286 -1.524)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 1.016)
+					(end 1.524 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 -2.032)
+					(end 1.524 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.778) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -0.508) (xy 0 -0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.016) (xy 0 -0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 3.048) (xy 1.778 3.048)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 3.556) (xy 1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Battery_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(text "I2C: SDA = GPIO5, SCL = GPIO6, verified by I2C scan on hardware 2026-10-05.\nADS1115 ADDR->GND sets 0x48; onboard SSD1306 OLED shares this bus at 0x3C\n(not shown, built into U2)."
 		(exclude_from_sim no)
@@ -1798,7 +2017,7 @@
 		)
 		(uuid "301880c0-5e93-4e4d-a940-5f24d5da11e6")
 	)
-	(text "J2: cable to REMOTE DHT22/AM2302, mounted outside the enclosure (via gland).\n1=VCC 2=DATA 3=GND. Data pull-up is on the sensor module.\nAt 3.3 V supply, AM2302 datasheet limits cable length to ~1 m."
+	(text "J2: DHT22/AM2302, 1=VCC 2=DATA 3=GND. Data pull-up is on the sensor module.\nFor now the sensor is INSIDE the enclosure, hot-glued to the wall (reads a few degC\nwarm, which errs safe). Remote option: cable out through a gland, max ~1 m at 3.3 V."
 		(exclude_from_sim no)
 		(at 355 165 0)
 		(effects
@@ -1831,7 +2050,7 @@
 		)
 		(uuid "c9a42587-1eb9-4ade-bc1b-031ee066f334")
 	)
-	(text "Divider R1 47k / R2 10k = 5.7:1 (unit 1 measured 46.5k/9.85k = 5.72:1). C1 = 2 x 1000pF mica\nin parallel (2nF, low leakage). ADS1115 abs max = VDD+0.3 = 3.6V.\n12.22V(flooded 50% SOC)->2.14V  14.4V(charging)->2.52V  16.0V(design max)->2.80V @ A0.\nANALOG GROUND: R2 and C1 return to the ADS1115 GND pin, and that node meets power GND\nat ONE point. Load current through a shared ground path adds directly to A0 and is\nscaled up 5.7x (bench: 15mV rail-to-rail = ~86mV error at the battery)."
+	(text "Divider R1 47k / R2 10k = 5.7:1 (unit 1 measured 46.5k/9.85k = 5.72:1). C1 = 2 x 1000pF mica\nin parallel (2nF, low leakage). ADS1115 abs max = VDD+0.3 = 3.6V.\n12.22V(flooded 50% SOC)->2.14V  14.4V(charging)->2.52V  16.0V(design max)->2.80V @ A0.\nANALOG GROUND: on the PCB, R2 and C1 return straight to the solid B.Cu GND plane (offset\nis microvolts). Wired builds: return them to the ADS1115 GND pin, meeting power GND at ONE\npoint (bench: 15mV rail-to-rail drop = ~86mV error at the battery after the 5.7x scale-up)."
 		(exclude_from_sim no)
 		(at 125.476 180.848 0)
 		(effects
@@ -1841,6 +2060,12 @@
 			(justify left)
 		)
 		(uuid "f2cc42dc-7e86-4202-a3cf-76629e29751a")
+	)
+	(junction
+		(at 59.69 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "06f800a4-f6e3-4462-8d3f-7ac0bb9a52ad")
 	)
 	(junction
 		(at 129.54 30.48)
@@ -1891,16 +2116,16 @@
 		(uuid "301dd25f-2a37-42e4-81fa-8602b02ad333")
 	)
 	(junction
+		(at 95.25 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3c356e49-b269-49c5-a21d-e66cd4993e13")
+	)
+	(junction
 		(at 129.54 130.81)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "58fd90f1-0e77-4c63-b879-37c0e0ca17a3")
-	)
-	(junction
-		(at 95.25 30.48)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6155b594-54b2-4280-972f-a8d86be4ffd7")
 	)
 	(junction
 		(at 287.02 106.68)
@@ -2066,16 +2291,6 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 100.33) (xy 58.42 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "26325a2c-7bc5-42a3-a51c-28dfa54a2794")
-	)
-	(wire
-		(pts
 			(xy 129.54 138.43) (xy 129.54 158.75)
 		)
 		(stroke
@@ -2096,7 +2311,7 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 100.33) (xy 69.85 30.48)
+			(xy 59.69 69.85) (xy 59.69 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2156,7 +2371,7 @@
 	)
 	(wire
 		(pts
-			(xy 16.51 158.75) (xy 95.25 158.75)
+			(xy 59.69 158.75) (xy 95.25 158.75)
 		)
 		(stroke
 			(width 0)
@@ -2186,16 +2401,6 @@
 	)
 	(wire
 		(pts
-			(xy 16.51 99.06) (xy 16.51 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ef091ee-a784-4bf0-8b38-c57a7672fbbc")
-	)
-	(wire
-		(pts
 			(xy 129.54 30.48) (xy 180.34 30.48)
 		)
 		(stroke
@@ -2213,6 +2418,16 @@
 			(type default)
 		)
 		(uuid "5a98c979-eec8-436f-bbf1-f5e2a25bc5ad")
+	)
+	(wire
+		(pts
+			(xy 34.29 69.85) (xy 59.69 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60167883-6df9-4bb7-b2c7-9d3623fa2dea")
 	)
 	(wire
 		(pts
@@ -2256,23 +2471,13 @@
 	)
 	(wire
 		(pts
-			(xy 16.51 109.22) (xy 16.51 158.75)
+			(xy 59.69 101.6) (xy 59.69 158.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6a51c214-bbf8-4d69-9fe1-adbca586804f")
-	)
-	(wire
-		(pts
-			(xy 16.51 95.25) (xy 55.88 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6e4970a0-4ac7-4144-9d26-a8508a84242d")
 	)
 	(wire
 		(pts
@@ -2556,17 +2761,17 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 100.33) (xy 66.04 100.33)
+			(xy 59.69 69.85) (xy 59.69 30.48)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d85c1631-061f-45ab-97e1-6c0157459892")
+		(uuid "d7d1bdf8-d112-4d6b-8843-16a4ef0d973f")
 	)
 	(wire
 		(pts
-			(xy 69.85 30.48) (xy 95.25 30.48)
+			(xy 59.69 30.48) (xy 95.25 30.48)
 		)
 		(stroke
 			(width 0)
@@ -2626,16 +2831,6 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 95.25) (xy 55.88 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "febc8f84-bbf5-4ba6-81e6-fe271af4d487")
-	)
-	(wire
-		(pts
 			(xy 154.94 158.75) (xy 180.34 158.75)
 		)
 		(stroke
@@ -2645,7 +2840,7 @@
 		(uuid "fefd7113-af4a-4be9-becc-9e8b0e346874")
 	)
 	(label "GND"
-		(at 16.51 158.75 0)
+		(at 59.69 158.75 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2665,7 +2860,7 @@
 		(uuid "fb72b2df-e297-47a7-a4f6-e189468d076d")
 	)
 	(label "12vPROT"
-		(at 69.85 30.48 0)
+		(at 59.69 30.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3328,17 +3523,17 @@
 	)
 	(symbol
 		(lib_id "Irin:FUSE")
-		(at 62.23 100.33 0)
+		(at 30.48 69.85 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
-		(on_board yes)
+		(on_board no)
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "ad839596-afd0-43f4-bc04-e65235d75264")
 		(property "Reference" "F1"
-			(at 61.722 104.14 0)
+			(at 29.972 73.66 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3347,8 +3542,8 @@
 				)
 			)
 		)
-		(property "Value" "5A (Micro2 blade)"
-			(at 60.96 91.948 0)
+		(property "Value" "5A Micro2, inline"
+			(at 29.21 61.468 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3358,7 +3553,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 62.23 100.33 0)
+			(at 30.48 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3369,7 +3564,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 62.23 100.33 0)
+			(at 30.48 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3380,7 +3575,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 62.23 100.33 0)
+			(at 30.48 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3568,7 +3763,7 @@
 	)
 	(symbol
 		(lib_id "Irin:BATT_CONN")
-		(at 16.51 104.14 0)
+		(at 59.69 96.52 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3578,7 +3773,7 @@
 		(dnp no)
 		(uuid "edcd3089-0922-4eda-8707-09c680ba686d")
 		(property "Reference" "J1"
-			(at 20.32 102.87 0)
+			(at 63.5 95.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3589,7 +3784,7 @@
 			)
 		)
 		(property "Value" "Battery terminals"
-			(at 20.32 106.68 0)
+			(at 63.5 99.06 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3600,7 +3795,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 16.51 104.14 0)
+			(at 59.69 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3611,7 +3806,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 16.51 104.14 0)
+			(at 59.69 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3622,7 +3817,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 16.51 104.14 0)
+			(at 59.69 96.52 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3641,6 +3836,156 @@
 			(project "irin"
 				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
 					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 16.51 83.82) (xy 16.51 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "97a48c76-bdcf-4018-a0fd-29df2970fca4")
+	)
+	(wire
+		(pts
+			(xy 16.51 69.85) (xy 26.67 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bf7e82f5-a7ec-4826-a2b8-4a2bcabf9a5a")
+	)
+	(wire
+		(pts
+			(xy 16.51 93.98) (xy 16.51 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93bb7b35-ec31-4bfb-bd92-048d4a853670")
+	)
+	(wire
+		(pts
+			(xy 16.51 158.75) (xy 59.69 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a622919-0f73-4550-8755-179eb4abe6ae")
+	)
+	(junction
+		(at 59.69 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "af7e0294-32c7-4403-87a4-79704df935df")
+	)
+	(rectangle
+		(start 6.35 46.99)
+		(end 49.53 102.87)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "bf926213-a51e-45da-85f1-1e27a7d49c87")
+	)
+	(text "OFF-BOARD (vehicle harness)\nF1: inline holder, as close to the\nbattery + terminal as practical."
+		(exclude_from_sim no)
+		(at 8.89 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "6b24d44c-b749-49c7-8283-e6e4d9ecbc9d")
+	)
+	(symbol
+		(lib_id "Device:Battery")
+		(at 16.51 88.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "642b9602-3c0d-4795-bae1-d2eae49945f6")
+		(property "Reference" "BT1"
+			(at 19.05 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Vehicle 12V (flooded, 50Ah)"
+			(at 19.05 90.17 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 16.51 88.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 16.51 88.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "The car's 12 V battery; off-board, shown for the harness"
+			(at 16.51 88.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "060a0186-9ddc-46ea-9188-279615b4e84a")
+		)
+		(pin "2"
+			(uuid "3cc1a333-0ac1-4c25-bd57-320e08a9d67f")
+		)
+		(instances
+			(project "irin"
+				(path "/097d63fa-dc7b-4932-a049-360b053b132d"
+					(reference "BT1")
 					(unit 1)
 				)
 			)
