@@ -21,3 +21,6 @@ _autosave-*
 
 # Generated status page script (ESPHome frontend + our link); build with esphome/www/build_www.py
 esphome/irin_www.js
+
+# Fab package zip — rebuilt from the tracked gerbers and drill files
+hardware/*.zip
