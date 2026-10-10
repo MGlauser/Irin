@@ -24,3 +24,6 @@ esphome/irin_www.js
 
 # Fab package zip — rebuilt from the tracked gerbers and drill files
 hardware/*.zip
+
+# Talk slides — large binaries that don't diff usefully
+presentation/
