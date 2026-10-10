@@ -521,6 +521,10 @@ The enclosure is printed to fit the board, not the other way round. Values from
 | Hole centres from the board's lower-left corner | (3.5, 3.5), (75.0, 3.5), (3.5, 65.5), (75.0, 65.5) |
 
 The pattern is symmetric, so KiCad's Y-down versus OpenSCAD's Y-up does not matter.
+
+**Rev B gerbers plotted and checked 2026-10-10.** Printed at 1:1 and laid against the
+real parts: the ESP32-C3 module, ADS1115 and MP1584EN footprints all line up. Rev B is
+releasable to fab.
 **No USB cutout** (owner decision, 2026-10-08): the box stays sealed; firmware goes
 in by OTA, or with the lid off. Rev B keeps the ~19 mm of clear board below U2's USB
 end (USB-C at U2's bottom end, confirmed by the owner 2026-10-08; the ceramic antenna is
