@@ -43,27 +43,39 @@ sensor:
 # Voltage is the diagnostic record. Default purge (10 days) is too short to
 # characterize DC-DC cycling across seasons or to support a warranty argument.
 #
+# READ BEFORE UNCOMMENTING: recorder `include` is an ALLOW-LIST and it applies
+# to the whole of Home Assistant, not to this device. Pasting the block below
+# as-is silently stops recording every other entity in the house. If you already
+# have a recorder: block, merge purge_keep_days into it and leave its filters
+# alone. If you don't, raise purge_keep_days on its own and skip the include —
+# 90 days of everything is cheap next to losing the rest of your history.
+#
 # recorder:
 #   purge_keep_days: 90
+#
+# Only if you genuinely want an allow-list for the entire instance:
 #   include:
 #     entities:
 #       - sensor.uncharted_12v_battery_voltage
 #       - sensor.uncharted_12v_battery_soc
+#       - sensor.uncharted_12v_time_since_charging
 #       - binary_sensor.uncharted_12v_charging
 
 # =============================================================================
-# TUNING VALUES — all three need real data
+# TUNING VALUES
 # =============================================================================
 #
-#  1. ESPHome calibrate_linear
-#       Two-point against a known-good meter, ~11.5 V and ~15 V.
-#       Absorbs resistor tolerance and ADS1115 gain error together.
+#  DONE — ESPHome calibrate_linear
+#       Two-point against a DVM at 11.50 V and 15.00 V, redone 2026-10-06 after
+#       the analog-ground fix. Fitted gain 5.7211 against a measured resistor
+#       ratio of 5.7208. Reads 12.22 V at the 50% point and 16.00 V at full
+#       scale. Nothing further needed unless the divider is rebuilt.
 #
-#  2. DC-DC stall threshold (automations.yaml, currently 12 h)
-#       Observe the normal maximum gap between DC-DC cycles over the first
-#       week; roughly double it. Leave the automation disabled until then.
+#  OPEN — DC-DC stall threshold (automations.yaml, currently 12 h)
+#       Observe the normal maximum gap between charging runs over the first
+#       week; roughly double it. Leave that automation DISABLED until then.
 #
-#  3. Charger float threshold (optional loop, currently 20 W)
-#       Run one full charge cycle manually and watch the power trace. Note the
-#       bulk draw (likely 60-90 W) and the float mean (a few watts). Set
-#       between them.
+#  OPEN — Charger float threshold (optional loop, currently 20 W)
+#       Only matters if you build the optional maintainer loop. Run one full
+#       charge cycle manually and watch the power trace. Note the bulk draw
+#       (likely 60-90 W) and the float mean (a few watts). Set between them.

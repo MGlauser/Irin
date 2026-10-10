@@ -3,11 +3,14 @@
 # CORE ALERTS. The optional external-maintainer control loop lives in
 # automations_charger_optional.yaml and is not required for normal operation.
 #
-# Verify entity IDs after first adoption — ESPHome derives them from the
-# friendly_name and they may differ from the guesses here.
+# Entity IDs checked against esphome/irin.yaml 0.3.0 (2026-10-10). ESPHome
+# derives them from friendly_name + entity name, so they change if either is
+# renamed — which is why CLAUDE.md says not to rename the instance.
+#
+# Battery is flooded lead-acid, 50 Ah. See CLAUDE.md if it is ever replaced.
 #
 # Hierarchy:
-#   1. SOC < 50%    — THE POINT OF THE PROJECT. Go plug the car in.
+#   1. SOC < 50%    — THE POINT OF THE PROJECT. Run the car or plug it in.
 #   2. Unavailable  — distinguishes a dead monitor from a healthy battery.
 #   3. DC-DC stall  — diagnostic. Separates "forgot to plug in" from a vehicle fault.
 
@@ -16,27 +19,49 @@
 # =============================================================================
 # This is what the project exists to do.
 #
-# At the observed ~0.1 V/day resting drop, 50% SOC leaves several days to flat. The intended
-# response takes minutes: plug the car into the 240 V charger and let a nightly
-# scheduled charge run the DC-DC. One to two days of margin is ample.
+# At the observed ~0.1 V/day resting drop, 50% SOC leaves several days to flat
+# (estimate — Irin's own gated-SOC trend over a multi-day sit will replace it).
+# The response takes minutes, so a quiet overnight window costs nothing.
 #
-# 50% is also where AGM cycle life begins to degrade, so the threshold is
-# chemistry-driven rather than arbitrary.
+# 50% is chemistry-driven, not arbitrary: a flooded battery left sitting
+# part-discharged sulfates, and cycle life falls off sharply past half.
+#
+# Two triggers on purpose. numeric_state fires only on a CROSSING, so it would
+# miss a battery that is already below 50% when HA restarts, or one that crossed
+# during the quiet window. The daily 08:00 trigger catches both, and re-reminds
+# each morning for as long as the condition persists.
 - id: uncharted_soc_low
   alias: "Uncharted — Battery SOC below 50%"
   description: >-
-    Primary alert. Gated (resting) SOC has fallen below half. Plug the car in.
+    Primary alert. Gated (resting) SOC has fallen below half. Run the car or
+    plug it in.
   trigger:
     - platform: numeric_state
       entity_id: sensor.uncharted_12v_battery_soc
       below: 50
       for: "00:30:00"
+    - platform: time
+      at: "08:00:00"
   condition:
-    # Ignore a stale reading — if the rest gate has not passed in over a day,
-    # the held value may predate whatever is happening now.
+    # Re-check, because the 08:00 trigger carries no threshold of its own.
     - condition: numeric_state
-      entity_id: sensor.uncharted_12v_soc_age
-      below: 24
+      entity_id: sensor.uncharted_12v_battery_soc
+      below: 50
+    # Quiet window. The alert has a multi-day fuse, so waking the house at
+    # 03:00 buys nothing and trains you to silence the channel that matters.
+    - condition: time
+      after: "08:00:00"
+      before: "22:00:00"
+    # Ignore a stale reading. SOC is gated behind a rest window that can be rare
+    # on this car, so the published value may be hours or days old; if the gate
+    # has not passed in over a day the held value may predate what is happening
+    # now. NOTE: the device publishes a TIMESTAMP (SOC Last Updated), not an age
+    # in hours — hence the template rather than a numeric_state condition.
+    - condition: template
+      alias: "Gated SOC is fresh (rest gate passed within 24 h)"
+      value_template: >-
+        {% set t = states('sensor.uncharted_12v_soc_last_updated') | as_datetime %}
+        {{ t is not none and (now() - t).total_seconds() < 86400 }}
   action:
     - service: notify.persistent_notification
       data:
@@ -44,14 +69,16 @@
         message: >-
           SOC {{ states('sensor.uncharted_12v_battery_soc') }}% at
           {{ states('sensor.uncharted_12v_battery_voltage') }} V.
-          Roughly 3 days to flat. Plug into the 240 V charger and run a
-          scheduled charge tonight.
+          Run the car in READY mode for 15-30 min, or plug into the 240 V
+          charger and run a scheduled charge. Either brings the HV system up so
+          the car's own DC-DC tops up the 12V. Repeat if a fresh SOC is still
+          at or below 50%.
     # Add your preferred push notifier here — a persistent notification alone
     # is easy to miss, and this alert has a multi-day fuse, not an open-ended one.
     # - service: notify.mobile_app_<device>
     #   data:
     #     title: "Uncharted: 12V battery at 50%"
-    #     message: "Plug the car in."
+    #     message: "Run the car 15-30 min, or plug it in."
   mode: single
 
 # =============================================================================
@@ -60,6 +87,10 @@
 # Without this, a dead monitor is indistinguishable from a healthy battery —
 # silence reads as good news, which is the worst possible failure mode for an
 # alerting device.
+#
+# Expect this to fire whenever the car leaves home WiFi. That is not a false
+# alarm: while away, Irin cannot alert at all, and it logs an away report it
+# posts on reconnect (see the Away sensors).
 - id: uncharted_monitor_offline
   alias: "Uncharted — Monitor unavailable"
   trigger:
@@ -72,20 +103,21 @@
       data:
         title: "Uncharted: monitor offline"
         message: >-
-          No data for 30+ min. Either the device failed, the car is out of WiFi
-          range, or the 12V rail is already down.
+          No data for 30+ min. Either the car is away from home WiFi, the device
+          failed, or the 12V rail is already down.
   mode: single
 
 # =============================================================================
 # 3. DIAGNOSTIC — DC-DC converter has stopped cycling
 # =============================================================================
 # Not the primary alert. Its value is diagnostic: it distinguishes "the owner
-# has not plugged the car in" from "the vehicle's DC-DC converter has stopped
-# working" — the latter being a warranty conversation.
+# has not run or plugged in the car" from "the vehicle's DC-DC converter has
+# stopped working" — the latter being a warranty conversation.
 #
 # THRESHOLD IS A PLACEHOLDER. Set it after the first week: find the normal
-# maximum gap between DC-DC cycles and roughly double it. Leave this automation
-# disabled until that data exists, or it will simply cry wolf.
+# maximum gap between charging runs and roughly double it. Leave this automation
+# DISABLED until that data exists, or it will simply cry wolf — and a channel
+# you have learned to ignore cannot carry alert 1.
 - id: uncharted_dcdc_stall
   alias: "Uncharted — DC-DC not cycling (diagnostic)"
   trigger:
@@ -101,6 +133,6 @@
           No vehicle-side 12V charging for
           {{ states('sensor.uncharted_12v_time_since_charging') }} h.
           Battery at {{ states('sensor.uncharted_12v_battery_voltage') }} V.
-          If the car has been plugged in during this period, the converter may
-          have a fault — worth raising while under warranty.
+          If the car has been run or plugged in during this period, the
+          converter may have a fault — worth raising while under warranty.
   mode: single

@@ -5,24 +5,34 @@
 # THIS IS A BACKUP PATH. DO NOT BUILD IT FIRST.
 # =============================================================================
 #
-# The primary remediation is manual and needs no hardware: on a 50% alert, plug
-# the car into the 240 V wall charger and run a scheduled charge nightly. The
-# vehicle's own DC-DC tops up the 12V on the manufacturer's profile.
+# The primary remediation is manual and needs no hardware: on a 50% alert, run
+# the car in READY mode for 15-30 min, or plug it into the 240 V wall charger
+# and run a scheduled charge. Either way the vehicle's own DC-DC tops up the
+# 12V on the manufacturer's profile.
 #
-# This file covers the case where the car is parked away from the 240 V outlet
-# for weeks at a time. Prove the alert works before adding a control loop that
-# can mask the very condition you are trying to observe.
+# This file covers the case where nobody can do either for weeks at a time —
+# the car parked away from home while the owner is travelling. Prove the alert
+# works before adding a control loop that can mask the very condition you are
+# trying to observe.
+#
+# Battery is flooded lead-acid, 50 Ah — set the charger to its plain 12 V
+# (flooded/standard) profile, NOT its AGM profile. AGM profiles charge roughly
+# 0.2-0.4 V higher, which gasses a flooded battery and boils off water.
 #
 # Hardware assumed:
 #   - Power-metering smart plug (confirmed available)
-#   - NOCO 3.5 A with AGM mode (primary; on hand)
-#   - Harley-Davidson 3.5 A, measured float ~13.2 V (spare; slightly low for AGM)
+#   - NOCO 3.5 A in 12 V standard mode (primary; on hand)
+#   - Harley-Davidson 3.5 A, measured float ~13.2 V (spare). A true maintainer
+#     despite the branding, and 13.2 V is a fine float for flooded, so this is
+#     a fully usable alternative — worth having, since the automation depends
+#     on one charger staying alive.
 #
 # PREREQUISITE TEST — power-cycle mode recovery:
-#   Set AGM mode, start charging, pull the cord, reapply power. With no button
-#   press, does it resume?
-#     Resumes in AGM              -> use as written
-#     Resumes in 12V standard     -> acceptable, mild chronic undercharge
+#   Set 12 V (flooded) mode, start charging, pull the cord, reapply power. With
+#   no button press, does it resume?
+#     Resumes in 12 V flooded     -> use as written
+#     Resumes in AGM              -> check its float voltage suits flooded
+#                                    (<=13.8 V) before relying on it
 #     Sits in standby             -> switched-plug control unusable; see NOTE below
 #
 # NOTE on failure: do NOT simply leave the charger on permanently. A continuously
@@ -38,8 +48,8 @@
 # Requires helpers from configuration_snippets.yaml.
 
 # --- Start: preventive, at 70% ---------------------------------------------
-# Deliberately above the 50% alert. Intervening at 50% means the AGM has already
-# reached the depth of discharge where cycle life degrades.
+# Deliberately above the 50% alert. Intervening at 50% means the battery has
+# already sat at the depth of discharge where a flooded cell starts sulfating.
 - id: uncharted_charger_start
   alias: "Uncharted — Start 12V maintainer"
   trigger:
@@ -50,9 +60,13 @@
     - condition: state
       entity_id: switch.uncharted_charger_plug
       state: "off"
-    - condition: numeric_state
-      entity_id: sensor.uncharted_12v_soc_age
-      below: 24
+    # Fresh gated SOC only. The device publishes a TIMESTAMP (SOC Last Updated),
+    # not an age in hours, so this is a template rather than numeric_state.
+    - condition: template
+      alias: "Gated SOC is fresh (rest gate passed within 24 h)"
+      value_template: >-
+        {% set t = states('sensor.uncharted_12v_soc_last_updated') | as_datetime %}
+        {{ t is not none and (now() - t).total_seconds() < 86400 }}
   action:
     - service: switch.turn_on
       target:
@@ -91,9 +105,9 @@
 
 # --- Backstop: hard maximum on-time ----------------------------------------
 # Catches a stuck charger, a failed power sensor, or a bad connection that never
-# reaches float. 24 h is correct for this setup: 3.5 A into a 60 Ah AGM from 50%
-# (~30 Ah) takes 10-12 h with absorption taper, so a shorter timeout would
-# truncate a legitimate charge.
+# reaches float. 24 h is correct for this setup: 3.5 A into a 50 Ah flooded
+# battery from 50% (~25 Ah) is C/14 — gentle and appropriate — and takes 8-10 h
+# with absorption taper, so a shorter timeout would truncate a legitimate charge.
 - id: uncharted_charger_timeout
   alias: "Uncharted — Maintainer runtime exceeded"
   trigger:
@@ -146,7 +160,7 @@
 #     - platform: state
 #       entity_id: switch.uncharted_charger_plug
 #       to: "on"
-#       for: "12:00:00"     # must exceed the 10-12 h full charge at 3.5 A
+#       for: "12:00:00"     # must exceed the 8-10 h full charge at 3.5 A
 #   action:
 #     - service: switch.turn_off
 #       target:
