@@ -3708,7 +3708,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+		(property "Footprint" "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm"
 			(at 245.11 87.63 0)
 			(hide yes)
 			(show_name no)

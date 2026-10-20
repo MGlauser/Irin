@@ -1,0 +1,137 @@
+(footprint "MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm"
+	(version 20250114)
+	(generator "manual")
+	(layer "F.Cu")
+	(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.4in apart center-to-center. CALIPER-MEASURED by owner 2026-10-20 on the physical module: taking one outer hole as 0, the four holes along an edge sit at 0.0 / 0.1 / 0.4 / 0.5 in, and the input edge to output edge spacing is 0.7 in. This CORRECTS Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm, whose across-module spacing was ruler-measured at +/-0.5mm and came out 0.1in too narrow overall (inner holes at +/-0.2in apart instead of 0.3in); the real module does not fit that footprint -- see the rev B erratum in CLAUDE.md. Board outline CALIPER-MEASURED 2026-10-20 at 0.66 x 0.86 in = 16.76 x 21.84 mm (width across the hole rows x length between them), drawn true on F.SilkS; cross-checks against the hole pattern as 0.08 in of board margin on all four sides. Pad numbers match the Irin:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
+	(tags "MP1584EN HW-133 buck module perfboard")
+	(attr through_hole)
+	(property "Reference" "REF**"
+		(at 0 -12.6 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm"
+		(at 0 12.6 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_rect
+		(start -8.382 -10.922)
+		(end 8.382 10.922)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_rect
+		(start -8.882 -11.422)
+		(end 8.882 11.422)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+	)
+	(fp_text user "VOUT-"
+		(at -5.08 10.2 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VOUT+"
+		(at 5.08 10.2 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VIN-"
+		(at -5.08 -10.2 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "VIN+"
+		(at 5.08 -10.2 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(pad "2" thru_hole circle
+		(at -6.35 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "2" thru_hole circle
+		(at -3.81 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "1" thru_hole rect
+		(at 3.81 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "1" thru_hole rect
+		(at 6.35 -8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "4" thru_hole circle
+		(at -6.35 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "4" thru_hole circle
+		(at -3.81 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "3" thru_hole rect
+		(at 3.81 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(pad "3" thru_hole rect
+		(at 6.35 8.89)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+	)
+	(embedded_fonts no)
+)

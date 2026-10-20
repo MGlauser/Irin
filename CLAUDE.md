@@ -127,6 +127,48 @@ enclosure and by keeping the board's onboard protection and USB flashing intact.
 Rejected: back-feeding 3V3 (bypasses onboard protection, blocks USB coexistence, buys
 nothing here); LM2596 modules (5-10 mA Iq, and hotter).
 
+**ERRATUM — rev B: the U1 footprint is wrong, too narrow** (found 2026-10-20 on the
+first populated board). `Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm` places
+the two net pairs 7.62 mm apart across the module (pair midpoints at x = +/-3.81, holes
+at x = +/-2.54 and +/-5.08) and the VIN/VOUT rows 17.78 mm apart. The real module does
+not fit. The footprint's own description flags the source: measured with a ruler at
++/-0.5 mm, outline a placeholder. **Workaround used on board #1:** one leg clipped off
+each negative end and the module mounted from the underside of the board. It works —
+board #1 is live and reading correctly.
+
+**Corrected footprint written 2026-10-20** from caliper measurements: taking one outer
+hole as 0, the four holes along an edge sit at **0.0 / 0.1 / 0.4 / 0.5 in**, and the
+input edge to output edge spacing is **0.7 in** (that one was already right). So the
+error was entirely across the module: inner holes needed 0.3 in, not 0.2 in — every
+hole moves outward 1.27 mm, pair midpoints 10.16 mm apart instead of 7.62 mm.
+
+`Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm` is the good one, and the
+schematic now points at it. The old `...W7.62mm...` footprint is kept but marked
+DEPRECATED in its own description, because the rev B boards were fabbed with it.
+**The board file still carries the old embedded footprint** — run Update PCB from
+Schematic in KiCad to pull the corrected one in, then re-plot before any rev C fab.
+
+**Rev C scope (owner will re-lay out, decided 2026-10-20):** two parts move — **U1**,
+onto the corrected footprint below, and **U3** (ADS1115), which sits uncomfortably close
+to the DHT22 on rev B. Everything else about rev B is proven: board #1 is built and
+reading correctly.
+
+**Also rev C: all three U[n] reference designators are badly placed** — found 2026-10-20
+when U2's label vanished under the soldered-in module. They sit too close to the part
+bodies to read once populated. U2's ref clears its drawn outline by only 1.8 mm, and
+that outline is a symmetric estimate around the pin span, not a measured body. U1's is
+worse after the footprint correction: it cleared the old (too-narrow) silk edge by
+2.3 mm but clears the true edge by 0.4 mm. Move all three well clear of the part
+bodies; a designator you can only read on a bare board is of no use during assembly or
+service.
+
+The module outline is now measured too: **0.66 x 0.86 in = 16.76 x 21.84 mm** (width
+across the hole rows x length between them), drawn true on F.SilkS in the corrected
+footprint. It cross-checks against the hole pattern as 0.08 in of board margin on all
+four sides. Height off the board is still unmeasured — the buck is a candidate for the
+tallest on-board part now that the DHT22 is remote-capable, so measure it if the
+enclosure's internal Z clearance gets tight.
+
 ### Input protection
 
 ```
@@ -562,6 +604,10 @@ picked up the build from the Firmware sensor (its build time changes on every in
       15.00 V on the bench. Redone 2026-10-06 after the analog-ground fix (see Voltage divider): fitted
       gain 5.7211 matches the measured resistor ratio 5.7208; constant offset ~-7 mV at A0
 - [x] **No clipping verified up to 16 V**: 16.00 V reads 16.00 V (2026-10-06)
+- [x] **First rev B board built and working (2026-10-20).** All parts transplanted from
+      the breadboard, including the divider resistors, so the existing calibration
+      carries over unchanged and no recalibration was needed: reads 12.55 V and 14.40 V
+      dead-on. See the U1 footprint erratum under Power supply.
 - [x] Reading accuracy at **12.22 V** (flooded 50% point): reads 12.22 V (2026-10-06)
 - [x] DC-DC detection hysteresis verified at the 12.8/12.9 V boundary (2026-10-05)
 - [x] Always-on current measured: ~10 mA at 12 V (deep sleep not used)
