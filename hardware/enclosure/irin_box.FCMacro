@@ -1,0 +1,326 @@
+# Irin enclosure: box + lid, generated from the rev B board.
+#
+# Run:  /Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd -c irin_box.FCMacro
+# Writes irin_box.step/.stl, irin_lid.step/.stl (lid flipped for printing) and
+# irin_assembly.step (box, lid, PCB and part keepouts, for a look in FreeCAD).
+#
+# Frame: board lower-left corner at the origin, Y up (KiCad x - 9.5, 85.5 - KiCad y),
+# Z up from the bottom of the box floor. "Top" edge (high Y) is J1; "bottom" edge
+# (Y = 0) is U2's USB end.
+#
+# PCB and lid mount independently:
+#   PCB: four M3 x 8 pan-head screws through the board holes into M3 heat-set inserts
+#        in short floor bosses. The board stays fixed with the lid off (USB flashing).
+#   Lid: four M3 x 8 countersunk screws into heat-set inserts at the top of full-height
+#        corner bosses in the end bays, beyond the board. The lid also snaps on: a bead
+#        on each side of its lip clicks into a groove in the wall.
+
+import os
+import FreeCAD
+import Part
+import MeshPart
+from FreeCAD import Vector as V
+
+OUT = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() else os.getcwd()
+
+# ---------------------------------------------------------------- parameters
+# Board (hardware/irin.kicad_pcb, rev B)
+BOARD_W, BOARD_H, PCB_T = 78.5, 69.0, 1.6
+HOLES = [(3.5, 3.5), (75.0, 3.5), (3.5, 65.5), (75.0, 65.5)]
+
+# Board edge to inner wall
+GAP_L = 1.0       # left
+GAP_R = 1.0       # right
+GAP_USB = 9.5     # bottom: lid bosses, USB-C plug body, DHT22 glued to the wall
+GAP_J1 = 9.5      # top: lid bosses, gland thread and locknut, wire bend into J1
+
+WALL = 2.4        # 6 perimeters at 0.4
+FLOOR = 2.0
+CORNER_R = 3.0    # outer vertical-edge radius
+
+# PCB support
+BOSS_H = 6.0      # floor top to PCB underside; THT leads trimmed to <= 2 mm
+BOSS_D = 8.0
+INSERT_D = 4.0    # M3 x 5.7 heat-set insert (Ruthex-type 4.0 mm); 2.5 for a self-tapping screw
+INSERT_DEPTH = 6.5
+PCB_SCREW_HEAD = (5.6, 2.0)   # M3 pan head dia, height: keepout only
+
+HEADROOM = 20.0   # PCB top to lid underside
+
+# Lid bosses: full height, merged into the four inner corners of the end bays
+LID_BOSS_D = 8.0
+LID_BOSS_BOARD_CLR = 1.5   # boss to board edge, so the board drops in past them
+
+LID_T = 2.4
+LID_HOLE_D = 3.4
+LID_CSK_D = 6.4    # 90-degree countersink for M3 flat heads (ISO 10642), flush lid top
+LIP_W = 1.6        # lip under the lid, inside the wall
+LIP_H = 4.0
+LIP_CLR = 0.10     # per side: a light slip fit; the snap beads do the holding
+LIP_CORNER_SKIP = LID_BOSS_D + 1.5   # lip stops short of the corner bosses
+
+# Snap: half-round bead on the lip's outer face, matching groove in the wall
+SNAP_R = 0.8
+SNAP_INTERFERENCE = 0.35   # bead past the wall face; raise for a firmer click, lower if it binds
+SNAP_GROOVE_DEPTH = 0.5
+SNAP_LEN = 20.0            # bead length, centred on each side; groove is 4 mm longer
+SNAP_Z_BELOW_RIM = 2.5
+
+# 12 V cable gland on the top wall, in line with J1. M12x1.5 (12.2 hole) or PG7 (12.7).
+GLAND_HOLE_D = 12.2
+GLAND_X = (50.0 + 55.1) / 2 - 9.5   # J1 pin centres, KiCad x 50.0 / 55.1
+GLAND_Z_ABOVE_PCB = 4.0             # about J1's wire-entry height
+
+# Strap flanges, left and right, flush with the rim so strap tension pulls the flat
+# base down onto the battery. 45-degree gussets underneath also carry the flange as
+# the box prints open side up: bridges between gussets, no supports.
+FLANGE_W = 12.0
+FLANGE_T = 3.5
+SLOT_W = 4.0       # zip ties up to ~3.6 mm, or 25 mm hook-and-loop with SLOT_L
+SLOT_L = 27.0
+GUSSET_T = 3.0
+GUSSET_SLOT_CLR = 1.0   # gussets either side of the slot, clear of the strap's path down
+# Strap-contact edges, all rounded
+FLANGE_CORNER_R = 4.0   # flange corners, in plan
+FLANGE_EDGE_R = 1.2     # flange top and bottom outer edges
+SLOT_EDGE_R = 1.0       # slot rim, top and bottom (strap bears here)
+GUSSET_EDGE_R = 1.0     # gusset sloped edges
+LID_EDGE_R = 1.5        # lid top perimeter: the strap crosses it running slot to slot
+
+# Component keepouts: (name, KiCad x0, x1, y0, y1, height above PCB top).
+# Footprint courtyards from the PCB; heights are estimates for modules soldered direct.
+PARTS = [
+    ("U1 MP1584", 68.23, 82.23, 47.50, 69.50, 7.0),
+    ("U2 ESP32-C3", 40.26, 64.84, 41.63, 66.21, 8.0),
+    ("U3 ADS1115", 16.05, 37.05, 41.22, 72.22, 5.0),
+    ("C2 100uF", 71.65, 80.31, 35.01, 43.17, 13.0),
+    ("D1 P6KE18A", 64.51, 80.11, 20.53, 24.63, 4.5),
+    ("R1", 31.06, 43.32, 29.64, 32.64, 3.0),
+    ("R2", 18.36, 30.62, 29.64, 32.64, 3.0),
+    ("C1", 21.00, 28.10, 34.77, 37.77, 6.0),
+    ("C3", 72.68, 79.78, 27.68, 30.68, 6.0),
+    ("J1 12V", 46.96, 58.13, 16.67, 27.71, 11.0),
+    ("J2 + XH plug", 47.08, 57.98, 30.64, 37.39, 16.0),
+]
+USB_PLUG = (12.5, 25.0, 7.0)   # width, length from U2's edge, height above PCB top
+DHT22 = (25.1, 7.7, 15.1)      # AM2302 body: in the USB gap, left of the plug, on the floor
+
+# ---------------------------------------------------------------- derived
+PCB_Z = FLOOR + BOSS_H
+PCB_TOP = PCB_Z + PCB_T
+RIM_Z = PCB_TOP + HEADROOM
+
+CAV_X0, CAV_X1 = -GAP_L, BOARD_W + GAP_R
+CAV_Y0, CAV_Y1 = -GAP_USB, BOARD_H + GAP_J1
+OUT_X0, OUT_X1 = CAV_X0 - WALL, CAV_X1 + WALL
+OUT_Y0, OUT_Y1 = CAV_Y0 - WALL, CAV_Y1 + WALL
+assert min(GAP_USB, GAP_J1) >= LID_BOSS_D + LID_BOSS_BOARD_CLR - 0.6, "end bays too short for the lid bosses"
+
+# Lid boss centres: each boss touches both walls of its corner (0.6 mm overlap to merge)
+_c = LID_BOSS_D / 2 - 0.6
+LID_HOLES = [(CAV_X0 + _c, CAV_Y0 + _c), (CAV_X1 - _c, CAV_Y0 + _c),
+             (CAV_X0 + _c, CAV_Y1 - _c), (CAV_X1 - _c, CAV_Y1 - _c)]
+CAV_XC, CAV_YC = (CAV_X0 + CAV_X1) / 2, (CAV_Y0 + CAV_Y1) / 2
+
+
+def kx(x):
+    return x - 9.5
+
+
+def ky(y):
+    return 85.5 - y
+
+
+def rbox(x0, y0, x1, y1, z0, h, r):
+    """Box with its four vertical edges rounded to r."""
+    b = Part.makeBox(x1 - x0, y1 - y0, h, V(x0, y0, z0))
+    if r <= 0:
+        return b
+    vert = [e for e in b.Edges
+            if abs(e.Vertexes[0].X - e.Vertexes[1].X) < 1e-6
+            and abs(e.Vertexes[0].Y - e.Vertexes[1].Y) < 1e-6]
+    return b.makeFillet(r, vert)
+
+
+def cyl(d, h, x, y, z, axis=V(0, 0, 1)):
+    return Part.makeCylinder(d / 2, h, V(x, y, z), axis)
+
+
+# ---------------------------------------------------------------- box
+box = rbox(OUT_X0, OUT_Y0, OUT_X1, OUT_Y1, 0, RIM_Z, CORNER_R)
+box = box.cut(rbox(CAV_X0, CAV_Y0, CAV_X1, CAV_Y1, FLOOR, RIM_Z,
+                   max(CORNER_R - WALL, 0.5)))
+
+for hx, hy in HOLES:
+    box = box.fuse(cyl(BOSS_D, BOSS_H + 0.01, hx, hy, FLOOR - 0.01))
+for hx, hy in HOLES:
+    box = box.cut(cyl(INSERT_D, INSERT_DEPTH, hx, hy, PCB_Z - INSERT_DEPTH + 0.01))
+
+# Lid bosses: cylinder plus the corner fill behind it, floor to rim, insert at the top
+for hx, hy in LID_HOLES:
+    cx = CAV_X0 if hx < CAV_XC else CAV_X1
+    cy = CAV_Y0 if hy < CAV_YC else CAV_Y1
+    fill = Part.makeBox(abs(hx - cx) + 0.01, abs(hy - cy) + 0.01, RIM_Z - FLOOR + 0.01,
+                        V(min(hx, cx) - 0.005, min(hy, cy) - 0.005, FLOOR - 0.01))
+    box = box.fuse(cyl(LID_BOSS_D, RIM_Z - FLOOR + 0.01, hx, hy, FLOOR - 0.01).fuse(fill))
+    box = box.cut(cyl(INSERT_D, INSERT_DEPTH, hx, hy, RIM_Z - INSERT_DEPTH))
+    box = box.cut(Part.makeCone(INSERT_D / 2, INSERT_D / 2 + 0.4, 0.4, V(hx, hy, RIM_Z - 0.4)))
+
+# Snap grooves in the wall, one centred on each side
+def snap_rod(side, r, length, offset):
+    """Horizontal rod along one inner wall; offset = centre distance into the cavity."""
+    z = RIM_Z - SNAP_Z_BELOW_RIM
+    if side in ("L", "R"):
+        x = CAV_X0 + offset if side == "L" else CAV_X1 - offset
+        return cyl(2 * r, length, x, CAV_YC - length / 2, z, V(0, 1, 0))
+    y = CAV_Y0 + offset if side == "B" else CAV_Y1 - offset
+    return cyl(2 * r, length, CAV_XC - length / 2, y, z, V(1, 0, 0))
+
+
+for side in "LRBT":
+    box = box.cut(snap_rod(side, SNAP_R, SNAP_LEN + 4, SNAP_R - SNAP_GROOVE_DEPTH))
+
+# Strap flanges with slots
+def flat_edges(shape, z, skip_x=None):
+    """Edges lying in the plane z, optionally skipping those that sit at x = skip_x."""
+    out = []
+    for e in shape.Edges:
+        bb = e.BoundBox
+        if abs(bb.ZMin - z) < 1e-4 and abs(bb.ZMax - z) < 1e-4:
+            if skip_x is not None and abs(bb.XMin - skip_x) < 1e-4 and abs(bb.XMax - skip_x) < 1e-4:
+                continue
+            out.append(e)
+    return out
+
+
+def in_slot(e, xc):
+    bb = e.BoundBox
+    return (bb.XMin > xc - SLOT_W / 2 - 1e-3 and bb.XMax < xc + SLOT_W / 2 + 1e-3
+            and bb.YMin > yc - SLOT_L / 2 - 1e-3 and bb.YMax < yc + SLOT_L / 2 + 1e-3)
+
+
+fy0, fy1 = OUT_Y0 + CORNER_R, OUT_Y1 - CORNER_R
+yc = (OUT_Y0 + OUT_Y1) / 2
+fz = RIM_Z - FLANGE_T
+g_reach = FLANGE_W - FLANGE_EDGE_R - 0.8   # meets the flat underside, inside the edge round
+g_off = SLOT_L / 2 + GUSSET_SLOT_CLR
+gusset_y = [fy0 + 2.5, yc - g_off - GUSSET_T, yc + g_off, fy1 - 2.5 - GUSSET_T]
+for wx, sgn in ((OUT_X0, -1), (OUT_X1, 1)):
+    inner_x = wx - sgn * WALL / 2
+    x0, x1 = sorted((inner_x, wx + sgn * FLANGE_W))
+    flange = rbox(x0, fy0, x1, fy1, fz, FLANGE_T, FLANGE_CORNER_R)
+    xc = wx + sgn * FLANGE_W / 2
+    flange = flange.cut(rbox(xc - SLOT_W / 2, yc - SLOT_L / 2, xc + SLOT_W / 2, yc + SLOT_L / 2,
+                             fz - 1, FLANGE_T + 2, SLOT_W / 2 - 0.01))
+    rim = [e for z in (fz, RIM_Z) for e in flat_edges(flange, z) if in_slot(e, xc)]
+    flange = flange.makeFillet(SLOT_EDGE_R, rim)
+    outer = [e for z in (fz, RIM_Z) for e in flat_edges(flange, z, inner_x) if not in_slot(e, xc)]
+    flange = flange.makeFillet(FLANGE_EDGE_R, outer)
+
+    tri = Part.Face(Part.makePolygon([V(wx - sgn * 0.5, 0, fz + 0.5), V(wx + sgn * g_reach, 0, fz + 0.5),
+                                      V(wx + sgn * g_reach, 0, fz),
+                                      V(wx - sgn * 0.5, 0, fz - g_reach - 0.5), V(wx - sgn * 0.5, 0, fz + 0.5)]))
+    gussets = []
+    for gy in gusset_y:
+        g = tri.extrude(V(0, GUSSET_T, 0))
+        g.translate(V(0, gy, 0))
+        sloped = [e for e in g.Edges if e.BoundBox.XLength > 1 and e.BoundBox.ZLength > 1]
+        gussets.append(g.makeFillet(GUSSET_EDGE_R, sloped))
+    flange = flange.multiFuse(gussets).removeSplitter()
+    box = box.fuse(flange)
+
+# Gland hole through the J1 wall
+gz = PCB_TOP + GLAND_Z_ABOVE_PCB
+box = box.cut(cyl(GLAND_HOLE_D, WALL + 2, GLAND_X, CAV_Y1 - 1, gz, V(0, 1, 0)))
+box = box.removeSplitter()
+
+# ---------------------------------------------------------------- lid
+lid = rbox(OUT_X0, OUT_Y0, OUT_X1, OUT_Y1, RIM_Z, LID_T, CORNER_R)
+lid = lid.makeFillet(LID_EDGE_R, flat_edges(lid, RIM_Z + LID_T))
+lx0, ly0 = CAV_X0 + LIP_CLR, CAV_Y0 + LIP_CLR
+lx1, ly1 = CAV_X1 - LIP_CLR, CAV_Y1 - LIP_CLR
+lip = rbox(lx0, ly0, lx1, ly1, RIM_Z - LIP_H, LIP_H + 0.01, 0.5)
+lip = lip.cut(rbox(lx0 + LIP_W, ly0 + LIP_W, lx1 - LIP_W, ly1 - LIP_W, RIM_Z - LIP_H - 1, LIP_H + 2, 0))
+s = LIP_CORNER_SKIP
+for cx, cy in ((lx0, ly0), (lx1, ly0), (lx0, ly1), (lx1, ly1)):
+    lip = lip.cut(Part.makeBox(2 * s, 2 * s, LIP_H + 2, V(cx - s, cy - s, RIM_Z - LIP_H - 1)))
+for side in "LRBT":
+    # bead centre sits SNAP_R - bead_out inside the wall face line, i.e. into the lip
+    lip = lip.fuse(snap_rod(side, SNAP_R, SNAP_LEN, SNAP_R - SNAP_INTERFERENCE))
+lid = lid.fuse(lip.common(Part.makeBox(OUT_X1 - OUT_X0, OUT_Y1 - OUT_Y0, LIP_H + 0.01,
+                                       V(OUT_X0, OUT_Y0, RIM_Z - LIP_H))))
+for hx, hy in LID_HOLES:
+    lid = lid.cut(cyl(LID_HOLE_D, LID_T + 2, hx, hy, RIM_Z - 1))
+    csk = LID_CSK_D / 2
+    lid = lid.cut(Part.makeCone(0.01, csk + 0.2, csk + 0.2, V(hx, hy, RIM_Z + LID_T - csk)))
+lid = lid.removeSplitter()
+
+# ---------------------------------------------------------------- keepout check
+keep = []
+for name, x0, x1, y0, y1, h in PARTS:
+    keep.append((name, Part.makeBox(x1 - x0, y1 - y0, h, V(kx(x0), ky(y1), PCB_TOP))))
+u2x = kx((40.26 + 64.84) / 2)
+w, l, h = USB_PLUG
+keep.append(("USB-C plug", Part.makeBox(w, l, h, V(u2x - w / 2, ky(66.21) - l, PCB_TOP))))
+dw, dd, dh = DHT22
+keep.append(("DHT22", Part.makeBox(dw, dd, dh, V(LID_HOLES[0][0] + LID_BOSS_D / 2 + 1.0, CAV_Y0 + 0.5, FLOOR))))
+for hx, hy in HOLES:
+    keep.append(("PCB screw head", cyl(PCB_SCREW_HEAD[0], PCB_SCREW_HEAD[1], hx, hy, PCB_TOP)))
+pcb = Part.makeBox(BOARD_W, BOARD_H, PCB_T, V(0, 0, PCB_Z))
+for hx, hy in HOLES:
+    pcb = pcb.cut(cyl(3.2, PCB_T + 2, hx, hy, PCB_Z - 1))
+
+problems = []
+for part_name, solid in (("box", box), ("lid", lid)):
+    if not solid.isValid():
+        raise Exception(part_name + " geometry is invalid")
+    for name, k in keep + [("PCB", pcb)]:
+        v = solid.common(k).Volume
+        if v > 1e-3:
+            problems.append("%s hits %s (%.2f mm^3)" % (part_name, name, v))
+dht = [k for n, k in keep if n == "DHT22"][0]
+usb = [k for n, k in keep if n == "USB-C plug"][0]
+if dht.common(usb).Volume > 1e-3:
+    problems.append("DHT22 hits the USB-C plug")
+for xc in (OUT_X0 - FLANGE_W / 2, OUT_X1 + FLANGE_W / 2):
+    # straight part of the slot (the ends are radiused), followed down to the base
+    strap = Part.makeBox(SLOT_W - 0.4, SLOT_L - SLOT_W, RIM_Z + 1,
+                         V(xc - SLOT_W / 2 + 0.2, yc - (SLOT_L - SLOT_W) / 2, -0.5))
+    if box.common(strap).Volume > 1e-3:
+        problems.append("strap path through the slot at x=%.1f is blocked" % xc)
+# The board has to drop straight in past the lid bosses
+drop = Part.makeBox(BOARD_W + 1.0, BOARD_H + 1.0, RIM_Z - PCB_Z, V(-0.5, -0.5, PCB_Z))
+if box.common(drop).Volume > 1e-3:
+    problems.append("lid bosses within 0.5 mm of the board's drop-in path")
+if problems:
+    raise Exception("Interference:\n  " + "\n  ".join(problems))
+
+# ---------------------------------------------------------------- export
+def stl(shape, path):
+    mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.02, AngularDeflection=0.2)
+    mesh.write(path)
+
+
+box.exportStep(os.path.join(OUT, "irin_box.step"))
+stl(box, os.path.join(OUT, "irin_box.stl"))
+lid_print = lid.copy()
+lid_print.rotate(V(0, 0, RIM_Z), V(1, 0, 0), 180)
+lid_print.translate(V(0, 0, -lid_print.BoundBox.ZMin))
+lid_print.exportStep(os.path.join(OUT, "irin_lid.step"))
+stl(lid_print, os.path.join(OUT, "irin_lid.stl"))
+
+ghosts = Part.makeCompound([k for _, k in keep] + [pcb])
+Part.makeCompound([box, lid, ghosts]).exportStep(os.path.join(OUT, "irin_assembly.step"))
+
+bb = box.BoundBox
+print("No interference: %d keepouts checked against box and lid" % (len(keep) + 1))
+print("Body, walls only: %.1f x %.1f mm, height %.1f mm (%.1f with lid)"
+      % (OUT_X1 - OUT_X0, OUT_Y1 - OUT_Y0, RIM_Z, RIM_Z + LID_T))
+print("Footprint with flanges: %.1f x %.1f mm" % (bb.XLength, bb.YLength))
+print("Cavity: %.1f x %.1f mm, floor to lid %.1f mm"
+      % (CAV_X1 - CAV_X0, CAV_Y1 - CAV_Y0, RIM_Z - FLOOR))
+print("PCB underside z=%.1f, top z=%.1f; gland centre z=%.1f, x=%.2f from board left edge"
+      % (PCB_Z, PCB_TOP, gz, GLAND_X))
+for label, pts in (("PCB screw", HOLES), ("Lid screw", LID_HOLES)):
+    print(label + " centres from the outer lower-left wall corner: " +
+          ", ".join("(%.2f, %.2f)" % (hx - OUT_X0, hy - OUT_Y0) for hx, hy in pts))
