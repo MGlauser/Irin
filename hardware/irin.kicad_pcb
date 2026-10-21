@@ -126,14 +126,14 @@
 			(outputdirectory "")
 		)
 	)
-	(footprint "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm"
+	(footprint "Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm"
 		(layer "F.Cu")
 		(uuid "043bd47f-f53d-470e-8fe8-1c02cd21f149")
 		(at 75.2348 58.4962)
-		(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.3in apart center-to-center. Measured by owner with a ruler (input/output edge spacing and pair pitch only -- +/-0.5mm). Board outline below is NOT measured -- it is a generous placeholder box around the hole pattern for visual reference only. Pad numbers match the Irin:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
+		(descr "MP1584EN adjustable buck module, HW-133A~F clone (silkscreen: 降压模块 / 输入 / 输出). 4 nets, each broken out to 2 redundant through-holes at 0.1in pitch: VIN-/VIN+ on one edge, VOUT-/VOUT+ on the opposite edge, 0.7in apart; the two net pairs on each edge are 0.4in apart center-to-center. CALIPER-MEASURED by owner 2026-10-20 on the physical module: taking one outer hole as 0, the four holes along an edge sit at 0.0 / 0.1 / 0.4 / 0.5 in, and the input edge to output edge spacing is 0.7 in. This CORRECTS Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W7.62mm_L17.78mm, whose across-module spacing was ruler-measured at +/-0.5mm and came out 0.1in too narrow overall (inner holes at +/-0.2in apart instead of 0.3in); the real module does not fit that footprint -- see the rev B erratum in CLAUDE.md. Board outline CALIPER-MEASURED 2026-10-20 at 0.66 x 0.86 in = 16.76 x 21.84 mm (width across the hole rows x length between them), drawn true on F.SilkS; cross-checks against the hole pattern as 0.08 in of board margin on all four sides. Pad numbers match the Irin:BUCK_MODULE schematic symbol (1=IN+ 2=IN- 3=OUT+ 4=OUT-). Rectangular pads mark the '+' nets (IN+, OUT+), matching the square pads printed on the real board next to its own '+' silkscreen -- also serves as the footprint's pin-1 indicator.")
 		(tags "MP1584EN HW-133 buck module perfboard")
 		(property "Reference" "U1"
-			(at -8.787 -0.0208 90)
+			(at 0.0762 13.3604 0)
 			(layer "F.SilkS")
 			(uuid "b6ffe8b2-021f-426f-bdbb-f6bce4b0b714")
 			(effects
@@ -144,8 +144,8 @@
 			)
 		)
 		(property "Value" "MP1584EN set to 5.0V"
-			(at 9.4652 0.0038 90)
-			(layer "F.SilkS")
+			(at 0 12.6 0)
+			(layer "F.Fab")
 			(uuid "6661f621-d0aa-44ba-b58e-a6b326bbc6b7")
 			(effects
 				(font
@@ -179,17 +179,11 @@
 		(path "/b8169df6-a622-4da6-b34d-a3e283748715")
 		(sheetname "/")
 		(sheetfile "irin.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3" "4")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -6.5 -10.5)
-			(end 6.5 10.5)
+			(start -8.382 -10.922)
+			(end 8.382 10.922)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -199,8 +193,8 @@
 			(uuid "6a210b78-3445-4f64-bd24-ee24224684e4")
 		)
 		(fp_rect
-			(start -7 -11)
-			(end 7 11)
+			(start -8.882 -11.422)
+			(end 8.882 11.422)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -210,7 +204,7 @@
 			(uuid "c79f1ef9-7d64-4fea-9943-5dad1f089db3")
 		)
 		(fp_text user "VIN-"
-			(at -3.81 -10.9 0)
+			(at -5.08 -10.2 0)
 			(layer "F.Fab")
 			(uuid "1c13d9a0-8bfa-44f2-99dd-4d7d0fc6ee46")
 			(effects
@@ -221,7 +215,7 @@
 			)
 		)
 		(fp_text user "VOUT-"
-			(at -3.81 10.9 0)
+			(at -5.08 10.2 0)
 			(layer "F.Fab")
 			(uuid "6fa9be97-049d-4959-9b45-40759e37898b")
 			(effects
@@ -232,7 +226,7 @@
 			)
 		)
 		(fp_text user "VIN+"
-			(at 3.81 -10.9 0)
+			(at 5.08 -10.2 0)
 			(layer "F.Fab")
 			(uuid "da7bc73c-75e9-468e-826b-5db967d4ed13")
 			(effects
@@ -243,7 +237,7 @@
 			)
 		)
 		(fp_text user "VOUT+"
-			(at 3.81 10.9 0)
+			(at 5.08 10.2 0)
 			(layer "F.Fab")
 			(uuid "29a52570-864f-4e87-bcd7-95c59876c3cf")
 			(effects
@@ -254,7 +248,7 @@
 			)
 		)
 		(pad "1" thru_hole rect
-			(at 2.54 -8.89)
+			(at 3.81 -8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -265,7 +259,7 @@
 			(uuid "1dd45deb-7b48-4b0d-8ce0-d3ea583acd97")
 		)
 		(pad "1" thru_hole rect
-			(at 5.08 -8.89)
+			(at 6.35 -8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -276,7 +270,7 @@
 			(uuid "390bab7e-b083-43f1-9df6-58cb9be3553f")
 		)
 		(pad "2" thru_hole circle
-			(at -5.08 -8.89)
+			(at -6.35 -8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -287,7 +281,7 @@
 			(uuid "67d88885-c619-48da-acb8-0c382202278b")
 		)
 		(pad "2" thru_hole circle
-			(at -2.54 -8.89)
+			(at -3.81 -8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -298,18 +292,7 @@
 			(uuid "c25a8ecd-0901-44b6-8b76-d252213c0d2a")
 		)
 		(pad "3" thru_hole rect
-			(at 2.54 8.89)
-			(size 1.7 1.7)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net "Net-(U1-OUT+)")
-			(pinfunction "OUT+_3")
-			(pintype "passive")
-			(uuid "995b72fa-5260-4660-bc65-faa3d2ec7382")
-		)
-		(pad "3" thru_hole rect
-			(at 5.08 8.89)
+			(at 3.81 8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -319,19 +302,19 @@
 			(pintype "passive")
 			(uuid "5f722cd3-7089-4cd4-9883-add9d4250ff5")
 		)
-		(pad "4" thru_hole circle
-			(at -5.08 8.89)
+		(pad "3" thru_hole rect
+			(at 6.35 8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/GND")
-			(pinfunction "OUT-_4")
+			(net "Net-(U1-OUT+)")
+			(pinfunction "OUT+_3")
 			(pintype "passive")
-			(uuid "814c1f63-1f99-4b5d-b00d-40e06a1e3f4e")
+			(uuid "995b72fa-5260-4660-bc65-faa3d2ec7382")
 		)
 		(pad "4" thru_hole circle
-			(at -2.54 8.89)
+			(at -6.35 8.89)
 			(size 1.7 1.7)
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
@@ -341,16 +324,27 @@
 			(pintype "passive")
 			(uuid "fb502f99-7ea6-45ce-867a-1347c5e656f8")
 		)
+		(pad "4" thru_hole circle
+			(at -3.81 8.89)
+			(size 1.7 1.7)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/GND")
+			(pinfunction "OUT-_4")
+			(pintype "passive")
+			(uuid "814c1f63-1f99-4b5d-b00d-40e06a1e3f4e")
+		)
 		(embedded_fonts no)
 	)
 	(footprint "Irin:ESP32C3_042LCD_2x8_P2.54mm_W17.78mm"
 		(layer "F.Cu")
 		(uuid "162e6cd1-f6e3-457f-9ee0-c5b71b55eed7")
-		(at 43.6626 45.0342)
+		(at 43.6372 47.8028)
 		(descr "01Space ESP32-C3-0.42LCD dev board: 2x8 THT pin rows, 0.1in pitch, 0.7in row spacing. Pad numbers match the Irin:ESP32C3_BOARD schematic symbol (1=5V 2=3V3 3=GND 4=GPIO3 5=GPIO5 6=GPIO6); pads 7-16 are the board's other physical pins, not used in this design, numbered arbitrarily.")
 		(tags "ESP32-C3 01Space 0.42LCD perfboard")
 		(property "Reference" "U2"
-			(at 8.8852 -4.8008 0)
+			(at 1.2446 23.876 0)
 			(layer "F.SilkS")
 			(uuid "8b9f2058-3d28-4edf-a3cd-814705821565")
 			(effects
@@ -2985,7 +2979,7 @@
 		(descr "HiLetgo ADS1115 16-bit ADC breakout (ASIN B07VPFLSMX). Single row of 10 THT pins at 0.1in (2.54mm) pitch along one long edge. Board outline 28.3mm x 18mm is from the published listing spec, NOT measured by owner -- drawn as a generous placeholder box for visual reference only, same caveat as Irin:MP1584EN_HW133. Pin ROW ORDER is CONFIRMED by owner against the physical module's silkscreen as VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3 (left to right). Pad numbers match the Irin:ADS1115 schematic symbol (1=VDD 2=GND 3=SCL 4=SDA 5=ADDR 6=A0); pads 7,9,10 are the module's other physical pins (ALRT, A1, A2, A3) not used in this design, numbered arbitrarily. The module is cable-wired to the ESP32's Qwiic port rather than pin-header-mounted (see CLAUDE.md).")
 		(tags "ADS1115 HiLetgo ADC breakout perfboard")
 		(property "Reference" "U3"
-			(at 0 -13 90)
+			(at 17.0688 -0.0452 180)
 			(layer "F.SilkS")
 			(uuid "46331856-3bf7-41bb-81e9-46a940ceee2e")
 			(effects
@@ -4101,6 +4095,14 @@
 			)
 		)
 		(path "/edcd3089-0922-4eda-8707-09c680ba686d")
+		(sheetname "/")
+		(sheetfile "irin.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -4367,6 +4369,8 @@
 			(remove_unused_layers no)
 			(roundrect_rratio 0.096154)
 			(net "/12vPROT")
+			(pinfunction "BATT+_1")
+			(pintype "passive")
 			(uuid "61a27bb9-a01c-48fc-b6c0-6914baf9a293")
 		)
 		(pad "2" thru_hole circle
@@ -4376,6 +4380,8 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/GND")
+			(pinfunction "GND_2")
+			(pintype "passive")
 			(uuid "8dc2b5de-6282-4c49-b656-1c8b89e0570c")
 		)
 		(embedded_fonts no)
@@ -4797,8 +4803,8 @@
 		(embedded_fonts no)
 	)
 	(gr_rect
-		(start 48.4764 65.8314)
-		(end 56.4764 68.3314)
+		(start 48.1086 68.854)
+		(end 56.1086 71.354)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -5047,7 +5053,7 @@
 		)
 	)
 	(gr_text "USB-C"
-		(at 52.5526 69.723 0)
+		(at 52.5272 72.2376 0)
 		(layer "F.SilkS")
 		(uuid "53b83fce-dd94-4c14-a2ad-a98136a67f8e")
 		(effects
@@ -5058,7 +5064,7 @@
 		)
 	)
 	(gr_text "IN-"
-		(at 71.45 46.3 0)
+		(at 70.0532 46.228 0)
 		(layer "F.SilkS")
 		(uuid "74fdc9ff-ae7b-44fa-b50c-9aa24c8ce5c0")
 		(effects
@@ -5068,8 +5074,19 @@
 			)
 		)
 	)
+	(gr_text "OUT+"
+		(at 70.3326 70.612 0)
+		(layer "F.SilkS")
+		(uuid "8f3e670d-fd18-494e-b4ec-d71a734dfb33")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
 	(gr_text "OUT-"
-		(at 71.45 70.7 0)
+		(at 80.3402 70.7136 0)
 		(layer "F.SilkS")
 		(uuid "964586ce-5593-4b5c-a160-9db08b48f578")
 		(effects
@@ -5080,20 +5097,9 @@
 		)
 	)
 	(gr_text "IN+"
-		(at 79.04 46.3 0)
+		(at 80.3656 46.1264 0)
 		(layer "F.SilkS")
 		(uuid "c1fd9f77-efbe-48e8-8db4-374ecbe13e8d")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-		)
-	)
-	(gr_text "OUT+"
-		(at 79.04 70.7 0)
-		(layer "F.SilkS")
-		(uuid "8f3e670d-fd18-494e-b4ec-d71a734dfb33")
 		(effects
 			(font
 				(size 1 1)
@@ -5183,14 +5189,6 @@
 		(uuid "4870fd6b-a861-4bfa-903e-9212eaf0d632")
 	)
 	(segment
-		(start 77.7748 49.6062)
-		(end 80.3148 49.6062)
-		(width 0.4)
-		(layer "F.Cu")
-		(net "/12vPROT")
-		(uuid "5d977322-d5cc-4231-adb8-19893a58f83d")
-	)
-	(segment
 		(start 55.09 22)
 		(end 55.09 24.39)
 		(width 0.4)
@@ -5207,14 +5205,6 @@
 		(uuid "9919b551-b7bd-4254-a92f-65bd00d819a4")
 	)
 	(segment
-		(start 77.7748 49.6062)
-		(end 77.7748 39.215949)
-		(width 0.4)
-		(layer "F.Cu")
-		(net "/12vPROT")
-		(uuid "ac21fa04-d2d2-4036-a155-70ec61399224")
-	)
-	(segment
 		(start 42.2694 31.1404)
 		(end 42.2694 25.574)
 		(width 0.4)
@@ -5229,30 +5219,6 @@
 		(layer "F.Cu")
 		(net "/12vPROT")
 		(uuid "f82195f6-9086-4775-8ab2-f11e4f888261")
-	)
-	(segment
-		(start 73.2028 62.8142)
-		(end 61.4426 62.8142)
-		(width 0.4)
-		(layer "F.Cu")
-		(net "Net-(U1-OUT+)")
-		(uuid "22ae6e0c-9dbf-49c9-b6e5-7e421e6d939b")
-	)
-	(segment
-		(start 77.7748 67.3862)
-		(end 73.2028 62.8142)
-		(width 0.4)
-		(layer "F.Cu")
-		(net "Net-(U1-OUT+)")
-		(uuid "a6476c77-b5bb-45e9-9ba6-6e54fc47cd5d")
-	)
-	(segment
-		(start 80.3148 67.3862)
-		(end 77.7748 67.3862)
-		(width 0.4)
-		(layer "F.Cu")
-		(net "Net-(U1-OUT+)")
-		(uuid "e1b9e90e-691f-42ce-9313-74396a841c12")
 	)
 	(segment
 		(start 66.675 35.6362)
@@ -5335,20 +5301,20 @@
 		(uuid "b65a1822-c9fb-4001-b52e-21ace01543c9")
 	)
 	(segment
-		(start 43.6626 45.0342)
-		(end 52.5272 36.1696)
+		(start 52.5272 34.5356)
+		(end 52.5272 38.9128)
 		(width 0.2)
 		(layer "F.Cu")
 		(net "Net-(J2-DATA)")
-		(uuid "7e325849-f0dc-4017-a5f1-8f13d093cd42")
+		(uuid "bae50858-adcb-415f-b450-cefd965039fb")
 	)
 	(segment
-		(start 52.5272 36.1696)
-		(end 52.5272 34.5356)
+		(start 52.5272 38.9128)
+		(end 43.6372 47.8028)
 		(width 0.2)
 		(layer "F.Cu")
 		(net "Net-(J2-DATA)")
-		(uuid "b23238aa-56c5-4d67-9794-9cc2fd3d7347")
+		(uuid "e68049cb-a644-41bf-9745-cba333ec85cf")
 	)
 	(segment
 		(start 20.5486 52.9082)
@@ -5489,7 +5455,7 @@
 		)
 		(polygon
 			(pts
-				(xy 40.3 38) (xy 64.8 38) (xy 64.8 44) (xy 40.3 44)
+				(xy 40.024226 44.0888) (xy 64.524226 44.0888) (xy 64.524226 50.0888) (xy 40.024226 50.0888)
 			)
 		)
 	)

@@ -142,6 +142,15 @@ input edge to output edge spacing is **0.7 in** (that one was already right). So
 error was entirely across the module: inner holes needed 0.3 in, not 0.2 in — every
 hole moves outward 1.27 mm, pair midpoints 10.16 mm apart instead of 7.62 mm.
 
+**Second defect in the same footprint, found 2026-10-20: the pad polarity was
+MIRRORED.** The old footprint put the '-' nets on the left, which is backwards for a
+top-mounted module. On board #1 the two defects cancelled — the workaround for the
+too-narrow holes was to mount the module from the underside, which mirrors the rows
+back — and that is why a board built on a wrong footprint runs correctly. A rev C board
+with U1 mounted normally on top would have fed IN+ into IN-. The corrected footprint
+puts VIN+/VOUT+ on the LEFT as drawn (viewed from the top), with the rectangular pads
+marking them.
+
 `Irin:MP1584EN_HW133_2x2Pad_P2.54mm_W10.16mm_L17.78mm` is the good one, and the
 schematic now points at it. The old `...W7.62mm...` footprint is kept but marked
 DEPRECATED in its own description, because the rev B boards were fabbed with it.
